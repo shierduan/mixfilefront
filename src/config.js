@@ -2,8 +2,8 @@ import axios from "axios";
 import {toast} from "react-toastify";
 
 
-// export const apiAddress = `${window.location.origin}/`
-export const apiAddress = `http://192.168.101.103:4719/`
+export const apiAddress = `${window.location.origin}/`
+// export const apiAddress = `http://192.168.101.103:4719/`
 
 export const client = axios.create({
     baseURL: apiAddress
