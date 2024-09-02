@@ -70,7 +70,7 @@ async function uploadFile(file) {
                 const {loaded, total} = progressEvent
                 setProgressState({
                     open: true,
-                    tip: `上传中: ${formatFileSize(loaded)}/${formatFileSize(total)}`,
+                    tip: `上传中: ${formatFileSize(loaded, true)}/${formatFileSize(total)}`,
                     progress: loaded / total * 100,
                     title: file.name,
                     cancel() {

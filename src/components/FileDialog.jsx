@@ -33,6 +33,8 @@ function FileDialog(props) {
     }
     const {name, size, shareInfoData} = data
 
+    const downloadAddress = `${apiAddress}/api/download?s=${encodeURIComponent(shareInfoData)}`
+
     return (
         <Backdrop open onClick={(event) => {
             if (event.target === event.currentTarget) {
@@ -46,8 +48,13 @@ function FileDialog(props) {
                 }}>
                     <Button variant={'outlined'}>复制分享码</Button>
                 </CopyToClipboard>
+                <CopyToClipboard text={downloadAddress} onCopy={() => {
+                    notifyMsg('复制成功!')
+                }}>
+                    <Button variant={'outlined'}>复制局域网地址</Button>
+                </CopyToClipboard>
                 <Button variant={'contained'} onClick={() => {
-                    window.open(`${apiAddress}/api/download?s=${encodeURIComponent(shareInfoData)}`)
+                    window.open(downloadAddress)
                 }}>下载/预览文件(图片视频右键另存为保存)</Button>
             </Container>
         </Backdrop>
