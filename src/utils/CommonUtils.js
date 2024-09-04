@@ -15,7 +15,7 @@ export function notifyMsg(msg) {
 
 export function formatFileSize(bytes, mb) {
     if (bytes === 0) return '0 B';
-    if (mb){
+    if (mb && bytes > 1024 * 1024) {
         return (bytes / (1024 * 1024)).toFixed(2) + ' MB'
     }
     const sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB'];
