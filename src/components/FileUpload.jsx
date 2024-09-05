@@ -5,6 +5,7 @@ import axios from "axios";
 import {toast} from "react-toastify";
 import {setProgressState} from "./ProgressDialog.jsx";
 import {formatFileSize, notifyMsg} from "../utils/CommonUtils.js";
+import {openFileDialog} from "./FileDialog.jsx";
 
 const Container = styled.div`
     display: flex;
@@ -80,6 +81,11 @@ async function uploadFile(file) {
                 })
             },
             signal: controller.signal
+        })
+        openFileDialog({
+            name: file.name,
+            size: file.size,
+            shareInfoData: response.data
         })
     } catch (e) {
         if (e.message === 'canceled') {
