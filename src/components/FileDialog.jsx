@@ -17,6 +17,7 @@ const Container = styled.div`
     gap: 10px;
     flex-direction: column;
     color: #8e2afe;
+    word-break: break-all;
 
     button {
         font-size: max(.6rem, 14px);
