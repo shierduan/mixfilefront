@@ -9,6 +9,7 @@ import {openFileDialog} from "./FileDialog.jsx";
 
 const Container = styled.div`
     display: flex;
+    flex-wrap: wrap;
     width: 100%;
     height: 100px;
     align-items: center;
@@ -20,6 +21,7 @@ const Container = styled.div`
     border: 4px dashed rgba(142, 42, 254, 0.63);
     transition: .3s;
     box-shadow: 0 0 5px 3px rgba(138, 43, 226, 0.15);
+    word-break: break-all;
 
     &:hover {
         background-color: rgba(138, 43, 226, 0.1);

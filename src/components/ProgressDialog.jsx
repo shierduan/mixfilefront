@@ -14,6 +14,7 @@ const Container = styled.div`
     gap: 10px;
     flex-direction: column;
     color: #8e2afe;
+    word-break: break-all;
 
     p {
         white-space: nowrap;
