@@ -11,7 +11,7 @@ import {debounce} from "./utils/CommonUtils.js";
 import {ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import FileDialog from "./components/FileDialog.jsx";
-import ProgressDialog from "./components/ProgressDialog.jsx";
+import UploadDialog from "./components/upload/UploadDialog.jsx";
 
 let theme = createTheme({
     palette: {
@@ -39,7 +39,7 @@ export function App() {
             <Home/>
             <FileDialog/>
             <ToastContainer/>
-            <ProgressDialog/>
+            <UploadDialog/>
         </ThemeProvider>
     );
 }

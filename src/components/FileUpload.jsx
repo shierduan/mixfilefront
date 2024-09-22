@@ -2,10 +2,9 @@ import styled from "styled-components";
 import {FileDrop} from "react-file-drop";
 import {apiAddress} from "../config.js";
 import axios from "axios";
-import {toast} from "react-toastify";
-import {setProgressState} from "./ProgressDialog.jsx";
 import {formatFileSize, notifyMsg} from "../utils/CommonUtils.js";
-import {openFileDialog} from "./FileDialog.jsx";
+import {addFileList} from "./upload/UploadDialog.jsx";
+import Semaphore from "@chriscdn/promise-semaphore";
 
 const Container = styled.div`
     display: flex;
@@ -57,22 +56,34 @@ const Container = styled.div`
     }
 `
 
-async function uploadFile(file) {
+const semaphore = new Semaphore(2)
+
+export async function uploadFile(file, setData) {
+    const controller = new AbortController();
     const uploadAddress = `${apiAddress}api/upload?name=${encodeURIComponent(file.name)}`
-    setProgressState({
-        open: true,
+    setData({
+        tip: `等待中`,
+        progress: 0,
+        title: file.name,
+        cancel() {
+            controller.abort()
+        }
+    })
+    await semaphore.acquire()
+    console.log('await')
+    setData({
         tip: `上传中: 0/${formatFileSize(file.size)}`,
         progress: 0,
-        title: file.name
+        title: file.name,
+        cancel() {
+            controller.abort()
+        }
     })
-    const controller = new AbortController();
-    let response = null
     try {
-        response = await axios.put(uploadAddress, file, {
+        await axios.put(uploadAddress, file, {
             onUploadProgress: progressEvent => {
                 const {loaded, total} = progressEvent
-                setProgressState({
-                    open: true,
+                setData({
                     tip: `上传中: ${formatFileSize(loaded, true)}/${formatFileSize(total)}`,
                     progress: loaded / total * 100,
                     title: file.name,
@@ -84,40 +95,39 @@ async function uploadFile(file) {
             },
             signal: controller.signal
         })
-        openFileDialog({
-            name: file.name,
-            size: file.size,
-            shareInfoData: response.data
-        })
     } catch (e) {
+        setData({
+            error: true,
+            tip: `上传失败`,
+            progress: 0,
+            title: file.name
+        })
         if (e.message === 'canceled') {
-            return
         }
-        toast.error(`上传失败: ${e?.message}`, {
-            position: "top-center"
-        });
         return
     } finally {
-        setProgressState({
-            open: false,
-        })
+        semaphore.release()
     }
-    notifyMsg('上传成功!')
+    setData({
+        tip: `上传完成`,
+        progress: 100,
+        title: file.name
+    })
 }
 
 function FileUpload(props) {
     return (
         <Container>
             <input type="file" id={'select-file'} hidden onChange={(event) => {
-                uploadFile(event.target.files[0])
+                addFileList(event.target.files)
                 event.target.value = ''
-            }}/>
+            }} multiple="multiple"/>
             <FileDrop
                 onTargetClick={() => {
                     document.querySelector('#select-file').click()
                 }}
                 onDrop={(files, event) => {
-                    uploadFile(files[0])
+                    addFileList(files)
                 }}
             >
                 选择/拖入文件
