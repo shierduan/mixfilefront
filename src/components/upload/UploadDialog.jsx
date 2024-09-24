@@ -51,7 +51,8 @@ function UploadDialog(props) {
     if (fileList.length === 0) {
         return null
     }
-    const complete = result.split("\n").length === fileList.length
+    const results = result.split("\n")
+    const complete = results.length === fileList.length
 
     return (
         <Backdrop open>
@@ -71,6 +72,7 @@ function UploadDialog(props) {
                     }
                 </div>
                 {
+                    result.trim() &&
                     <CopyToClipboard
                         className={'file-card animate__animated animate__bounceIn'}
                         text={result}
