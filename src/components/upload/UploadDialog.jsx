@@ -71,7 +71,6 @@ function UploadDialog(props) {
                     }
                 </div>
                 {
-                    complete &&
                     <CopyToClipboard
                         className={'file-card animate__animated animate__bounceIn'}
                         text={result}
