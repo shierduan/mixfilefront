@@ -3,7 +3,7 @@ import {FileDrop} from "react-file-drop";
 import {apiAddress} from "../config.js";
 import axios from "axios";
 import {formatFileSize, notifyMsg} from "../utils/CommonUtils.js";
-import {addFileList} from "./upload/UploadDialog.jsx";
+import {addFileList, addFileResult} from "./upload/UploadDialog.jsx";
 import Semaphore from "@chriscdn/promise-semaphore";
 
 const Container = styled.div`
@@ -70,7 +70,6 @@ export async function uploadFile(file, setData) {
         }
     })
     await semaphore.acquire()
-    console.log('await')
     setData({
         tip: `上传中: 0/${formatFileSize(file.size)}`,
         progress: 0,
@@ -80,7 +79,7 @@ export async function uploadFile(file, setData) {
         }
     })
     try {
-        await axios.put(uploadAddress, file, {
+        let response = await axios.put(uploadAddress, file, {
             onUploadProgress: progressEvent => {
                 const {loaded, total} = progressEvent
                 setData({
@@ -95,6 +94,7 @@ export async function uploadFile(file, setData) {
             },
             signal: controller.signal
         })
+        addFileResult(response.data)
     } catch (e) {
         setData({
             error: true,
