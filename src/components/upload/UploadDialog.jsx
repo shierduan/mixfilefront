@@ -52,7 +52,7 @@ function UploadDialog(props) {
         return null
     }
     const results = result.split("\n")
-    const complete = results.length === fileList.length
+    const complete = result.trim() && results.length === fileList.length
 
     return (
         <Backdrop open>
