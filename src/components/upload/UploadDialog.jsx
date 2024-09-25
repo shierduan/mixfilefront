@@ -52,6 +52,7 @@ function UploadDialog(props) {
         return null
     }
     const results = result.split("\n")
+    const uploaded = result.trim() ? results.length : 0
     const complete = result.trim() && results.length === fileList.length
 
     return (
@@ -62,7 +63,7 @@ function UploadDialog(props) {
                         <h3 className={'file-card animate__animated animate__bounceIn'}>
                             {fileList.length} 个文件全部上传成功
                         </h3>
-                        : <h3>{fileList.length} 个文件正在上传</h3>
+                        : <h3>{uploaded} / {fileList.length} 个文件正在上传</h3>
                 }
                 <div class="content">
                     {
