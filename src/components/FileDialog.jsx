@@ -41,6 +41,8 @@ function FileDialog(props) {
             if (event.target === event.currentTarget) {
                 setGdata(null)
             }
+        }} style={{
+            zIndex: '99'
         }}>
             <Container className={'shadow'}>
                 <h3>文件: {name}</h3>

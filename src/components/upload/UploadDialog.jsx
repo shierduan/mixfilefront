@@ -56,7 +56,9 @@ function UploadDialog(props) {
     const complete = result.trim() && results.length === fileList.length
 
     return (
-        <Backdrop open>
+        <Backdrop open style={{
+            zIndex: '99'
+        }}>
             <Container className={'shadow'}>
                 {
                     complete ?
