@@ -34,7 +34,7 @@ function FileDialog(props) {
     }
     const {name, size, shareInfoData} = data
 
-    const downloadAddress = `${apiAddress}/api/download?s=${encodeURIComponent(shareInfoData)}`
+    const downloadAddress = `${apiAddress}api/download?s=${encodeURIComponent(shareInfoData)}`
 
     return (
         <Backdrop open onClick={(event) => {
