@@ -2,6 +2,7 @@ import styled from "styled-components";
 import {useState} from "react";
 import {Button, TextField} from "@mui/material";
 import {apiAddress} from "../config.js";
+import {decodeMixShareCode} from "../utils/ShareCode.js";
 
 const Container = styled.div`
     display: flex;
@@ -42,7 +43,9 @@ function FileResolve(props) {
                 setInput(event.target.value)
             }}/>
             <Button variant={'contained'} onClick={() => {
-                window.open(`${apiAddress}api/download?s=${encodeURIComponent(input.trim())}`)
+                let code = input.trim()
+                code = decodeMixShareCode(code) ?? code
+                window.open(`${apiAddress}api/download?s=${encodeURIComponent(code)}`)
             }}>打开</Button>
         </Container>
     );
