@@ -94,7 +94,7 @@ export async function uploadFile(file, setData) {
             },
             signal: controller.signal
         })
-        addFileResult(response.data)
+        addFileResult({file, shareInfoData: response.data})
     } catch (e) {
         setData({
             error: true,

@@ -2,7 +2,8 @@ import styled from "styled-components";
 import {useState} from "react";
 import {Button, TextField} from "@mui/material";
 import {apiAddress} from "../config.js";
-import {decodeMixShareCode} from "../utils/ShareCode.js";
+import {decodeMixFileName, decodeMixShareCode} from "../utils/ShareCode.js";
+import {openFileListDialog} from "./FileList.jsx";
 
 const Container = styled.div`
     display: flex;
@@ -42,9 +43,13 @@ function FileResolve(props) {
             <TextField label={'输入分享码'} variant={'outlined'} value={input} onChange={(event) => {
                 setInput(event.target.value)
             }}/>
-            <Button variant={'contained'} onClick={() => {
+            <Button variant={'contained'} onClick={async () => {
                 let code = input.trim()
-                code = decodeMixShareCode(code) ?? code
+                code = decodeMixShareCode(code)
+                let fileName = await decodeMixFileName(code)
+                if (fileName?.endsWith(".mix_list")) {
+                    return openFileListDialog(code)
+                }
                 window.open(`${apiAddress}api/download?s=${encodeURIComponent(code)}`)
             }}>打开</Button>
         </Container>

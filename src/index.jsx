@@ -12,6 +12,7 @@ import {ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import FileDialog from "./components/FileDialog.jsx";
 import UploadDialog from "./components/upload/UploadDialog.jsx";
+import FileListDialog from "./components/FileList.jsx";
 
 let theme = createTheme({
     palette: {
@@ -37,9 +38,10 @@ export function App() {
     return (
         <ThemeProvider theme={theme}>
             <Home/>
-            <FileDialog/>
             <ToastContainer/>
             <UploadDialog/>
+            <FileListDialog/>
+            <FileDialog/>
         </ThemeProvider>
     );
 }

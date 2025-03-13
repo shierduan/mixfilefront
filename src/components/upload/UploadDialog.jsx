@@ -1,9 +1,13 @@
 import {useState} from 'react';
 import styled from "styled-components";
 import {Backdrop, Button} from "@mui/material";
-import {ProgressCard} from "./FileCard.jsx";
+import {ProgressCard} from "./UploadCard.jsx";
 import {notifyMsg} from "../../utils/CommonUtils.js";
 import {CopyToClipboard} from "react-copy-to-clipboard/src";
+import {apiAddress} from "../../config.js";
+import axios from "axios";
+import pako from "pako";
+import {openFileListDialog} from "../FileList.jsx";
 
 const Container = styled.div`
     display: flex;
@@ -43,7 +47,8 @@ let setFileResult = null
 function UploadDialog(props) {
 
     const [fileList, setList] = useState([])
-    const [result, setResult] = useState('')
+    const [result, setResult] = useState([])
+    const [uploading, setUploading] = useState(false)
     setFileList = setList
     setFileResult = setResult
 
@@ -51,9 +56,8 @@ function UploadDialog(props) {
     if (fileList.length === 0) {
         return null
     }
-    const results = result.split("\n")
-    const uploaded = result.trim() ? results.length : 0
-    const complete = result.trim() && results.length === fileList.length
+    const uploaded = result.length
+    const complete = result.length === fileList.length
 
     return (
         <Backdrop open style={{
@@ -75,19 +79,43 @@ function UploadDialog(props) {
                     }
                 </div>
                 {
-                    result.trim() &&
-                    <CopyToClipboard
-                        className={'file-card animate__animated animate__bounceIn'}
-                        text={result}
-                        onCopy={() => {
-                            notifyMsg('复制成功!')
-                        }}>
-                        <Button variant={'outlined'}>全部复制</Button>
-                    </CopyToClipboard>
+                    result.length > 0 &&
+                    <>
+                        <CopyToClipboard
+                            className={'file-card animate__animated animate__bounceIn'}
+                            text={result.map((it) => it.shareInfoData).join('\n')}
+                            onCopy={() => {
+                                notifyMsg('复制成功!')
+                            }}>
+                            <Button variant={'outlined'}>全部复制</Button>
+                        </CopyToClipboard>
+                    </>
                 }
+
+                {
+                    result.length > 1 &&
+                    <Button disabled={uploading} variant={'contained'} onClick={async () => {
+                        const dataList = result.map(({file, shareInfoData}) => {
+                            return {
+                                name: file.name,
+                                size: file.size,
+                                category: '',
+                                time: new Date().getTime(),
+                                shareInfoData
+                            }
+                        })
+                        const shareData = pako.gzip(JSON.stringify(dataList))
+                        const uploadAddress = `${apiAddress}api/upload?name=${encodeURIComponent('文件分享.mix_list')}&add=false`
+                        setUploading(true)
+                        let response = await axios.put(uploadAddress, shareData, {})
+                        openFileListDialog(response.data)
+                        setUploading(false)
+                    }}>{'一键导出'}</Button>
+                }
+
                 <Button variant={'contained'} onClick={() => {
                     setFileList([])
-                    setFileResult('')
+                    setFileResult([])
                 }}>{complete ? '关闭' : '取消'}</Button>
             </Container>
         </Backdrop>
@@ -99,7 +127,7 @@ export function addFileList(list) {
 }
 
 export function addFileResult(res) {
-    setFileResult((prev) => `${prev}\n${res}`.trim())
+    setFileResult((prev) => [...prev, res])
 }
 
 export default UploadDialog;
