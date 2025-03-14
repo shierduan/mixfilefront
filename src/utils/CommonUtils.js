@@ -1,4 +1,5 @@
 import {toast} from "react-toastify";
+import moment from "moment";
 
 const debounceMap = {}
 
@@ -22,4 +23,8 @@ export function formatFileSize(bytes, mb) {
     const i = Math.floor(Math.log(bytes) / Math.log(1024));
     const formattedSize = parseFloat((bytes / Math.pow(1024, i)).toFixed(2));
     return `${formattedSize} ${sizes[i]}`;
+}
+
+export function getFormattedDate() {
+    return moment().format('YYYY-MM-DD HH:mm:ss');
 }

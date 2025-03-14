@@ -2,7 +2,7 @@ import {useState} from 'react';
 import styled from "styled-components";
 import {Backdrop, Button} from "@mui/material";
 import {ProgressCard} from "./UploadCard.jsx";
-import {notifyMsg} from "../../utils/CommonUtils.js";
+import {getFormattedDate, notifyMsg} from "../../utils/CommonUtils.js";
 import {CopyToClipboard} from "react-copy-to-clipboard/src";
 import {apiAddress} from "../../config.js";
 import axios from "axios";
@@ -105,7 +105,7 @@ function UploadDialog(props) {
                             }
                         })
                         const shareData = pako.gzip(JSON.stringify(dataList))
-                        const uploadAddress = `${apiAddress}api/upload?name=${encodeURIComponent('文件分享.mix_list')}&add=false`
+                        const uploadAddress = `${apiAddress}api/upload?name=${encodeURIComponent(`文件分享-${getFormattedDate()}.mix_list`)}&add=false`
                         setUploading(true)
                         let response = await axios.put(uploadAddress, shareData, {})
                         openFileListDialog(response.data)

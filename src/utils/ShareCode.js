@@ -1,4 +1,5 @@
 import basex from 'base-x'
+import forge from 'node-forge'
 
 const replaceMap = {}
 
@@ -31,7 +32,6 @@ function hex2a(hexx) {
 }
 
 const mixBase = basex('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')
-const key = '202cb962ac59075b964b07152d234b70'
 
 function hexToArrayBuffer(hex) {
     const bytes = new Uint8Array(hex.length / 2);
@@ -47,36 +47,46 @@ function arrayBufferToStr(buffer) {
     return decoder.decode(buffer);
 }
 
-async function getCryptoKeyFromHEX(md5Hex) {
-    const keyBuffer = hexToArrayBuffer(md5Hex);
-    return await crypto.subtle.importKey(
-        "raw",
-        keyBuffer,
-        {name: "AES-GCM"},
-        false,
-        ["decrypt"]
-    );
+function bufferToHex(buffer) {
+    return Array.from(buffer)
+        .map(byte => byte.toString(16).padStart(2, '0'))
+        .join('')
 }
 
+
 // 解密函数
-async function decryptAESGCM(encryptedData, iv, md5Key = key) {
+async function decryptAESGCM(encryptedData, iv, authTag) {
     try {
-        // 获取密钥
-        const key = await getCryptoKeyFromHEX(md5Key);
 
-        // 解密
-        const decrypted = await crypto.subtle.decrypt(
-            {
-                name: "AES-GCM",
-                iv: iv,
-                tagLength: 12 * 8
-            },
-            key,
-            encryptedData
-        );
+        encryptedData = forge.util.createBuffer(encryptedData)
+        iv = forge.util.createBuffer(iv)
+        authTag = forge.util.createBuffer(authTag)
 
-        // 将解密结果转换回字符串
-        return arrayBufferToStr(decrypted);
+
+        // 将输入数据转换为 forge 缓冲区格式
+        const keyBytes = forge.util.hexToBytes('202cb962ac59075b964b07152d234b70'); // 密钥 (16 字节 = 128 位)
+
+
+        // 创建 AES-GCM 解密器
+        const decipher = forge.cipher.createDecipher('AES-GCM', keyBytes);
+
+        // 设置 IV
+        decipher.start({
+            iv: iv,
+            tag: authTag, // GCM 模式需要提供认证标签,
+            tagLength: 96
+        });
+
+        // 解密密文
+        decipher.update(forge.util.createBuffer(encryptedData));
+
+        // 完成解密并验证
+        const pass = decipher.finish();
+
+        if (pass) {
+            // 解密成功，返回明文
+            return decipher.output.toString('utf8');
+        }
     } catch (error) {
         console.error("解密失败:", error);
         throw error;
@@ -85,9 +95,19 @@ async function decryptAESGCM(encryptedData, iv, md5Key = key) {
 
 // 工具函数：从数据中提取 IV 和加密数据
 function extractIvAndData(dataBuffer) {
-    const iv = dataBuffer.slice(0, 12); // AES-GCM 的 IV 通常是 12 字节
-    const encrypted = dataBuffer.slice(12); // 剩余部分是加密数据
-    return {iv, encrypted};
+    const ivLength = 12; // AES-GCM 的 IV 通常是 12 字节
+    const tagLength = 12; // AES-GCM 的认证标签通常是 16 字节
+
+    // 提取 IV（前 12 字节）
+    const iv = dataBuffer.slice(0, ivLength);
+
+    // 提取认证标签（最后 16 字节）
+    const authTag = dataBuffer.slice(dataBuffer.length - tagLength);
+
+    // 提取加密数据（IV 之后到认证标签之前）
+    const encrypted = dataBuffer.slice(ivLength, dataBuffer.length - tagLength);
+
+    return {iv, encrypted, authTag};
 }
 
 export async function decodeMixFile(data) {
@@ -96,8 +116,8 @@ export async function decodeMixFile(data) {
     if (!encData) {
         return null
     }
-    const {iv, encrypted} = extractIvAndData(encData);
-    const dData = (await decryptAESGCM(encrypted, iv, key)).toString()
+    const {iv, encrypted, authTag} = extractIvAndData(encData);
+    const dData = (await decryptAESGCM(encrypted, iv, authTag))
     try {
         return JSON.parse(dData)
     } catch (e) {
