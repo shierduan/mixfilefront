@@ -1,5 +1,6 @@
 import basex from 'base-x'
 import forge from 'node-forge'
+import {notifyMsg} from "./CommonUtils.js";
 
 const replaceMap = {}
 
@@ -88,6 +89,7 @@ async function decryptAESGCM(encryptedData, iv, authTag) {
             return decipher.output.toString('utf8');
         }
     } catch (error) {
+        notifyMsg('解密分享码失败')
         console.error("解密失败:", error);
         throw error;
     }

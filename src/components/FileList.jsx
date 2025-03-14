@@ -74,8 +74,8 @@ function FileListDialog(props) {
             zIndex: '99'
         }}>
             <Container className={'shadow'}>
+                <h3>共{fileList.length}个文件</h3>
                 <div class="content">
-                    <h3>共{fileList.length}个文件</h3>
                     {fileList.map((item) => {
                         return <FileCard item={item} key={item.shareInfoData}/>
                     })}
