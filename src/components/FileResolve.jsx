@@ -4,6 +4,7 @@ import {Button, TextField} from "@mui/material";
 import {apiAddress} from "../config.js";
 import {decodeMixFileName, decodeMixShareCode} from "../utils/ShareCode.js";
 import {openFileListDialog} from "./FileList.jsx";
+import {notifyMsg} from "../utils/CommonUtils.js";
 
 const Container = styled.div`
     display: flex;
@@ -47,7 +48,10 @@ function FileResolve(props) {
                 let code = input.trim()
                 code = decodeMixShareCode(code)
                 let fileName = await decodeMixFileName(code)
-                if (fileName?.endsWith(".mix_list")) {
+                if (!fileName) {
+                    return notifyMsg('解密分享码失败')
+                }
+                if (fileName.endsWith(".mix_list")) {
                     return openFileListDialog(code)
                 }
                 window.open(`${apiAddress}api/download?s=${encodeURIComponent(code)}`)
