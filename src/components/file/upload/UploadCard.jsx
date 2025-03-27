@@ -2,7 +2,7 @@ import {Box, LinearProgress} from "@mui/material";
 import {useEffect, useState} from "react";
 import {uploadFile} from "../FileUpload.jsx";
 import styled from "styled-components";
-import useUnmountEffect from "../../hooks/useUnmountEffect.js";
+import useUnmountEffect from "../../../hooks/useUnmountEffect.js";
 
 function LinearProgressWithLabel(props) {
     return (

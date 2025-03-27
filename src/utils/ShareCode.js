@@ -1,6 +1,5 @@
 import basex from 'base-x'
 import forge from 'node-forge'
-import {notifyMsg} from "./CommonUtils.js";
 
 const replaceMap = {}
 

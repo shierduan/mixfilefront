@@ -1,10 +1,11 @@
 import styled from "styled-components";
 import {FileDrop} from "react-file-drop";
-import {apiAddress} from "../config.js";
+import {apiAddress} from "../../config.js";
 import axios from "axios";
-import {formatFileSize, notifyMsg} from "../utils/CommonUtils.js";
-import {addFileList, addFileResult} from "./upload/UploadDialog.jsx";
+import {formatFileSize, notifyMsg} from "../../utils/CommonUtils.js";
 import Semaphore from "@chriscdn/promise-semaphore";
+import {fileListProxy, fileResultProxy} from "./upload/UploadDialog.jsx";
+import {ref} from "valtio";
 
 const Container = styled.div`
     display: flex;
@@ -94,7 +95,7 @@ export async function uploadFile(file, setData) {
             },
             signal: controller.signal
         })
-        addFileResult({file, shareInfoData: response.data})
+        fileResultProxy.push({file, shareInfoData: response.data})
     } catch (e) {
         setData({
             error: true,
@@ -115,11 +116,15 @@ export async function uploadFile(file, setData) {
     })
 }
 
+function parseFileList(fileList) {
+    return [...fileList].map((it) => ref(it))
+}
+
 function FileUpload(props) {
     return (
         <Container>
             <input type="file" id={'select-file'} hidden onChange={(event) => {
-                addFileList(event.target.files)
+                fileListProxy.push(...parseFileList(event.target.files))
                 event.target.value = ''
             }} multiple="multiple"/>
             <FileDrop
@@ -127,7 +132,7 @@ function FileUpload(props) {
                     document.querySelector('#select-file').click()
                 }}
                 onDrop={(files, event) => {
-                    addFileList(files)
+                    fileListProxy.push(...parseFileList(files))
                 }}
             >
                 选择/拖入文件

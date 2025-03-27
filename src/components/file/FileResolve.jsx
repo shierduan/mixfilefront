@@ -1,10 +1,10 @@
 import styled from "styled-components";
 import {useState} from "react";
 import {Button, TextField} from "@mui/material";
-import {apiAddress} from "../config.js";
-import {decodeMixFileName, decodeMixShareCode} from "../utils/ShareCode.js";
+import {apiAddress} from "../../config.js";
+import {decodeMixFileName, decodeMixShareCode} from "../../utils/ShareCode.js";
 import {openFileListDialog} from "./FileList.jsx";
-import {notifyMsg} from "../utils/CommonUtils.js";
+import {notifyMsg} from "../../utils/CommonUtils.js";
 
 const Container = styled.div`
     display: flex;

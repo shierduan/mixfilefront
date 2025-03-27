@@ -1,9 +1,9 @@
 import styled from "styled-components";
 
 import logo from '../assets/logo.png'
-import FileHistory from "./FileHistory.jsx";
-import FileResolve from "./FileResolve.jsx";
-import FileUpload from "./FileUpload.jsx";
+import FileHistory from "./file/FileHistory.jsx";
+import FileResolve from "./file/FileResolve.jsx";
+import FileUpload from "./file/FileUpload.jsx";
 
 const Container = styled.div`
     margin: 5vh auto;

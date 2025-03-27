@@ -1,9 +1,10 @@
 import styled from "styled-components";
 import {useEffect, useState} from "react";
-import {client} from "../config.js";
-import {formatFileSize} from "../utils/CommonUtils.js";
-import {openFileDialog} from "./FileDialog.jsx";
+import {client} from "../../config.js";
+import {formatFileSize} from "../../utils/CommonUtils.js";
+import FileDialog from "./FileDialog.jsx";
 import {openFileListDialog} from "./FileList.jsx";
+import {addDialog} from "../../utils/DialogManager.jsx";
 
 const Container = styled.div`
     display: flex;
@@ -41,7 +42,7 @@ export function FileCard({item}) {
                 openFileListDialog(shareInfoData)
                 return
             }
-            openFileDialog(item)
+            addDialog(<FileDialog data={item}/>)
         }}>
             <h4>{name}</h4>
             <p>{formatFileSize(size)}</p>

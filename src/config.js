@@ -1,9 +1,8 @@
 import axios from "axios";
 import {toast} from "react-toastify";
 
-
-export const apiAddress = `${window.location.origin}/`
-// export const apiAddress = `http://192.168.101.106:4719/`
+const params = new URLSearchParams(window.location.search);
+export const apiAddress = params.get("api") ?? `${window.location.origin}/`
 
 export const client = axios.create({
     baseURL: apiAddress

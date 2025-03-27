@@ -1,12 +1,13 @@
 import styled from "styled-components";
 import {useEffect, useState} from "react";
-import {apiAddress} from "../config.js";
-import {Backdrop, Button, CircularProgress} from "@mui/material";
+import {apiAddress} from "../../config.js";
+import {Button, CircularProgress} from "@mui/material";
 import axios from "axios";
 import pako from "pako";
 import {FileCard} from "./FileHistory.jsx";
-import {notifyMsg} from "../utils/CommonUtils.js";
+import {notifyMsg} from "../../utils/CommonUtils.js";
 import {CopyToClipboard} from "react-copy-to-clipboard/src";
+import {addDialog} from "../../utils/DialogManager.jsx";
 
 const Container = styled.div`
     display: flex;
@@ -35,15 +36,8 @@ const Container = styled.div`
     }
 `
 
-let setGdata = null
 
-function FileListDialog(props) {
-    const [data, setData] = useState(null)
-    setGdata = setData
-
-    if (data == null) {
-        return null
-    }
+function FileListDialog({data}) {
 
     const downloadAddress = `${apiAddress}api/download?s=${data}`
 
@@ -61,38 +55,33 @@ function FileListDialog(props) {
             setList(JSON.parse(decoder.decode(originalRaw)))
         })()
     }, [data]);
+
     if (fileList.length === 0) {
-        return <Backdrop open><CircularProgress/></Backdrop>
+        return <CircularProgress/>
     }
 
     return (
-        <Backdrop open onClick={(event) => {
-            if (event.target === event.currentTarget) {
-                setGdata(null)
-            }
-        }} style={{
-            zIndex: '99'
-        }}>
-            <Container className={'shadow'}>
-                <h3>共{fileList.length}个文件</h3>
-                <div class="content">
-                    {fileList.map((item) => {
-                        return <FileCard item={item} key={item.shareInfoData}/>
-                    })}
-                </div>
-                <CopyToClipboard text={`mf://${data}`} onCopy={() => {
-                    notifyMsg('复制成功!')
-                }}>
-                    <Button variant={'outlined'}>复制分享码</Button>
-                </CopyToClipboard>
-
-            </Container>
-        </Backdrop>
+        <Container className={'shadow'}>
+            <h3>共{fileList.length}个文件</h3>
+            <div class="content">
+                {fileList.map((item) => {
+                    return <FileCard item={item} key={item.shareInfoData}/>
+                })}
+            </div>
+            <CopyToClipboard text={`mf://${data}`} onCopy={() => {
+                notifyMsg('复制成功!')
+            }}>
+                <Button variant={'outlined'}>复制分享码</Button>
+            </CopyToClipboard>
+            <Button variant={'contained'} onClick={()=>{
+                window.open(`${apiAddress}api/download?s=${encodeURIComponent(data)}`)
+            }}>下载列表文件</Button>
+        </Container>
     );
 }
 
 export function openFileListDialog(file) {
-    setGdata(file)
+    addDialog(<FileListDialog data={file}/>)
 }
 
 export default FileListDialog;

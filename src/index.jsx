@@ -10,9 +10,7 @@ import Home from "./components/Home.jsx";
 import {debounce} from "./utils/CommonUtils.js";
 import {ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import FileDialog from "./components/FileDialog.jsx";
-import UploadDialog from "./components/upload/UploadDialog.jsx";
-import FileListDialog from "./components/FileList.jsx";
+import {DialogManager} from "./utils/DialogManager.jsx";
 
 let theme = createTheme({
     palette: {
@@ -35,13 +33,12 @@ window.addEventListener('resize', () => {
 
 
 export function App() {
+
     return (
         <ThemeProvider theme={theme}>
             <Home/>
             <ToastContainer/>
-            <UploadDialog/>
-            <FileListDialog/>
-            <FileDialog/>
+            <DialogManager/>
         </ThemeProvider>
     );
 }
