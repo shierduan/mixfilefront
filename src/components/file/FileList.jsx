@@ -7,7 +7,7 @@ import pako from "pako";
 import {FileCard} from "./FileHistory.jsx";
 import {notifyMsg} from "../../utils/CommonUtils.js";
 import {CopyToClipboard} from "react-copy-to-clipboard/src";
-import {addDialog} from "../../utils/DialogManager.jsx";
+import {addDialog} from "../../utils/DialogContainer.jsx";
 
 const Container = styled.div`
     display: flex;

@@ -8,7 +8,7 @@ import {apiAddress} from "../../../config.js";
 import axios from "axios";
 import pako from "pako";
 import {openFileListDialog} from "../FileList.jsx";
-import {addDialog, dialogProxy} from "../../../utils/DialogManager.jsx";
+import {addDialog, dialogProxy} from "../../../utils/DialogContainer.jsx";
 import {proxy, subscribe, useSnapshot} from "valtio";
 
 const Container = styled.div`

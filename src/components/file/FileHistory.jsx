@@ -4,7 +4,7 @@ import {client} from "../../config.js";
 import {formatFileSize} from "../../utils/CommonUtils.js";
 import FileDialog from "./FileDialog.jsx";
 import {openFileListDialog} from "./FileList.jsx";
-import {addDialog} from "../../utils/DialogManager.jsx";
+import {addDialog} from "../../utils/DialogContainer.jsx";
 
 const Container = styled.div`
     display: flex;

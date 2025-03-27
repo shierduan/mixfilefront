@@ -10,7 +10,7 @@ import Home from "./components/Home.jsx";
 import {debounce} from "./utils/CommonUtils.js";
 import {ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import {DialogManager} from "./utils/DialogManager.jsx";
+import {DialogContainer} from "./utils/DialogContainer.jsx";
 
 let theme = createTheme({
     palette: {
@@ -38,7 +38,7 @@ export function App() {
         <ThemeProvider theme={theme}>
             <Home/>
             <ToastContainer/>
-            <DialogManager/>
+            <DialogContainer/>
         </ThemeProvider>
     );
 }
