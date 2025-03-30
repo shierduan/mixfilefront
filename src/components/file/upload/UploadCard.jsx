@@ -1,8 +1,9 @@
 import {Box, LinearProgress} from "@mui/material";
-import {useEffect, useState} from "react";
-import {uploadFile} from "../FileUpload.jsx";
+import {useEffect} from "react";
 import styled from "styled-components";
 import useUnmountEffect from "../../../hooks/useUnmountEffect.js";
+import {uploadFile} from "../FileUpload.jsx";
+import {useSnapshot} from "valtio";
 
 function LinearProgressWithLabel(props) {
     return (
@@ -41,24 +42,16 @@ const Container = styled.div`
     }
 `
 
-export function ProgressCard({file}) {
+export function ProgressCard({file: upFile}) {
 
-    const [data, setData] = useState({
-        error: false,
-        tip: '',
-        progress: 0,
-        title: '',
-        cancel: null,
-    })
-
-    const {tip, progress, cancel, title, error} = data ?? {}
+    const {tip, progress, cancel, title, error} = useSnapshot(upFile)
 
     useUnmountEffect(() => {
         cancel?.()
     }, [cancel])
 
     useEffect(() => {
-        uploadFile(file, setData)
+        uploadFile(upFile)
     }, []);
 
     return <Container className={'shadow'} error={error}>

@@ -1,11 +1,11 @@
-import {proxy, useSnapshot} from "valtio";
+import {proxy, ref, useSnapshot} from "valtio";
 import {Backdrop} from "@mui/material";
 
 export const dialogProxy = proxy([])
 
 export function addDialog(dialog, autoClose = true) {
     dialogProxy.push({
-        content: () => dialog,
+        content: ref(dialog),
         autoClose,
     })
 }
@@ -26,7 +26,7 @@ export function DialogContainer(props) {
         }} style={{
             zIndex: '99'
         }}>
-            {item.content()}
+            {item.content}
         </Backdrop>
     })
 }

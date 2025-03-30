@@ -2,10 +2,9 @@ import styled from "styled-components";
 import {FileDrop} from "react-file-drop";
 import {apiAddress} from "../../config.js";
 import axios from "axios";
-import {formatFileSize, notifyMsg} from "../../utils/CommonUtils.js";
+import {formatFileSize} from "../../utils/CommonUtils.js";
 import Semaphore from "@chriscdn/promise-semaphore";
-import {fileListProxy, fileResultProxy} from "./upload/UploadDialog.jsx";
-import {ref} from "valtio";
+import {addUploadFile} from "./upload/UploadDialog.jsx";
 
 const Container = styled.div`
     display: flex;
@@ -59,72 +58,47 @@ const Container = styled.div`
 
 const semaphore = new Semaphore(2)
 
-export async function uploadFile(file, setData) {
+export async function uploadFile(upFile) {
     const controller = new AbortController();
+    const {file} = upFile;
     const uploadAddress = `${apiAddress}api/upload?name=${encodeURIComponent(file.name)}`
-    setData({
-        tip: `等待中`,
-        progress: 0,
-        title: file.name,
-        cancel() {
-            controller.abort()
-        }
-    })
+    upFile.tip = '等待中'
+    upFile.cancel = () => {
+        controller.abort()
+    }
     await semaphore.acquire()
-    setData({
-        tip: `上传中: 0/${formatFileSize(file.size)}`,
-        progress: 0,
-        title: file.name,
-        cancel() {
-            controller.abort()
-        }
-    })
+    upFile.tip = `上传中: 0/${formatFileSize(file.size)}`
     try {
         let response = await axios.put(uploadAddress, file, {
             onUploadProgress: progressEvent => {
                 const {loaded, total} = progressEvent
-                setData({
-                    tip: `上传中: ${formatFileSize(loaded, true)}/${formatFileSize(total)}`,
-                    progress: loaded / total * 100,
-                    title: file.name,
-                    cancel() {
-                        controller.abort()
-                        notifyMsg('上传已取消')
-                    }
-                })
+                upFile.tip = `上传中: ${formatFileSize(loaded, true)}/${formatFileSize(total)}`
+                upFile.progress = loaded / total * 100
             },
             signal: controller.signal
         })
-        fileResultProxy.push({file, shareInfoData: response.data})
+        // fileResultProxy.push({file: upFile, shareInfoData: response.data})
+        upFile.result = response.data
     } catch (e) {
-        setData({
-            error: true,
-            tip: `上传失败`,
-            progress: 0,
-            title: file.name
-        })
+        upFile.error = true
+        upFile.tip = '上传失败'
+        upFile.progress = 0
         if (e.message === 'canceled') {
         }
         return
     } finally {
+        upFile.complete = true
         semaphore.release()
     }
-    setData({
-        tip: `上传完成`,
-        progress: 100,
-        title: file.name
-    })
-}
-
-function parseFileList(fileList) {
-    return [...fileList].map((it) => ref(it))
+    upFile.progress = 100
+    upFile.tip = '上传成功'
 }
 
 function FileUpload(props) {
     return (
         <Container>
             <input type="file" id={'select-file'} hidden onChange={(event) => {
-                fileListProxy.push(...parseFileList(event.target.files))
+                addUploadFile(...event.target.files)
                 event.target.value = ''
             }} multiple="multiple"/>
             <FileDrop
@@ -132,7 +106,7 @@ function FileUpload(props) {
                     document.querySelector('#select-file').click()
                 }}
                 onDrop={(files, event) => {
-                    fileListProxy.push(...parseFileList(files))
+                    addUploadFile(...files)
                 }}
             >
                 选择/拖入文件

@@ -9,7 +9,7 @@ import axios from "axios";
 import pako from "pako";
 import {openFileListDialog} from "../FileList.jsx";
 import {addDialog, dialogProxy} from "../../../utils/DialogContainer.jsx";
-import {proxy, subscribe, useSnapshot} from "valtio";
+import {proxy, ref, useSnapshot} from "valtio";
 
 const Container = styled.div`
     display: flex;
@@ -42,49 +42,80 @@ const Container = styled.div`
     }
 `
 
-export const fileListProxy = proxy([])
-export const fileResultProxy = proxy([])
+export const uploadFileList = proxy([])
 
 
-const unsubscribe = subscribe(fileListProxy, () => {
-        if (fileListProxy.length > 0) {
-            addDialog(<UploadDialog/>, false)
-        }
-    }
-)
+export function addUploadFile(...files) {
+    files.forEach((file) => {
+        uploadFileList.push({
+            file: ref(file),
+            result: null,
+            complete: false,
+            error: false,
+            tip: '',
+            progress: 0,
+            title: file.name,
+            cancel: null,
+        })
+    })
+    addDialog(<UploadDialog/>, false)
+}
+
 
 function UploadDialog() {
 
-    const fileList = useSnapshot(fileListProxy)
-    const result = useSnapshot(fileResultProxy)
+    const fileList = useSnapshot(uploadFileList)
+
     const [uploading, setUploading] = useState(false)
 
-    const uploaded = result.length
-    const complete = result.length === fileList.length
+    const results = fileList.filter(file => file.result !== null)
 
+    const uploaded = results.length
+    const errorCount = fileList.filter(file => file.error).length
+    const complete = fileList.filter(file => file.complete).length === fileList.length
+
+    let title = <h3>{uploaded} / {fileList.length} 个文件正在上传</h3>
+    if (complete) {
+        title = (
+            <h3 className={'file-card animate__animated animate__bounceIn'}>
+                {fileList.length} 个文件全部上传成功
+            </h3>
+        )
+    }
+
+    if (errorCount > 0) {
+        title = (
+            <h3 className={'file-card animate__animated animate__bounceIn'}>
+                {uploaded} / {fileList.length} 个文件上传中 {errorCount} 个文件上传失败
+            </h3>
+        )
+        if (complete) {
+            title = (
+                <h3 className={'file-card animate__animated animate__bounceIn'}>
+                    {uploaded} / {fileList.length} 个文件上传成功 {errorCount} 个文件上传失败
+                </h3>
+            )
+        }
+    }
 
     return (
         <Container className={'shadow'}>
             {
-                complete ?
-                    <h3 className={'file-card animate__animated animate__bounceIn'}>
-                        {fileList.length} 个文件全部上传成功
-                    </h3>
-                    : <h3>{uploaded} / {fileList.length} 个文件正在上传</h3>
+                title
             }
             <div class="content">
                 {
-                    fileList.map((file, index) =>
+                    uploadFileList.map((file, index) =>
                         <ProgressCard file={file} key={index}/>
                     )
                 }
             </div>
             {
-                result.length > 0 &&
+                results.length > 0 &&
                 <>
                     <CopyToClipboard
                         className={'file-card animate__animated animate__bounceIn'}
-                        text={result.map((it) => it.shareInfoData).join('\n')}
+                        text={results.map((it) => it.shareInfoData).join('\n')}
                         onCopy={() => {
                             notifyMsg('复制成功!')
                         }}>
@@ -94,9 +125,9 @@ function UploadDialog() {
             }
 
             {
-                result.length > 1 &&
+                results.length > 1 &&
                 <Button disabled={uploading} variant={'contained'} onClick={async () => {
-                    const dataList = result.map(({file, shareInfoData}) => {
+                    const dataList = results.map(({file, shareInfoData}) => {
                         return {
                             name: file.name,
                             size: file.size,
@@ -115,9 +146,9 @@ function UploadDialog() {
             }
 
             <Button variant={'contained'} onClick={() => {
+                notifyMsg('上传已取消')
                 dialogProxy.pop()
-                fileListProxy.length = 0
-                fileResultProxy.length = 0
+                uploadFileList.length = 0
             }}>{complete ? '关闭' : '取消'}</Button>
         </Container>
 

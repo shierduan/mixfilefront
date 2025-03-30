@@ -73,7 +73,7 @@ function FileListDialog({data}) {
             }}>
                 <Button variant={'outlined'}>复制分享码</Button>
             </CopyToClipboard>
-            <Button variant={'contained'} onClick={()=>{
+            <Button variant={'contained'} onClick={() => {
                 window.open(`${apiAddress}api/download?s=${encodeURIComponent(data)}`)
             }}>下载列表文件</Button>
         </Container>
