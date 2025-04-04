@@ -44,7 +44,7 @@ export function FileCard({item}) {
             }
             addDialog(<FileDialog data={item}/>)
         }}>
-            <h4>{name}</h4>
+            <h4 className={'text-hide'}>{name}</h4>
             <p>{formatFileSize(size)}</p>
         </CardContainer>)
     )
@@ -56,7 +56,7 @@ function FileHistory(props) {
 
     async function updateResult() {
         const result = await client.get('api/upload_history')
-        setFetchedList(result.data.reverse())
+        setFetchedList(result.data)
     }
 
     useEffect(() => {

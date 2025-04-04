@@ -11,3 +11,10 @@ body {
 .shadow {
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
+
+.text-hide {
+  white-space: nowrap; /* 禁止换行 */
+  overflow: hidden; /* 隐藏溢出部分 */
+  text-overflow: ellipsis; /* 显示省略号 */
+  max-width: 100%; /* 限制宽度 */
+}
