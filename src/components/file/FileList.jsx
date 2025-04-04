@@ -23,6 +23,7 @@ const Container = styled.div`
     flex-direction: column;
     color: #8e2afe;
     word-break: break-all;
+    overflow: hidden;
 
     > .content {
         gap: 10px;
@@ -36,6 +37,7 @@ const Container = styled.div`
     }
 
     button {
+        max-width: 100%;
         font-size: max(.6rem, 14px);
     }
 `
@@ -45,6 +47,7 @@ const FileContainer = styled.div`
     padding: 5px;
     width: 100%;
     height: 100%;
+    max-width: 90vw;
 
     > .content {
         display: flex;
@@ -94,6 +97,7 @@ function FileListDialog({data}) {
                              // This must be passed through to the rendered row element.
                          }) {
         const file = fileList[index];
+
 
         const {name, size, time, shareInfoData} = file
         return (
