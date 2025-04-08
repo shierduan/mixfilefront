@@ -54,7 +54,7 @@ function FileResolve(props) {
                 if (fileName.endsWith(".mix_list")) {
                     return openFileListDialog(code)
                 }
-                window.open(`${apiAddress}api/download?s=${encodeURIComponent(code)}`)
+                window.open(`${apiAddress}api/download/${encodeURIComponent(fileName)}?s=${encodeURIComponent(code)}`)
             }}>打开</Button>
         </Container>
     );

@@ -115,7 +115,7 @@ function UploadDialog() {
                 <>
                     <CopyToClipboard
                         className={'file-card animate__animated animate__bounceIn'}
-                        text={results.map((it) => it.shareInfoData).join('\n')}
+                        text={results.map((it) => it.result).join('\n')}
                         onCopy={() => {
                             notifyMsg('复制成功!')
                         }}>
@@ -127,13 +127,13 @@ function UploadDialog() {
             {
                 results.length > 1 &&
                 <Button disabled={uploading} variant={'contained'} onClick={async () => {
-                    const dataList = results.map(({file, shareInfoData}) => {
+                    const dataList = results.map(({file, result}) => {
                         return {
                             name: file.name,
                             size: file.size,
                             category: '',
                             time: new Date().getTime(),
-                            shareInfoData
+                            shareInfoData: result
                         }
                     })
                     const shareData = pako.gzip(JSON.stringify(dataList))

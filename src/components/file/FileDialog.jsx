@@ -28,7 +28,7 @@ function FileDialog({data}) {
 
     const {name, size, shareInfoData} = data
 
-    const downloadAddress = `${apiAddress}api/download?s=${encodeURIComponent(shareInfoData)}`
+    const downloadAddress = `${apiAddress}api/download/${encodeURIComponent(name)}?s=${encodeURIComponent(shareInfoData)}`
 
     return (
         <Container className={'shadow'}>
