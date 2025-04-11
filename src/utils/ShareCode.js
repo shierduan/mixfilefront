@@ -55,7 +55,7 @@ function bufferToHex(buffer) {
 
 
 // 解密函数
-async function decryptAESGCM(encryptedData, iv, authTag) {
+function decryptAESGCM(encryptedData, iv, authTag) {
     try {
 
         encryptedData = forge.util.createBuffer(encryptedData)
@@ -110,14 +110,14 @@ function extractIvAndData(dataBuffer) {
     return {iv, encrypted, authTag};
 }
 
-export async function decodeMixFile(data) {
+export function decodeMixFile(data) {
     data = decodeMixShareCode(data)
     const encData = mixBase.decode(data)
     if (!encData) {
         return null
     }
     const {iv, encrypted, authTag} = extractIvAndData(encData);
-    const dData = (await decryptAESGCM(encrypted, iv, authTag))
+    const dData = decryptAESGCM(encrypted, iv, authTag)
     try {
         return JSON.parse(dData)
     } catch (e) {
@@ -125,9 +125,17 @@ export async function decodeMixFile(data) {
     }
 }
 
-export async function decodeMixFileName(shareInfo) {
+export function decodeMixFileName(shareInfo) {
     try {
-        return (await decodeMixFile(shareInfo))?.f
+        const {f, s, h, u, k, r} = decodeMixFile(shareInfo)
+        return {
+            fileName: f,
+            fileSize: s,
+            headSize: h,
+            url: u,
+            key: k,
+            referer: r,
+        }
     } catch (e) {
         console.error("解密失败:", e);
     }

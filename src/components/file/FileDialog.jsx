@@ -32,14 +32,14 @@ function FileDialog({data}) {
 
     return (
         <Container className={'shadow'}>
-            <h3>文件: {name}</h3>
+            <h3 className={'text-hide'}>文件: {name}</h3>
             <CopyToClipboard text={`mf://${shareInfoData}`} onCopy={() => {
-                notifyMsg('复制成功!')
+                notifyMsg('复制成功!', {toastId: 'copy-to-clipboard'})
             }}>
                 <Button variant={'outlined'}>复制分享码</Button>
             </CopyToClipboard>
             <CopyToClipboard text={downloadAddress} onCopy={() => {
-                notifyMsg('复制成功!')
+                notifyMsg('复制成功!', {toastId: 'copy-to-clipboard'})
             }}>
                 <Button variant={'outlined'}>复制局域网地址</Button>
             </CopyToClipboard>

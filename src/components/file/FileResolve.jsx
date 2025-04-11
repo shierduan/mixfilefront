@@ -1,10 +1,11 @@
 import styled from "styled-components";
 import {useState} from "react";
 import {Button, TextField} from "@mui/material";
-import {apiAddress} from "../../config.js";
 import {decodeMixFileName, decodeMixShareCode} from "../../utils/ShareCode.js";
 import {openFileListDialog} from "./FileList.jsx";
 import {notifyMsg} from "../../utils/CommonUtils.js";
+import {addDialog} from "../../utils/DialogContainer.jsx";
+import FileDialog from "./FileDialog.jsx";
 
 const Container = styled.div`
     display: flex;
@@ -35,6 +36,23 @@ const Container = styled.div`
 
 `
 
+export function resolveMixFile(input) {
+    let code = input.trim()
+    code = decodeMixShareCode(code)
+    let {fileName, fileSize} = decodeMixFileName(code)
+    if (!fileName) {
+        return notifyMsg('解密分享码失败', {toastId: 'decode-share-code'})
+    }
+    if (fileName.endsWith(".mix_list")) {
+        return openFileListDialog(code)
+    }
+    addDialog(<FileDialog data={{
+        name: fileName,
+        size: fileSize,
+        shareInfoData: code
+    }}/>)
+}
+
 function FileResolve(props) {
 
     const [input, setInput] = useState('')
@@ -46,16 +64,8 @@ function FileResolve(props) {
             }}/>
             <Button variant={'contained'} onClick={async () => {
                 let code = input.trim()
-                code = decodeMixShareCode(code)
-                let fileName = await decodeMixFileName(code)
-                if (!fileName) {
-                    return notifyMsg('解密分享码失败')
-                }
-                if (fileName.endsWith(".mix_list")) {
-                    return openFileListDialog(code)
-                }
-                window.open(`${apiAddress}api/download/${encodeURIComponent(fileName)}?s=${encodeURIComponent(code)}`)
-            }}>打开</Button>
+                resolveMixFile(code)
+            }}>解析</Button>
         </Container>
     );
 }

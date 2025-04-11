@@ -54,12 +54,16 @@ const FileContainer = styled.div`
         flex-direction: column;
         gap: 10px;
         background-color: rgba(229, 207, 254, 0.25);
-        border-radius: 5px;
         transition: .3s;
-        padding: 5px;
+        padding: 10px;
         width: 100%;
         height: 100%;
-        border: 1px solid rgba(142, 42, 254, 0.53);;
+        border: 2px solid rgba(142, 42, 254, 0.6);
+        border-radius: 10px;
+
+        p {
+            font-weight: bold;
+        }
 
         &:hover {
             background-color: rgba(210, 172, 254, 0.5);
@@ -134,7 +138,7 @@ function FileListDialog({data}) {
                 {content}
             </div>
             <CopyToClipboard text={`mf://${data}`} onCopy={() => {
-                notifyMsg('复制成功!')
+                notifyMsg('复制成功!', {toastId: 'copy-to-clipboard'})
             }}>
                 <Button variant={'outlined'}>复制分享码</Button>
             </CopyToClipboard>

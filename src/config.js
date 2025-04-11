@@ -16,11 +16,14 @@ axiosRetry(client, {
     }
 });
 
+
 client.interceptors.response.use((config) => {
     return config
 }, (error) => {
-    toast.error(`连接失败: ${error.response?.body}`, {
-        position: "top-center"
+    const msg = `连接失败: ${error.response?.body}`
+    toast.error(msg, {
+        position: "top-center",
+        toastId: msg
     });
     return Promise.reject(error)
 })

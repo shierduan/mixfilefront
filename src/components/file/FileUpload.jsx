@@ -91,7 +91,7 @@ export async function uploadFile(upFile) {
         semaphore.release()
     }
     upFile.progress = 100
-    upFile.tip = '上传成功'
+    upFile.tip = `上传成功 ${formatFileSize(file.size)}`
 }
 
 function FileUpload(props) {

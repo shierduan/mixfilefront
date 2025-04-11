@@ -117,7 +117,7 @@ function UploadDialog() {
                         className={'file-card animate__animated animate__bounceIn'}
                         text={results.map((it) => it.result).join('\n')}
                         onCopy={() => {
-                            notifyMsg('复制成功!')
+                            notifyMsg('复制成功!', {toastId: 'copy-to-clipboard'})
                         }}>
                         <Button variant={'outlined'}>全部复制</Button>
                     </CopyToClipboard>
@@ -146,7 +146,7 @@ function UploadDialog() {
             }
 
             <Button variant={'contained'} onClick={() => {
-                notifyMsg('上传已取消')
+                notifyMsg('上传已取消', {toastId: 'cancel-upload'})
                 dialogProxy.pop()
                 uploadFileList.length = 0
             }}>{complete ? '关闭' : '取消'}</Button>

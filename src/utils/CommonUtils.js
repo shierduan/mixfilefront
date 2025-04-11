@@ -10,9 +10,10 @@ export function debounce(key, fn, delay) {
     debounceMap[key] = setTimeout(fn, delay)
 }
 
-export function notifyMsg(msg) {
-    toast(msg)
+export function notifyMsg(msg, options) {
+    toast(msg, options)
 }
+
 
 export function formatFileSize(bytes, mb) {
     if (bytes === 0) return '0 B';

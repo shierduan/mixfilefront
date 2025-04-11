@@ -4,6 +4,7 @@ import styled from "styled-components";
 import useUnmountEffect from "../../../hooks/useUnmountEffect.js";
 import {uploadFile} from "../FileUpload.jsx";
 import {useSnapshot} from "valtio";
+import {resolveMixFile} from "../FileResolve.jsx";
 
 function LinearProgressWithLabel(props) {
     return (
@@ -27,10 +28,25 @@ const Container = styled.div`
     width: 100%;
     gap: 10px;
     flex-direction: column;
-    color: ${props => props.error ? 'red' : "#8e2afe"};
+    color: #8e2afe;
     word-break: break-all;
-    border: 2px solid ${props => props.error ? 'red' : "rgba(142, 42, 254, 0.6)"};;
+    border: 2px solid rgba(142, 42, 254, 0.6);
     border-radius: 10px;
+    transition: .3s;
+    background-color: rgba(229, 207, 254, 0.25);
+
+    &.error {
+        color: red;
+        border: 2px solid red;
+    }
+
+    &.done {
+        cursor: pointer;
+
+        &:hover {
+            background-color: rgba(142, 42, 254, 0.23);
+        }
+    }
 
     p {
         white-space: nowrap;
@@ -44,7 +60,7 @@ const Container = styled.div`
 
 export function ProgressCard({file: upFile}) {
 
-    const {tip, progress, cancel, title, error} = useSnapshot(upFile)
+    const {tip, progress, cancel, title, error, result, file} = useSnapshot(upFile)
 
     useUnmountEffect(() => {
         cancel?.()
@@ -53,10 +69,21 @@ export function ProgressCard({file: upFile}) {
     useEffect(() => {
         uploadFile(upFile)
     }, []);
+    const classes = ['shadow']
+    if (error) {
+        classes.push('error')
+    }
+    if (result) {
+        classes.push('done')
+    }
 
-    return <Container className={'shadow'} error={error}>
-        <h4>{title}</h4>
-        <LinearProgressWithLabel value={progress}/>
+    return <Container className={classes.join(' ')} error={error} onClick={() => {
+        if (result) {
+            resolveMixFile(result)
+        }
+    }}>
+        <h4 className={'text-hide'}>{title}</h4>
+        {!result && <LinearProgressWithLabel value={progress}/>}
         <p>{tip}</p>
     </Container>
 }
