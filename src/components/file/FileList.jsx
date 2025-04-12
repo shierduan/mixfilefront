@@ -34,6 +34,10 @@ const Container = styled.div`
         overflow-y: auto;
         justify-content: center;
         align-items: center;
+
+        > div {
+            overflow: auto;
+        }
     }
 
     button {
@@ -124,7 +128,7 @@ function FileListDialog({data}) {
     if (fileList.length > 0) {
         content = <List
             width={480}
-            height={600}
+            height={window.innerHeight / 2}
             rowCount={fileList.length}
             rowHeight={100}
             rowRenderer={rowRenderer}

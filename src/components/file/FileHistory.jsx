@@ -5,6 +5,8 @@ import {formatFileSize} from "../../utils/CommonUtils.js";
 import FileDialog from "./FileDialog.jsx";
 import {openFileListDialog} from "./FileList.jsx";
 import {addDialog} from "../../utils/DialogContainer.jsx";
+import {Button} from "@mui/material";
+import FileExportDialog from "./FileExport.jsx";
 
 const Container = styled.div`
     display: flex;
@@ -12,6 +14,9 @@ const Container = styled.div`
     gap: 10px;
     width: 100%;
 
+    button {
+        font-size: max(.6rem, 14px);
+    }
 
 `
 
@@ -66,9 +71,19 @@ function FileHistory(props) {
             clearInterval(id)
         }
     }, []);
+    let exportButton = null
+
+    if (fetchedList.length > 1) {
+        exportButton = <Button variant={'outlined'} className={'animate__animated animate__bounceIn'} onClick={() => {
+            addDialog(<FileExportDialog fileList={fetchedList}/>)
+        }}>
+            导出文件列表
+        </Button>
+    }
 
     return (
         <Container>
+            {exportButton}
 
             {
                 fetchedList.map((item) => <FileCard item={item} key={item.shareInfoData}/>)

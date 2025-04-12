@@ -2,7 +2,7 @@ import styled from "styled-components";
 import {Button} from "@mui/material";
 import {apiAddress} from "../../config.js";
 import {CopyToClipboard} from "react-copy-to-clipboard/src";
-import {notifyMsg} from "../../utils/CommonUtils.js";
+import {formatFileSize, notifyMsg} from "../../utils/CommonUtils.js";
 
 const Container = styled.div`
     display: flex;
@@ -33,6 +33,7 @@ function FileDialog({data}) {
     return (
         <Container className={'shadow'}>
             <h3 className={'text-hide'}>文件: {name}</h3>
+            <p>{formatFileSize(size ?? 0)}</p>
             <CopyToClipboard text={`mf://${shareInfoData}`} onCopy={() => {
                 notifyMsg('复制成功!', {toastId: 'copy-to-clipboard'})
             }}>
