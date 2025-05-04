@@ -59,7 +59,7 @@ function FileExportDialog({fileList}) {
             <h4>导出文件列表</h4>
             <div class="content">
                 <TextField label={'文件列表名称'} variant={'outlined'} value={listName} onChange={(event) => {
-                    setListName(event.target.value.trim)
+                    setListName(event.target.value.trim())
                 }}/>
             </div>
             <Button variant={'contained'} disabled={uploading} onClick={async () => {
