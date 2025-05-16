@@ -6,6 +6,7 @@ import {addDialog, dialogProxy} from "../../../utils/DialogContainer.jsx";
 import {proxy, ref, useSnapshot} from "valtio";
 import FileExportDialog from "../FileExport.jsx";
 import {useEffect} from "react";
+import {showConfirmWindow} from "../../common/ConfirmWindow.jsx";
 
 const Container = styled.div`
     display: flex;
@@ -134,7 +135,14 @@ function UploadDialog() {
             }
 
             <Button variant={'contained'} onClick={() => {
-                notifyMsg('上传已取消', {toastId: 'cancel-upload'})
+                if (!complete) {
+                    showConfirmWindow('确认取消上传?', () => {
+                        notifyMsg('上传已取消', {toastId: 'cancel-upload'})
+                        dialogProxy.pop()
+                        uploadFileList.length = 0
+                    })
+                    return
+                }
                 dialogProxy.pop()
                 uploadFileList.length = 0
             }}>{complete ? '关闭' : '取消'}</Button>
