@@ -3,9 +3,9 @@ import {useState} from "react";
 import {Button, TextField} from "@mui/material";
 import {decodeMixFileName, decodeMixShareCode} from "../../utils/ShareCode.js";
 import {openFileListDialog} from "./FileList.jsx";
-import {notifyMsg} from "../../utils/CommonUtils.js";
 import {addDialog} from "../../utils/DialogContainer.jsx";
 import FileDialog from "./FileDialog.jsx";
+import {notifyError} from "../../utils/CommonUtils.js";
 
 const Container = styled.div`
     display: flex;
@@ -41,7 +41,10 @@ export function resolveMixFile(input) {
     code = decodeMixShareCode(code)
     let {fileName, fileSize} = decodeMixFileName(code)
     if (!fileName) {
-        return notifyMsg('解密分享码失败', {toastId: 'decode-share-code'})
+        return notifyError('解密分享码失败', {
+            position: "top-center",
+            toastId: '解密分享码失败'
+        });
     }
     if (fileName.endsWith(".mix_list")) {
         return openFileListDialog(code)

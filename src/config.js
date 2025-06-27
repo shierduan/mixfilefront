@@ -1,6 +1,6 @@
 import axios from "axios";
-import {toast} from "react-toastify";
 import axiosRetry from "axios-retry";
+import {notifyError} from "./utils/CommonUtils.js";
 
 const params = new URLSearchParams(window.location.search);
 export const apiAddress = params.get("api") ?? `${window.location.origin}/`
@@ -21,7 +21,7 @@ client.interceptors.response.use((config) => {
     return config
 }, (error) => {
     const msg = `连接失败: ${error.response?.body}`
-    toast.error(msg, {
+    notifyError(msg, {
         position: "top-center",
         toastId: msg
     });

@@ -14,6 +14,10 @@ export function notifyMsg(msg, options) {
     toast(msg, options)
 }
 
+export function notifyError(msg, options) {
+    toast.error(msg, options)
+}
+
 
 export function formatFileSize(bytes, mb) {
     if (bytes === 0) return '0 B';

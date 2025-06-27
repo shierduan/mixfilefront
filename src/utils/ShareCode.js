@@ -139,6 +139,7 @@ export function decodeMixFileName(shareInfo) {
     } catch (e) {
         console.error("解密失败:", e);
     }
+    return {}
 }
 
 
