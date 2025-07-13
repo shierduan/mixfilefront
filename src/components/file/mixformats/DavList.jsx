@@ -3,7 +3,7 @@ import {apiAddress} from "../../../config.js";
 import {Button, CircularProgress} from "@mui/material";
 import {fetchMixGzipTextData, formatFileSize, notifyMsg} from "../../../utils/CommonUtils.js";
 import {CopyToClipboard} from "react-copy-to-clipboard/src";
-import {addDialog, dialogProxy} from "../../../utils/DialogContainer.jsx";
+import {addDialog} from "../../../utils/DialogContainer.jsx";
 import {List} from "react-virtualized";
 import {resolveMixFile} from "../FileResolve.jsx";
 import {MixFileChip, MixFileDataContainer} from "./StyleContainers.jsx";
@@ -103,9 +103,7 @@ function FileDavDialog({data}) {
         />
     }
 
-    let topButton = <Button variant={'outlined'} onClick={() => {
-        dialogProxy.pop()
-    }}>关闭</Button>
+    let topButton = <></>
 
     if (pathHistory.length > 0) {
         topButton = <Button variant={'outlined'} onClick={() => {
@@ -134,7 +132,7 @@ function FileDavDialog({data}) {
 }
 
 export function openFileDavDialog(file) {
-    addDialog(<FileDavDialog data={file}/>, false)
+    addDialog(<FileDavDialog data={file}/>)
 }
 
 export default FileDavDialog;
