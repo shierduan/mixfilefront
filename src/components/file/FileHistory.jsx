@@ -3,7 +3,7 @@ import {useEffect, useState} from "react";
 import {client} from "../../config.js";
 import {formatFileSize} from "../../utils/CommonUtils.js";
 import FileDialog from "./FileDialog.jsx";
-import {openFileListDialog} from "./FileList.jsx";
+import {openFileListDialog} from "./mixformats/FileList.jsx";
 import {addDialog} from "../../utils/DialogContainer.jsx";
 import {Button} from "@mui/material";
 import FileExportDialog from "./FileExport.jsx";

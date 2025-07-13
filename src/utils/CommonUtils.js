@@ -1,5 +1,8 @@
 import {toast} from "react-toastify";
 import moment from "moment";
+import axios from "axios";
+import pako from "pako";
+import {apiAddress} from "../config.js";
 
 const debounceMap = {}
 
@@ -32,4 +35,14 @@ export function formatFileSize(bytes, mb) {
 
 export function getFormattedDate() {
     return moment().format('YYYY-MM-DD HH:mm:ss');
+}
+
+export async function fetchMixGzipTextData(code) {
+    const downloadAddress = `${apiAddress}api/download?s=${code}`
+    const fileData = (await axios.get(downloadAddress, {
+        responseType: 'arraybuffer'
+    })).data
+    const decoder = new TextDecoder('utf-8');
+    const originalRaw = pako.ungzip(fileData)
+    return decoder.decode(originalRaw)
 }
