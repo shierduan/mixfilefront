@@ -101,6 +101,9 @@ function FileDavDialog({data}) {
             rowHeight={100}
             rowRenderer={rowRenderer}
         />
+        if (currentFiles.length === 0) {
+            content = <h4>文件夹为空</h4>
+        }
     }
 
     let topButton = <></>
