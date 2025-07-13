@@ -2,11 +2,10 @@ import styled from "styled-components";
 import {useEffect, useState} from "react";
 import {client} from "../../config.js";
 import {formatFileSize} from "../../utils/CommonUtils.js";
-import FileDialog from "./FileDialog.jsx";
-import {openFileListDialog} from "./mixformats/FileList.jsx";
 import {addDialog} from "../../utils/DialogContainer.jsx";
 import {Button} from "@mui/material";
 import FileExportDialog from "./FileExport.jsx";
+import {resolveMixFile} from "./FileResolve.jsx";
 
 const Container = styled.div`
     display: flex;
@@ -43,11 +42,7 @@ export function FileCard({item}) {
     const {name, size, time, shareInfoData} = item
     return (
         (<CardContainer className={'animate__animated animate__bounceIn'} onClick={() => {
-            if (name.endsWith('.mix_list')) {
-                openFileListDialog(shareInfoData)
-                return
-            }
-            addDialog(<FileDialog data={item}/>)
+            resolveMixFile(shareInfoData)
         }}>
             <h4 className={'text-hide'}>{name}</h4>
             <p>{formatFileSize(size)}</p>
