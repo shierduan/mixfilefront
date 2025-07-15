@@ -17,7 +17,6 @@ function FileListDialog({data}) {
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        setList([]);
         (async () => {
             const textData = await fetchMixGzipTextData(data)
             setList(JSON.parse(textData))

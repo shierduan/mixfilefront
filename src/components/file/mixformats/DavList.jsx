@@ -46,7 +46,6 @@ function FileDavDialog({data}) {
 
 
     useEffect(() => {
-        setDavFile([]);
         (async () => {
             const textData = await fetchMixGzipTextData(data)
             setDavFile(JSON.parse(textData.substring(5)))
