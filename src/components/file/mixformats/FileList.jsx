@@ -1,7 +1,13 @@
-import {useEffect, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import {apiAddress} from "../../../config.js";
 import {Button, CircularProgress} from "@mui/material";
-import {fetchMixGzipTextData, formatFileSize, notifyError, notifyMsg} from "../../../utils/CommonUtils.js";
+import {
+    compareByName,
+    fetchMixGzipTextData,
+    formatFileSize,
+    notifyError,
+    notifyMsg
+} from "../../../utils/CommonUtils.js";
 import {CopyToClipboard} from "react-copy-to-clipboard/src";
 import {addDialog} from "../../../utils/DialogContainer.jsx";
 import {List} from "react-virtualized";
@@ -28,6 +34,10 @@ function FileListDialog({data}) {
         })
     }, [data]);
 
+    const sortedFieList = useMemo(() => {
+        return [...fileList].sort((a, b) => compareByName(a.name, b.name));
+    }, [fileList]);
+
     function rowRenderer({
                              index, // Index of row
                              isScrolling, // The List is currently being scrolled
@@ -37,7 +47,7 @@ function FileListDialog({data}) {
                              style, // Style object to be applied to row (to position it);
                              // This must be passed through to the rendered row element.
                          }) {
-        const file = fileList[index];
+        const file = sortedFieList[index];
 
 
         const {name, size, time, shareInfoData} = file

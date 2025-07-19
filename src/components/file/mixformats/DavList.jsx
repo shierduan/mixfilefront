@@ -1,7 +1,13 @@
-import {useEffect, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import {apiAddress} from "../../../config.js";
 import {Button, CircularProgress} from "@mui/material";
-import {fetchMixGzipTextData, formatFileSize, notifyError, notifyMsg} from "../../../utils/CommonUtils.js";
+import {
+    compareByName,
+    fetchMixGzipTextData,
+    formatFileSize,
+    notifyError,
+    notifyMsg
+} from "../../../utils/CommonUtils.js";
 import {CopyToClipboard} from "react-copy-to-clipboard/src";
 import {addDialog} from "../../../utils/DialogContainer.jsx";
 import {List} from "react-virtualized";
@@ -15,7 +21,7 @@ function FileDavDialog({data}) {
 
     const [currentFile, setCurrentFile] = useState({})
 
-    let currentFiles = Object.values(currentFile.files ?? {})
+    let fileList = Object.values(currentFile.files ?? {})
 
     const [loading, setLoading] = useState(true)
 
@@ -57,6 +63,11 @@ function FileDavDialog({data}) {
         })
     }, [data]);
 
+    const sortedFileList = useMemo(() => {
+        return [...fileList].sort((a, b) => compareByName(a.name, b.name));
+        // return [...fileList].sort((a, b) => a.name.localeCompare(b.name, undefined, {numeric: true}));
+    }, [fileList]);
+
 
     function rowRenderer({
                              index, // Index of row
@@ -67,7 +78,7 @@ function FileDavDialog({data}) {
                              style, // Style object to be applied to row (to position it);
                              // This must be passed through to the rendered row element.
                          }) {
-        const file = currentFiles[index];
+        const file = sortedFileList[index];
 
 
         const {name, size, time, shareInfoData, isFolder} = file
@@ -100,11 +111,11 @@ function FileDavDialog({data}) {
         content = <List
             width={480}
             height={window.innerHeight / 2}
-            rowCount={currentFiles.length}
+            rowCount={fileList.length}
             rowHeight={100}
             rowRenderer={rowRenderer}
         />
-        if (currentFiles.length === 0) {
+        if (fileList.length === 0) {
             content = <h4>文件夹为空</h4>
         }
     }
@@ -120,7 +131,7 @@ function FileDavDialog({data}) {
 
     return (
         <MixFileDataContainer className={'shadow'}>
-            <h3>{[...pathHistory, currentFile].map((it) => it.name).join("/")} 共{currentFiles.length}个文件</h3>
+            <h3>{[...pathHistory, currentFile].map((it) => it.name).join("/")} 共{fileList.length}个文件</h3>
             {topButton}
             <div class="content">
                 {content}

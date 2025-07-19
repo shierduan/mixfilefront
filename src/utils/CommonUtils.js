@@ -46,3 +46,31 @@ export async function fetchMixGzipTextData(code) {
     const originalRaw = pako.ungzip(fileData)
     return decoder.decode(originalRaw)
 }
+
+function extractNumber(str, start) {
+    let result = 0;
+    let i = start;
+    while (i < str.length && /\d/.test(str[i])) {
+        result = result * 10 + (str.charCodeAt(i) - 48);
+        i++;
+    }
+    return result;
+}
+
+export function compareByName(a, b) {
+    let i1 = 0, i2 = 0;
+    while (i1 < a.length && i2 < b.length) {
+        if (/\d/.test(a[i1]) && /\d/.test(b[i2])) {
+            const n1 = extractNumber(a, i1);
+            const n2 = extractNumber(b, i2);
+            i1 += n1.toString().length;
+            i2 += n2.toString().length;
+            if (n1 !== n2) return n1 - n2;
+        } else {
+            if (a[i1] !== b[i2]) return a[i1].charCodeAt(0) - b[i2].charCodeAt(0);
+            i1++;
+            i2++;
+        }
+    }
+    return a.length - b.length;
+}
