@@ -44,7 +44,6 @@ export function resolveMixFile(input) {
     if (!fileName) {
         return notifyError('解密分享码失败', {
             position: "top-center",
-            toastId: '解密分享码失败'
         });
     }
     if (fileName.endsWith(".mix_list")) {

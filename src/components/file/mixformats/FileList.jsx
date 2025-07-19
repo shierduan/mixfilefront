@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import {apiAddress} from "../../../config.js";
 import {Button, CircularProgress} from "@mui/material";
-import {fetchMixGzipTextData, formatFileSize, notifyMsg} from "../../../utils/CommonUtils.js";
+import {fetchMixGzipTextData, formatFileSize, notifyError, notifyMsg} from "../../../utils/CommonUtils.js";
 import {CopyToClipboard} from "react-copy-to-clipboard/src";
 import {addDialog} from "../../../utils/DialogContainer.jsx";
 import {List} from "react-virtualized";
@@ -21,7 +21,11 @@ function FileListDialog({data}) {
             const textData = await fetchMixGzipTextData(data)
             setList(JSON.parse(textData))
             setLoading(false)
-        })()
+        })().catch(error => {
+            notifyError(`解析文件列表失败: ${error.msg}`, {
+                position: "top-center",
+            })
+        })
     }, [data]);
 
     function rowRenderer({
