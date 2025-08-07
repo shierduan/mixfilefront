@@ -1,10 +1,10 @@
 import {Box, LinearProgress} from "@mui/material";
 import {useEffect} from "react";
 import styled from "styled-components";
-import useUnmountEffect from "../../../../../hooks/useUnmountEffect.js";
-import {uploadFile} from "../FileUpload.jsx";
+import useUnmountEffect from "../../../../../../hooks/useUnmountEffect.js";
+import {uploadFile} from "../../FileUpload.jsx";
 import {useSnapshot} from "valtio";
-import {resolveMixFile} from "../FileResolve.jsx";
+import {resolveMixFile} from "../../FileResolve.jsx";
 
 function LinearProgressWithLabel(props) {
     return (

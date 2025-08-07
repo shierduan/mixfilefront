@@ -1,12 +1,12 @@
 import styled from "styled-components";
 import {Button} from "@mui/material";
 import {ProgressCard} from "./UploadCard.jsx";
-import {notifyMsg} from "../../../../../utils/CommonUtils.js";
-import {addDialog, dialogProxy} from "../../../../../utils/DialogContainer.jsx";
+import {notifyMsg} from "../../../../../../utils/CommonUtils.js";
+import {addDialog, dialogProxy} from "../../../../../../utils/DialogContainer.jsx";
 import {proxy, ref, useSnapshot} from "valtio";
 import FileExportDialog from "../FileExport.jsx";
 import {useEffect} from "react";
-import {showConfirmWindow} from "../../../../common/ConfirmWindow.jsx";
+import {showConfirmWindow} from "../../../../../common/ConfirmWindow.jsx";
 
 const Container = styled.div`
     display: flex;
@@ -72,7 +72,7 @@ function UploadDialog() {
     let title = <h3>{uploaded} / {fileList.length} 个文件正在上传</h3>
     if (complete) {
         title = (
-            <h3 className={'file-card animate__animated animate__bounceIn'}>
+            <h3 className={'components-card animate__animated animate__bounceIn'}>
                 {fileList.length} 个文件全部上传成功
             </h3>
         )
@@ -80,13 +80,13 @@ function UploadDialog() {
 
     if (errorCount > 0) {
         title = (
-            <h3 className={'file-card animate__animated animate__bounceIn'}>
+            <h3 className={'components-card animate__animated animate__bounceIn'}>
                 {uploaded} / {fileList.length} 个文件上传中 {errorCount} 个文件上传失败
             </h3>
         )
         if (complete) {
             title = (
-                <h3 className={'file-card animate__animated animate__bounceIn'}>
+                <h3 className={'components-card animate__animated animate__bounceIn'}>
                     {uploaded} / {fileList.length} 个文件上传成功 {errorCount} 个文件上传失败
                 </h3>
             )

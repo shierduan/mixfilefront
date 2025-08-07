@@ -18,6 +18,7 @@ const Container = styled(AppBar)`
 
         .tabs {
             button {
+                font-weight: bold;
                 font-size: 16px;
                 color: white;
             }

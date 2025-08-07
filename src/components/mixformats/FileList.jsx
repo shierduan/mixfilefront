@@ -5,7 +5,7 @@ import {compareByName, fetchMixGzipTextData, formatFileSize, notifyError, notify
 import {CopyToClipboard} from "react-copy-to-clipboard/src";
 import {addDialog} from "../../utils/DialogContainer.jsx";
 import {List} from "react-virtualized";
-import {resolveMixFile} from "../routes/home/file/FileResolve.jsx";
+import {resolveMixFile} from "../routes/home/components/FileResolve.jsx";
 import {MixFileChip, MixFileDataContainer} from "./StyleContainers.jsx";
 
 

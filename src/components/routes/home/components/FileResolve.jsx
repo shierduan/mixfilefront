@@ -4,7 +4,7 @@ import {Button, TextField} from "@mui/material";
 import {decodeMixFileName, decodeMixShareCode} from "../../../../utils/ShareCode.js";
 import {openFileListDialog} from "../../../mixformats/FileList.jsx";
 import {addDialog} from "../../../../utils/DialogContainer.jsx";
-import FileDialog from "./FileDialog.jsx";
+import FileDialog from "./dialog/FileDialog.jsx";
 import {notifyError} from "../../../../utils/CommonUtils.js";
 import {openFileDavDialog} from "../../../mixformats/DavList.jsx";
 

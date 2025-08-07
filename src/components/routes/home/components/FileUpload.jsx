@@ -4,7 +4,7 @@ import {apiAddress} from "../../../../config.js";
 import axios from "axios";
 import {formatFileSize} from "../../../../utils/CommonUtils.js";
 import Semaphore from "@chriscdn/promise-semaphore";
-import {addUploadFile} from "./upload/UploadDialog.jsx";
+import {addUploadFile} from "./dialog/upload/UploadDialog.jsx";
 
 const Container = styled.div`
     display: flex;
@@ -77,7 +77,7 @@ export async function uploadFile(upFile) {
             },
             signal: controller.signal
         })
-        // fileResultProxy.push({file: upFile, shareInfoData: response.data})
+        // fileResultProxy.push({components: upFile, shareInfoData: response.data})
         upFile.result = response.data
     } catch (e) {
         upFile.error = true
@@ -97,13 +97,13 @@ export async function uploadFile(upFile) {
 function FileUpload(props) {
     return (
         <Container>
-            <input type="file" id={'select-file'} hidden onChange={(event) => {
+            <input type="file" id={'select-components'} hidden onChange={(event) => {
                 addUploadFile(...event.target.files)
                 event.target.value = ''
             }} multiple="multiple"/>
             <FileDrop
                 onTargetClick={() => {
-                    document.querySelector('#select-file').click()
+                    document.querySelector('#select-components').click()
                 }}
                 onDrop={(files, event) => {
                     addUploadFile(...files)

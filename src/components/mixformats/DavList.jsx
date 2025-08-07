@@ -5,7 +5,7 @@ import {compareByName, fetchMixGzipTextData, formatFileSize, notifyError, notify
 import {CopyToClipboard} from "react-copy-to-clipboard/src";
 import {addDialog} from "../../utils/DialogContainer.jsx";
 import {List} from "react-virtualized";
-import {resolveMixFile} from "../routes/home/file/FileResolve.jsx";
+import {resolveMixFile} from "../routes/home/components/FileResolve.jsx";
 import {MixFileChip, MixFileDataContainer} from "./StyleContainers.jsx";
 
 function FileDavDialog({data}) {
@@ -90,7 +90,7 @@ function FileDavDialog({data}) {
         return (
             <MixFileChip key={key} style={style} onClick={() => {
                 if (isFolder) {
-                    // return openFileDavDialog(null, file)
+                    // return openFileDavDialog(null, components)
                     setPathHistory((prev) => [...prev, currentFile])
                     return setCurrentFile(file ?? {})
                 }
