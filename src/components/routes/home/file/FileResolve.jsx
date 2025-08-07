@@ -1,12 +1,12 @@
 import styled from "styled-components";
 import {useState} from "react";
 import {Button, TextField} from "@mui/material";
-import {decodeMixFileName, decodeMixShareCode} from "../../utils/ShareCode.js";
-import {openFileListDialog} from "./mixformats/FileList.jsx";
-import {addDialog} from "../../utils/DialogContainer.jsx";
+import {decodeMixFileName, decodeMixShareCode} from "../../../../utils/ShareCode.js";
+import {openFileListDialog} from "../../../mixformats/FileList.jsx";
+import {addDialog} from "../../../../utils/DialogContainer.jsx";
 import FileDialog from "./FileDialog.jsx";
-import {notifyError} from "../../utils/CommonUtils.js";
-import {openFileDavDialog} from "./mixformats/DavList.jsx";
+import {notifyError} from "../../../../utils/CommonUtils.js";
+import {openFileDavDialog} from "../../../mixformats/DavList.jsx";
 
 const Container = styled.div`
     display: flex;

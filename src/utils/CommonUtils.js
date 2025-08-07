@@ -3,6 +3,8 @@ import moment from "moment";
 import axios from "axios";
 import pako from "pako";
 import {apiAddress} from "../config.js";
+import {proxy} from "valtio";
+import {watch} from "valtio/utils";
 
 const debounceMap = {}
 
@@ -45,6 +47,53 @@ export async function fetchMixGzipTextData(code) {
     const decoder = new TextDecoder('utf-8');
     const originalRaw = pako.ungzip(fileData)
     return decoder.decode(originalRaw)
+}
+
+export function updateURLParams(params, replace = true) {
+    const url = new URL(window.location.href);
+    const searchParams = url.searchParams;
+
+    Object.entries(params).forEach(([key, value]) => {
+        if (value === null || value === undefined) {
+            searchParams.delete(key);
+        } else {
+            searchParams.set(key, value.toString());
+        }
+    });
+
+    const newUrl = `${url.pathname}?${searchParams.toString()}${url.hash}`;
+
+    const {history} = window;
+
+    if (replace) {
+        history.replaceState(null, '', newUrl);
+    } else {
+        history.pushState(null, '', newUrl);
+    }
+}
+
+export function getURLParam(key) {
+    const url = new URL(window.location.href);
+    return url.searchParams.get(key);
+}
+
+export function paramProxy(defaults) {
+    const state = proxy({})
+    for (const key in defaults) {
+        const val = getURLParam(key)
+        state[key] = val ?? defaults[key]
+    }
+
+    watch((get) => {
+        const value = get(state)
+        const params = {}
+        for (const key in value) {
+            params[key] = String(value[key])
+        }
+        updateURLParams(params)
+    })
+
+    return state
 }
 
 function extractNumber(str, start) {

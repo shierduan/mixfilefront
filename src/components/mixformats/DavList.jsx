@@ -1,17 +1,11 @@
 import {useEffect, useMemo, useState} from "react";
-import {apiAddress} from "../../../config.js";
+import {apiAddress} from "../../config.js";
 import {Button, CircularProgress} from "@mui/material";
-import {
-    compareByName,
-    fetchMixGzipTextData,
-    formatFileSize,
-    notifyError,
-    notifyMsg
-} from "../../../utils/CommonUtils.js";
+import {compareByName, fetchMixGzipTextData, formatFileSize, notifyError, notifyMsg} from "../../utils/CommonUtils.js";
 import {CopyToClipboard} from "react-copy-to-clipboard/src";
-import {addDialog} from "../../../utils/DialogContainer.jsx";
+import {addDialog} from "../../utils/DialogContainer.jsx";
 import {List} from "react-virtualized";
-import {resolveMixFile} from "../FileResolve.jsx";
+import {resolveMixFile} from "../routes/home/file/FileResolve.jsx";
 import {MixFileChip, MixFileDataContainer} from "./StyleContainers.jsx";
 
 function FileDavDialog({data}) {
@@ -64,8 +58,13 @@ function FileDavDialog({data}) {
     }, [data]);
 
     const sortedFileList = useMemo(() => {
-        return [...fileList].sort((a, b) => compareByName(a.name, b.name));
-        // return [...fileList].sort((a, b) => a.name.localeCompare(b.name, undefined, {numeric: true}));
+        return [...fileList].sort((a, b) => {
+            if (a.isFolder !== b.isFolder) {
+                return a.isFolder ? -1 : 1;
+            }
+            return compareByName(a.name, b.name)
+        });
+
     }, [fileList]);
 
 

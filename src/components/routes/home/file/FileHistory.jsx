@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import {useEffect, useState} from "react";
-import {client} from "../../config.js";
-import {formatFileSize} from "../../utils/CommonUtils.js";
-import {addDialog} from "../../utils/DialogContainer.jsx";
+import {client} from "../../../../config.js";
+import {formatFileSize} from "../../../../utils/CommonUtils.js";
+import {addDialog} from "../../../../utils/DialogContainer.jsx";
 import {Button} from "@mui/material";
 import FileExportDialog from "./FileExport.jsx";
 import {resolveMixFile} from "./FileResolve.jsx";
@@ -41,7 +41,7 @@ const CardContainer = styled.div`
 export function FileCard({item}) {
     const {name, size, time, shareInfoData} = item
     return (
-        (<CardContainer className={'animate__animated animate__bounceIn'} onClick={() => {
+        (<CardContainer className={'animate__animated animate__slideInUp animate__faster'} onClick={() => {
             resolveMixFile(shareInfoData)
         }}>
             <h4 className={'text-hide'}>{name}</h4>
@@ -68,8 +68,9 @@ function FileHistory(props) {
     }, []);
     let exportButton = null
 
+
     if (fetchedList.length > 1) {
-        exportButton = <Button variant={'outlined'} className={'animate__animated animate__bounceIn'} onClick={() => {
+        exportButton = <Button variant={'outlined'} onClick={() => {
             addDialog(<FileExportDialog fileList={fetchedList}/>)
         }}>
             导出文件列表

@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import {FileDrop} from "react-file-drop";
-import {apiAddress} from "../../config.js";
+import {apiAddress} from "../../../../config.js";
 import axios from "axios";
-import {formatFileSize} from "../../utils/CommonUtils.js";
+import {formatFileSize} from "../../../../utils/CommonUtils.js";
 import Semaphore from "@chriscdn/promise-semaphore";
 import {addUploadFile} from "./upload/UploadDialog.jsx";
 

@@ -1,7 +1,7 @@
 import {Box, LinearProgress} from "@mui/material";
 import {useEffect} from "react";
 import styled from "styled-components";
-import useUnmountEffect from "../../../hooks/useUnmountEffect.js";
+import useUnmountEffect from "../../../../../hooks/useUnmountEffect.js";
 import {uploadFile} from "../FileUpload.jsx";
 import {useSnapshot} from "valtio";
 import {resolveMixFile} from "../FileResolve.jsx";
@@ -69,7 +69,9 @@ export function ProgressCard({file: upFile}) {
     useEffect(() => {
         uploadFile(upFile)
     }, []);
+
     const classes = ['shadow']
+
     if (error) {
         classes.push('error')
     }

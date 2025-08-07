@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import {Button} from "@mui/material";
-import {apiAddress} from "../../config.js";
+import {apiAddress} from "../../../../config.js";
 import {CopyToClipboard} from "react-copy-to-clipboard/src";
-import {formatFileSize, notifyMsg} from "../../utils/CommonUtils.js";
+import {formatFileSize, notifyMsg} from "../../../../utils/CommonUtils.js";
 
 const Container = styled.div`
     display: flex;
