@@ -5,7 +5,7 @@ import {CircularProgress} from "@mui/material";
 import styled from "styled-components";
 
 const MiddleContainer = styled.div`
-    margin: 0 auto;
+    margin: 20px auto;
     width: 100%;
     display: flex;
     align-items: center;
@@ -67,6 +67,7 @@ export default function useApi({
     }
 
     useEffect(() => {
+        setIsLoading(true)
         fetchData()
         if (refreshInterval > 0) {
             const timer = setInterval(fetchData, refreshInterval)

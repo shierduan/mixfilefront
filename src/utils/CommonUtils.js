@@ -81,7 +81,7 @@ export function updateURLParams(params, replace = false) {
         } else {
             history.pushState(null, '', newUrl);
         }
-        window.dispatchEvent(new PopStateEvent('popstate', { state: history.state }));
+        window.dispatchEvent(new PopStateEvent('popstate', {state: history.state}));
     }
 }
 

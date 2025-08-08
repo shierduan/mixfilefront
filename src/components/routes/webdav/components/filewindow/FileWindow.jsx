@@ -1,10 +1,11 @@
 import styled from "styled-components";
 import useApi from "../../../../../hooks/useApi.jsx";
 import {parsePropfindXML} from "../../utils/WebDavUtils.js";
-import WebDavFileCard from "./WebDavFileCard.js";
+import WebDavFileCard from "./WebDavFileCard.jsx";
 import {compareByName, paramProxy} from "../../../../../utils/CommonUtils.js";
 import {useSnapshot} from "valtio";
 import {useEffect} from "react";
+import {AutoSizer, List} from "react-virtualized";
 
 const Container = styled.div`
     display: flex;
@@ -15,6 +16,13 @@ const Container = styled.div`
     flex-direction: column;
     padding: 5px;
     gap: 5px;
+
+    .empty {
+        margin-top: 50px;
+        width: 100%;
+        text-align: center;
+        color: gray;
+    }
 `
 
 export const webDavState = paramProxy({
@@ -44,7 +52,38 @@ function FileWindow(props) {
                 }
                 return compareByName(a.name, b.name)
             })
-            return files.map((file) => <WebDavFileCard file={file} key={file.name}/>)
+            if (files.length === 0) {
+                return <h4 className={'empty'}>文件夹为空</h4>
+            }
+
+            // return files.map((file) => <WebDavFileCard file={file} key={file.name}/>)
+
+            const renderer = ({
+                                  index, // Index of row
+                                  isScrolling, // The List is currently being scrolled
+                                  isVisible, // This row is visible within the List (eg it is not an overscanned row)
+                                  key, // Unique key within array of rendered rows
+                                  parent, // Reference to the parent List (instance)
+                                  style, // Style object to be applied to row (to position it);
+                                  // This must be passed through to the rendered row element.
+                              }) => {
+                const file = files[index]
+
+                return <div key={key} style={style}>
+                    <WebDavFileCard file={file}/>
+                </div>
+            }
+
+            return <AutoSizer>
+                {({width, height}) => (
+                    <List
+                        width={width}
+                        height={height}
+                        rowCount={files.length}
+                        rowHeight={40}
+                        rowRenderer={renderer}/>
+                )}
+            </AutoSizer>
         }
     })
 

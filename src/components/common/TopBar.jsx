@@ -22,6 +22,10 @@ const Container = styled(AppBar)`
                 font-size: 16px;
                 color: white;
             }
+
+            .MuiTabs-indicator {
+                background-color: rgb(221, 193, 251);
+            }
         }
 
         .logo {

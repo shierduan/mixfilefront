@@ -1,7 +1,7 @@
 import {Breadcrumbs} from "@mui/material";
 import HomeIcon from '@mui/icons-material/Home';
 import styled from "styled-components";
-import ParamLink from "../../../../common/ParamLink.js";
+import ParamLink from "../../../../common/ParamLink.jsx";
 import {useSnapshot} from "valtio";
 import {webDavState} from "./FileWindow.jsx";
 
@@ -14,14 +14,26 @@ const Container = styled.div`
     padding: 5px 10px;
     border-radius: 10px;
 
+    .MuiBreadcrumbs-separator {
+        font-size: 16px;
+    }
+
     a {
         display: flex;
         align-items: center;
         gap: 5px;
+        font-size: 16px;
+        color: rgba(67, 4, 116, 0.86);
+    }
+
+    .MuiBreadcrumbs-li {
+        display: flex;
+        align-items: center;
     }
 
     .MuiSvgIcon-root {
-        font-size: 20px;
+        color: rgba(142, 42, 254, 0.44);
+        font-size: 24px;
     }
 `
 

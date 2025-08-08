@@ -3,7 +3,7 @@ import {addDialog} from "../../../../../utils/DialogContainer.jsx";
 import {Button} from "@mui/material";
 import FileExportDialog from "../dialog/FileExport.jsx";
 import useApi from "../../../../../hooks/useApi.jsx";
-import {FileCard} from "./FileCard.js";
+import {FileCard} from "./FileCard.jsx";
 
 const Container = styled.div`
     display: flex;

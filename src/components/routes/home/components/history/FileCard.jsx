@@ -23,6 +23,7 @@ const CardContainer = styled.div`
 
 export function FileCard({item}) {
     const {name, size, time, shareInfoData} = item
+
     return (
         (<CardContainer className={'animate__animated animate__slideInDown animate__faster'} onClick={() => {
             resolveMixFile(shareInfoData)
