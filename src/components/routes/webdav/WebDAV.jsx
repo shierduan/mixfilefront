@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import FileWindow from "./components/filewindow/FileWindow.jsx";
+import NavBar from "./components/filewindow/NavBar.jsx";
 
 const Container = styled.div`
     margin: 10px auto;
@@ -10,7 +11,7 @@ const Container = styled.div`
     padding: 10px;
     min-height: 60vh;
     flex-direction: column;
-    gap: 20px;
+    gap: 10px;
     align-items: center;
 `
 
@@ -19,6 +20,7 @@ function WebDav(props) {
 
     return (
         <Container>
+            <NavBar/>
             <FileWindow/>
         </Container>
     );

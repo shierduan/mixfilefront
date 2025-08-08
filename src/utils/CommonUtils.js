@@ -35,8 +35,8 @@ export function formatFileSize(bytes, mb) {
     return `${formattedSize} ${sizes[i]}`;
 }
 
-export function getFormattedDate() {
-    return moment().format('YYYY-MM-DD HH:mm:ss');
+export function getFormattedDate(date) {
+    return moment(date).format('YYYY-MM-DD HH:mm:ss');
 }
 
 export async function fetchMixGzipTextData(code) {
@@ -49,7 +49,12 @@ export async function fetchMixGzipTextData(code) {
     return decoder.decode(originalRaw)
 }
 
-export function updateURLParams(params, replace = true) {
+/**
+ * 生成一个带有更新参数的新 URL（不会修改浏览器地址）
+ * @param {Object} params - 需要更新的参数
+ * @returns {string} - 更新后的 URL 字符串
+ */
+export function getParamUrl(params) {
     const url = new URL(window.location.href);
     const searchParams = url.searchParams;
 
@@ -61,16 +66,25 @@ export function updateURLParams(params, replace = true) {
         }
     });
 
-    const newUrl = `${url.pathname}?${searchParams.toString()}${url.hash}`;
+    // 返回完整 URL
+    return url.toString();
+}
 
-    const {history} = window;
+export function updateURLParams(params, replace = false) {
 
-    if (replace) {
-        history.replaceState(null, '', newUrl);
-    } else {
-        history.pushState(null, '', newUrl);
+    const newUrl = getParamUrl(params);
+
+    if (newUrl !== window.location.href) {
+        const {history} = window;
+        if (replace) {
+            history.replaceState(null, '', newUrl);
+        } else {
+            history.pushState(null, '', newUrl);
+        }
+        window.dispatchEvent(new PopStateEvent('popstate', { state: history.state }));
     }
 }
+
 
 export function getURLParam(key) {
     const url = new URL(window.location.href);
@@ -79,18 +93,30 @@ export function getURLParam(key) {
 
 export function paramProxy(defaults) {
     const state = proxy({})
-    for (const key in defaults) {
-        const val = getURLParam(key)
-        state[key] = val ?? defaults[key]
+
+    function syncFromURL() {
+        for (const key in defaults) {
+            const val = getURLParam(key)
+            state[key] = val ?? defaults[key]
+        }
     }
 
+    // 初始化：从 URL 读入状态
+    syncFromURL()
+
     watch((get) => {
+
         const value = get(state)
         const params = {}
         for (const key in value) {
             params[key] = String(value[key])
         }
         updateURLParams(params)
+    })
+
+    // 添加 popstate 监听器
+    window.addEventListener('popstate', () => {
+        syncFromURL()
     })
 
     return state

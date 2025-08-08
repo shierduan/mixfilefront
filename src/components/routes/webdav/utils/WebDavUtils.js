@@ -23,9 +23,10 @@ export function parsePropfindXML(xmlText) {
         const name = decodeURIComponent(get("displayname"));
         const size = parseInt(get("getcontentlength")) || 0;
         const etag = get("getetag");
+        const lastModified = new Date(get("getlastmodified"));
         const mimeType = get("getcontenttype");
         const isFolder = !!parseTagFirst(prop, "collection");
 
-        return {name, isFolder, href, size, etag, mimeType};
+        return {name, isFolder, href, size, etag, mimeType, lastModified};
     })
 }
