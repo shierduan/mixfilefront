@@ -108,6 +108,20 @@ function UploadDialog() {
         }
     }, [complete]);
 
+    let exportButton = null
+
+    if (results.length > 1) {
+        exportButton = <Button variant={'outlined'} onClick={async () => {
+            addDialog(<FileExportDialog fileList={results.map(({file, result}) => {
+                return {
+                    name: file.name,
+                    size: file.size,
+                    shareInfoData: result,
+                }
+            })}/>)
+        }}>{'导出文件'}</Button>
+    }
+
     return (
         <Container className={'shadow'}>
             {
@@ -122,16 +136,7 @@ function UploadDialog() {
             </div>
 
             {
-                results.length > 1 &&
-                <Button variant={'outlined'} onClick={async () => {
-                    addDialog(<FileExportDialog fileList={results.map(({file, result}) => {
-                        return {
-                            name: file.name,
-                            size: file.size,
-                            shareInfoData: result,
-                        }
-                    })}/>)
-                }}>{'导出文件'}</Button>
+                exportButton
             }
 
             <Button variant={'contained'} onClick={() => {

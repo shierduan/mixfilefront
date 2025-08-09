@@ -11,7 +11,7 @@ function FileExportDialog({fileList}) {
 
 
     const [uploading, setUploading] = useState(false)
-    const [listName, setListName] = useState(`文件分享-${getFormattedDate()}`)
+    const [listName, setListName] = useState(`文件列表-${getFormattedDate()}`)
 
     return (
         <DialogDiv className={'shadow'}>
