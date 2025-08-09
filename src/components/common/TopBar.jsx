@@ -68,7 +68,9 @@ export function TopBar() {
     const currentTab = getCurrentTab(location.pathname);
 
 
-    return <Container position="sticky" className={"animate__animated animate__slideInDown animate__faster"}>
+    return <Container position="sticky" className={"animate__animated animate__slideInDown animate__faster"} sx={{
+        zIndex: 10,
+    }}>
         <div class="content">
             <div className="logo">
                 <img src={logo} alt="logo"/>
