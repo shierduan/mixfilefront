@@ -1,11 +1,11 @@
 import styled from "styled-components";
 import {formatFileSize, getFormattedDate} from "../../../../../utils/CommonUtils.js";
-import {webDavState} from "./FileWindow.jsx";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile.js";
 import FolderCopyIcon from '@mui/icons-material/FolderCopy';
 import VideoFileIcon from '@mui/icons-material/VideoFile';
 import ImageIcon from '@mui/icons-material/Image';
 import {apiAddress} from "../../../../../config.js";
+import {useLocation, useNavigate} from "react-router-dom";
 
 const Container = styled.div`
     display: flex;
@@ -92,10 +92,13 @@ function WebDavFileCard({file}) {
         fileSize = <div>{formatFileSize(size)}</div>
     }
 
+    const navigate = useNavigate();
+    const path = useLocation().pathname
+
     return (
         <Container onClick={() => {
             if (isFolder) {
-                webDavState.path += `/${name}`
+                navigate(path + `/${name}`)
                 return
             }
             window.open(apiAddress + href)

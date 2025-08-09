@@ -2,10 +2,9 @@ import styled from "styled-components";
 import useApi from "../../../../../hooks/useApi.jsx";
 import {parsePropfindXML} from "../../utils/WebDavUtils.js";
 import WebDavFileCard from "./WebDavFileCard.jsx";
-import {compareByName, paramProxy} from "../../../../../utils/CommonUtils.js";
-import {useSnapshot} from "valtio";
-import {useEffect} from "react";
+import {compareByName} from "../../../../../utils/CommonUtils.js";
 import {AutoSizer, List} from "react-virtualized";
+import {useParams} from "react-router-dom";
 
 const Container = styled.div`
     display: flex;
@@ -25,38 +24,33 @@ const Container = styled.div`
     }
 `
 
-export const webDavState = paramProxy({
-    path: ''
-})
 
 function FileWindow(props) {
 
-    const {path} = useSnapshot(webDavState)
-
-    useEffect(() => {
-        return () => {
-            webDavState.path = ''
-        }
-    }, [])
+    const path = useParams()['*'] ?? '';
 
     const content = useApi({
-        path: `api/webdav${path}`,
+        path: `api/webdav/${path}`,
         method: 'PROPFIND',
         headers: {
             depth: 1
         },
         content(data) {
-            const files = parsePropfindXML(data).slice(1).filter((it) => it.name !== "当前目录存档.mix_dav").sort((a, b) => {
+            const files = parsePropfindXML(data).slice(1)
+
+            //去掉存档文件
+            files.pop()
+
+            files.sort((a, b) => {
                 if (a.isFolder !== b.isFolder) {
                     return a.isFolder ? -1 : 1;
                 }
                 return compareByName(a.name, b.name)
             })
+
             if (files.length === 0) {
                 return <h4 className={'empty'}>文件夹为空</h4>
             }
-
-            // return files.map((file) => <WebDavFileCard file={file} key={file.name}/>)
 
             const renderer = ({
                                   index, // Index of row

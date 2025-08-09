@@ -1,9 +1,7 @@
 import {Breadcrumbs} from "@mui/material";
 import HomeIcon from '@mui/icons-material/Home';
 import styled from "styled-components";
-import ParamLink from "../../../../common/ParamLink.jsx";
-import {useSnapshot} from "valtio";
-import {webDavState} from "./FileWindow.jsx";
+import {Link, useLocation} from "react-router-dom";
 
 const Container = styled.div`
     width: 100%;
@@ -40,7 +38,7 @@ const Container = styled.div`
 
 function NavBar(props) {
 
-    const {path} = useSnapshot(webDavState)
+    const path = useLocation().pathname
 
     const segments = path.split('/').filter(Boolean)
 
@@ -48,27 +46,24 @@ function NavBar(props) {
 
     const crumbs = segments.map((segment, index) => {
         lastSegment += `/${segment}`
-        return <ParamLink
-            params={{
-                path: lastSegment
-            }}
+        let content = decodeURIComponent(segment)
+        if (index === 0) {
+            content = <>
+                <HomeIcon fontSize="inherit"/>
+                ROOT
+            </>
+        }
+        return <Link
+            to={lastSegment}
             key={index}
         >
-            {segment}
-        </ParamLink>
+            {content}
+        </Link>
     })
 
     return (
         <Container className={'shadow'}>
             <Breadcrumbs aria-label="breadcrumb">
-                <ParamLink
-                    params={{
-                        path: ''
-                    }}
-                >
-                    <HomeIcon fontSize="inherit"/>
-                    ROOT
-                </ParamLink>
                 {crumbs}
             </Breadcrumbs>
         </Container>

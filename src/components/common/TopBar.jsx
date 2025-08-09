@@ -1,8 +1,7 @@
 import styled from "styled-components";
 import {AppBar, Tab, Tabs} from "@mui/material";
 import logo from "../../assets/logo.png";
-import {useSnapshot} from "valtio";
-import {paramProxy} from "../../utils/CommonUtils.js";
+import {useLocation, useNavigate} from "react-router-dom";
 
 
 const Container = styled(AppBar)`
@@ -43,14 +42,31 @@ const Container = styled(AppBar)`
     }
 `
 
-export const routeState = paramProxy({
-    route: 'home'
-})
+const tabRoutes = [
+    {value: '/', matchPrefix: '/'},
+    {value: '/webdav', matchPrefix: '/webdav'},
+    // 以后要加更多tab，只要在这里加一项即可
+];
+
+function getCurrentTab(pathname) {
+    // 从后往前找，保证更长的前缀优先匹配
+    for (let i = tabRoutes.length - 1; i >= 0; i--) {
+        const prefix = tabRoutes[i].matchPrefix;
+        if (pathname === prefix || pathname.startsWith(prefix + '/')) {
+            return tabRoutes[i].value;
+        }
+    }
+    // 如果都不匹配，默认返回 '/'
+    return '/';
+}
 
 
 export function TopBar() {
 
-    const {route} = useSnapshot(routeState)
+    const location = useLocation();
+    const navigate = useNavigate();
+    const currentTab = getCurrentTab(location.pathname);
+
 
     return <Container position="sticky" className={"animate__animated animate__slideInDown animate__faster"}>
         <div class="content">
@@ -61,11 +77,11 @@ export function TopBar() {
                 MixFile
             </h2>
             <div class="tabs">
-                <Tabs value={route} onChange={(event, value) => {
-                    routeState.route = value
+                <Tabs value={currentTab} onChange={(event, value) => {
+                    navigate(value)
                 }}>
-                    <Tab label="主页" value={'home'}/>
-                    <Tab label="WebDAV" value={'webdav'}/>
+                    <Tab label="主页" value={'/'}/>
+                    <Tab label="WebDAV" value={'/webdav'}/>
                 </Tabs>
             </div>
         </div>
