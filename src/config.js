@@ -22,7 +22,7 @@ axiosRetry(client, {
 client.interceptors.response.use((config) => {
     return config
 }, (error) => {
-    if (error instanceof CanceledError){
+    if (error instanceof CanceledError) {
         return
     }
     const msg = `连接失败: ${error.response?.body ?? error.message}`;
