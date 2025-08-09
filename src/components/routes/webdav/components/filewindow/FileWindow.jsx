@@ -56,6 +56,7 @@ function FileWindow(props) {
         headers: {
             depth: 1
         },
+        refreshInterval: 1000,
         content(data) {
             const files = parsePropfindXML(data).slice(1)
 

@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, {CanceledError} from "axios";
 import axiosRetry from "axios-retry";
 import {notifyError} from "./utils/CommonUtils.js";
 
@@ -22,7 +22,10 @@ axiosRetry(client, {
 client.interceptors.response.use((config) => {
     return config
 }, (error) => {
-    const msg = `连接失败: ${error.response?.body}`
+    if (error instanceof CanceledError){
+        return
+    }
+    const msg = `连接失败: ${error.response?.body ?? error.message}`;
     notifyError(msg, {
         position: "top-center",
         toastId: msg

@@ -1,50 +1,10 @@
 import {useState} from 'react';
-import styled from "styled-components";
 import {Button, TextField} from "@mui/material";
 import {getFormattedDate} from "../../../../../utils/CommonUtils.js";
 import {apiAddress, client} from "../../../../../config.js";
 import {openFileListDialog} from "../../../../mixformats/FileList.jsx";
 import pako from "pako";
-
-const Container = styled.div`
-    display: flex;
-    background-color: white;
-    padding: 10px;
-    border-radius: 10px;
-    justify-content: center;
-    width: 500px;
-    max-width: 95vw;
-    gap: 10px;
-    flex-direction: column;
-    color: #8e2afe;
-    word-break: break-all;
-
-    > .content {
-        padding: 20px;
-        gap: 10px;
-        display: flex;
-        flex-direction: column;
-        max-height: 60vh;
-        overflow-y: auto;
-
-        input {
-            font-size: max(.6rem, 16px)
-        }
-
-        label {
-            font-size: max(.6rem, 16px)
-        }
-    }
-
-    p {
-        white-space: nowrap;
-        font-weight: bold;
-    }
-
-    button {
-        font-size: max(.6rem, 14px);
-    }
-`
+import DialogDiv from "../../../../common/DialogDiv.jsx";
 
 
 function FileExportDialog({fileList}) {
@@ -54,7 +14,7 @@ function FileExportDialog({fileList}) {
     const [listName, setListName] = useState(`文件分享-${getFormattedDate()}`)
 
     return (
-        <Container className={'shadow'}>
+        <DialogDiv className={'shadow'}>
             <h4>导出文件列表</h4>
             <div class="content">
                 <TextField label={'文件列表名称'} variant={'outlined'} value={listName} onChange={(event) => {
@@ -81,7 +41,7 @@ function FileExportDialog({fileList}) {
                     setUploading(false)
                 }
             }}>确认导出</Button>
-        </Container>
+        </DialogDiv>
 
     );
 }

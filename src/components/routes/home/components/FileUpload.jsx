@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import {FileDrop} from "react-file-drop";
-import {apiAddress} from "../../../../config.js";
-import axios from "axios";
+import {apiAddress, client} from "../../../../config.js";
 import {formatFileSize} from "../../../../utils/CommonUtils.js";
 import Semaphore from "@chriscdn/promise-semaphore";
 import {addUploadFile} from "./dialog/upload/UploadDialog.jsx";
@@ -70,7 +69,7 @@ export async function uploadFile(upFile) {
     await semaphore.acquire()
     upFile.tip = `上传中: 0/${formatFileSize(file.size)}`
     try {
-        let response = await axios.put(uploadAddress, file, {
+        let response = await client.put(uploadAddress, file, {
             onUploadProgress: progressEvent => {
                 const {loaded, total} = progressEvent
                 upFile.tip = `上传中: ${formatFileSize(loaded, true)}/${formatFileSize(total)}`

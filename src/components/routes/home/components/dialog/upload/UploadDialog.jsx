@@ -7,6 +7,7 @@ import {proxy, ref, useSnapshot} from "valtio";
 import FileExportDialog from "../FileExport.jsx";
 import {useEffect} from "react";
 import {showConfirmWindow} from "../../../../../common/ConfirmWindow.jsx";
+import DialogDiv from "../../../../../common/DialogDiv.jsx";
 
 const Container = styled.div`
     display: flex;
@@ -109,7 +110,7 @@ function UploadDialog() {
     }, [complete]);
 
     return (
-        <Container className={'shadow'}>
+        <DialogDiv className={'shadow'}>
             {
                 title
             }
@@ -146,7 +147,7 @@ function UploadDialog() {
                 dialogProxy.pop()
                 uploadFileList.length = 0
             }}>{complete ? '关闭' : '取消'}</Button>
-        </Container>
+        </DialogDiv>
 
     );
 }
