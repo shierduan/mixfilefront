@@ -5,6 +5,7 @@ import axios from "axios";
 import {formatFileSize} from "../../../../utils/CommonUtils.js";
 import Semaphore from "@chriscdn/promise-semaphore";
 import {addUploadFile} from "./dialog/upload/UploadDialog.jsx";
+import {selectFiles} from "../../../common/FileSelect.jsx";
 
 const Container = styled.div`
     display: flex;
@@ -94,16 +95,14 @@ export async function uploadFile(upFile) {
     upFile.tip = `上传成功 ${formatFileSize(file.size)}`
 }
 
+
 function FileUpload(props) {
     return (
         <Container>
-            <input type="file" id={'select-components'} hidden onChange={(event) => {
-                addUploadFile(...event.target.files)
-                event.target.value = ''
-            }} multiple="multiple"/>
             <FileDrop
-                onTargetClick={() => {
-                    document.querySelector('#select-components').click()
+                onTargetClick={async () => {
+                    const files = await selectFiles()
+                    addUploadFile(...files)
                 }}
                 onDrop={(files, event) => {
                     addUploadFile(...files)

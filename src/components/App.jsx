@@ -6,6 +6,7 @@ import {DialogContainer} from "../utils/DialogContainer.jsx";
 import WebDav from "./routes/webdav/WebDAV.jsx";
 import Footer from "./common/Footer.jsx";
 import {HashRouter, Outlet, Route, Routes} from "react-router-dom";
+import FileSelect from "./common/FileSelect.jsx";
 
 
 const theme = createTheme({
@@ -24,6 +25,7 @@ function Layout() {
             <ToastContainer/>
             <DialogContainer/>
             <Footer/>
+            <FileSelect/>
         </>
     );
 }

@@ -1,3 +1,5 @@
+import {apiAddress} from "../../../../config.js";
+
 export function parsePropfindXML(xmlText) {
     const parser = new DOMParser();
     const xml = parser.parseFromString(xmlText, "application/xml");
@@ -26,7 +28,8 @@ export function parsePropfindXML(xmlText) {
         const lastModified = new Date(get("getlastmodified"));
         const mimeType = get("getcontenttype");
         const isFolder = !!parseTagFirst(prop, "collection");
+        const url = (apiAddress + href).replace(/([^:]\/)\/+/g, '$1')
 
-        return {name, isFolder, href, size, etag, mimeType, lastModified};
+        return {name, isFolder, href, size, etag, mimeType, lastModified, url};
     })
 }

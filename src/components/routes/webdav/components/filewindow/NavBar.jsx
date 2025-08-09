@@ -5,7 +5,6 @@ import {Link, useLocation} from "react-router-dom";
 
 const Container = styled.div`
     width: 100%;
-    max-width: 1200px;
     height: 40px;
     display: flex;
     align-items: center;
@@ -19,9 +18,18 @@ const Container = styled.div`
     a {
         display: flex;
         align-items: center;
+        justify-content: center;
         gap: 5px;
         font-size: 16px;
         color: rgba(67, 4, 116, 0.86);
+        transition: .3s;
+        text-decoration: none;
+        border-radius: 10px;
+        padding: 2px 7px;
+
+        &:hover {
+            background-color: rgba(142, 42, 254, 0.18);
+        }
     }
 
     .MuiBreadcrumbs-li {

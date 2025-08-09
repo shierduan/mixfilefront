@@ -3,10 +3,12 @@ import axiosRetry from "axios-retry";
 import {notifyError} from "./utils/CommonUtils.js";
 
 const params = new URLSearchParams(window.location.search);
+
 export const apiAddress = params.get("api") ?? `${window.location.origin}/`
 
 export const client = axios.create({
-    baseURL: apiAddress
+    baseURL: apiAddress,
+    withCredentials: true
 })
 
 axiosRetry(client, {

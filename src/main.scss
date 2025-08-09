@@ -1,6 +1,8 @@
 * {
   margin: 0;
   padding: 0;
+  outline: none;
+  box-sizing: border-box;
 }
 
 body {
@@ -11,6 +13,7 @@ body {
 .shadow {
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
+
 
 .text-hide {
   white-space: nowrap; /* 禁止换行 */

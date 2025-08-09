@@ -4,17 +4,23 @@ import {parsePropfindXML} from "../../utils/WebDavUtils.js";
 import WebDavFileCard from "./WebDavFileCard.jsx";
 import {compareByName} from "../../../../../utils/CommonUtils.js";
 import {AutoSizer, List} from "react-virtualized";
-import {useParams} from "react-router-dom";
+import {useLocation} from "react-router-dom";
+import FileSort from "./FileSort.js";
+import {useState} from "react";
 
 const Container = styled.div`
     display: flex;
     width: 100%;
-    max-width: 1200px;
-    min-height: 50vh;
     border-radius: 10px;
     flex-direction: column;
-    padding: 5px;
+    padding: 0px 10px;
     gap: 5px;
+
+    .content {
+        flex-direction: column;
+        display: flex;
+        min-height: 50vh;
+    }
 
     .empty {
         margin-top: 50px;
@@ -23,14 +29,29 @@ const Container = styled.div`
         color: gray;
     }
 `
+const isFolderFirst = (a, b) => a.isFolder === b.isFolder ? 0 : a.isFolder ? -1 : 1;
+
+export const FILE_SORTS = {
+    name: {
+        func: (a, b) => isFolderFirst(a, b) || compareByName(a.name, b.name)
+    },
+    size: {
+        func: (a, b) => isFolderFirst(a, b) || a.size - b.size
+    },
+    date: {
+        func: (a, b) => isFolderFirst(a, b) || a.lastModified - b.lastModified
+    }
+}
 
 
 function FileWindow(props) {
 
-    const path = useParams()['*'] ?? '';
+    const path = useLocation().pathname;
+
+    const [sort, setSort] = useState(FILE_SORTS.name);
 
     const content = useApi({
-        path: `api/webdav/${path}`,
+        path: `api${path}`,
         method: 'PROPFIND',
         headers: {
             depth: 1
@@ -41,12 +62,7 @@ function FileWindow(props) {
             //去掉存档文件
             files.pop()
 
-            files.sort((a, b) => {
-                if (a.isFolder !== b.isFolder) {
-                    return a.isFolder ? -1 : 1;
-                }
-                return compareByName(a.name, b.name)
-            })
+            files.sort(sort.func)
 
             if (files.length === 0) {
                 return <h4 className={'empty'}>文件夹为空</h4>
@@ -83,7 +99,10 @@ function FileWindow(props) {
 
     return (
         <Container className={"shadow"}>
-            {content}
+            <FileSort setSort={setSort} sort={sort}/>
+            <div class="content">
+                {content}
+            </div>
         </Container>
     );
 }

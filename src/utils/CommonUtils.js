@@ -1,8 +1,7 @@
 import {toast} from "react-toastify";
 import moment from "moment";
-import axios from "axios";
 import pako from "pako";
-import {apiAddress} from "../config.js";
+import {apiAddress, client} from "../config.js";
 import {proxy} from "valtio";
 import {watch} from "valtio/utils";
 
@@ -41,7 +40,7 @@ export function getFormattedDate(date) {
 
 export async function fetchMixGzipTextData(code) {
     const downloadAddress = `${apiAddress}api/download?s=${code}`
-    const fileData = (await axios.get(downloadAddress, {
+    const fileData = (await client.get(downloadAddress, {
         responseType: 'arraybuffer'
     })).data
     const decoder = new TextDecoder('utf-8');
@@ -68,6 +67,10 @@ export function getParamUrl(params) {
 
     // 返回完整 URL
     return url.toString();
+}
+
+export function reverseSort(compareFn) {
+    return (a, b) => compareFn(b, a); // 反转 a 和 b 的位置
 }
 
 export function updateURLParams(params, replace = false) {

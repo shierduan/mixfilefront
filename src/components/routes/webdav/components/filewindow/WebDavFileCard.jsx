@@ -4,7 +4,6 @@ import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile.js";
 import FolderCopyIcon from '@mui/icons-material/FolderCopy';
 import VideoFileIcon from '@mui/icons-material/VideoFile';
 import ImageIcon from '@mui/icons-material/Image';
-import {apiAddress} from "../../../../../config.js";
 import {useLocation, useNavigate} from "react-router-dom";
 
 const Container = styled.div`
@@ -83,6 +82,7 @@ function WebDavFileCard({file}) {
         isFolder,
         size,
         href,
+        url,
         shareInfo,
         lastModified,
     } = file
@@ -101,9 +101,9 @@ function WebDavFileCard({file}) {
                 navigate(path + `/${name}`)
                 return
             }
-            window.open(apiAddress + href)
+            window.open(url)
         }}>
-            <div class="file-name">
+            <div class="file-name animate__animated animate__fadeIn animate__faster">
                 <div class="name">
                     <FileIcon file={file}/>
                     <h4>{name}</h4>

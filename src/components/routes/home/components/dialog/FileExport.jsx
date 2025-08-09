@@ -2,9 +2,8 @@ import {useState} from 'react';
 import styled from "styled-components";
 import {Button, TextField} from "@mui/material";
 import {getFormattedDate} from "../../../../../utils/CommonUtils.js";
-import {apiAddress} from "../../../../../config.js";
+import {apiAddress, client} from "../../../../../config.js";
 import {openFileListDialog} from "../../../../mixformats/FileList.jsx";
-import axios from "axios";
 import pako from "pako";
 
 const Container = styled.div`
@@ -76,7 +75,7 @@ function FileExportDialog({fileList}) {
                 const uploadAddress = `${apiAddress}api/upload?name=${encodeURIComponent(`${listName}.mix_list`)}&add=false`
                 setUploading(true)
                 try {
-                    let response = await axios.put(uploadAddress, shareData, {})
+                    let response = await client.put(uploadAddress, shareData)
                     openFileListDialog(response.data)
                 } finally {
                     setUploading(false)

@@ -1,8 +1,9 @@
 // useApi.jsx
-import {useEffect, useRef, useState} from 'react'
+import {useEffect} from 'react'
 import {client} from "../config.js";
 import {CircularProgress} from "@mui/material";
 import styled from "styled-components";
+import useProxyState from "./useProxyState.js";
 
 const MiddleContainer = styled.div`
     margin: 20px auto;
@@ -41,10 +42,13 @@ export default function useApi({
                                    loading = <DefaultLoading/>
                                }) {
 
-    const [data, setData] = useState(null)
-    const [err, setErr] = useState(null)
-    const [isLoading, setIsLoading] = useState(true)
-    const dataRef = useRef(null)
+    const state = useProxyState({
+        err: null,
+        data: null,
+        isLoading: true
+    })
+
+    const {err, data, isLoading} = state
 
     const fetchData = async () => {
         try {
@@ -54,20 +58,19 @@ export default function useApi({
                 data: body,
                 headers,
             })
-            dataRef.current = response.data
-            setData(dataRef.current)
-            setErr(null)
+            state.data = response.data
+            state.err = null
         } catch (e) {
-            if (!dataRef.current) {
-                setErr(e)
+            if (!state.data) {
+                state.err = e
             }
         } finally {
-            setIsLoading(false)
+            state.isLoading = false
         }
     }
 
     useEffect(() => {
-        setIsLoading(true)
+        state.isLoading = true
         fetchData()
         if (refreshInterval > 0) {
             const timer = setInterval(fetchData, refreshInterval)
