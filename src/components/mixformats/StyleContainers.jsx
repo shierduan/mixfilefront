@@ -17,13 +17,8 @@ export const MixFileDataContainer = styled.div`
 
     > .content {
         gap: 10px;
-        display: flex;
-        flex-direction: column;
-        max-height: 60vh;
-        min-height: 100px;
-        overflow-y: auto;
-        justify-content: center;
-        align-items: center;
+        height: 50vh;
+        width: 100%;
 
         > div {
             overflow: auto;

@@ -1,4 +1,23 @@
-import {apiAddress} from "../../../../config.js";
+import {apiAddress, client} from "../../../../config.js";
+
+
+export async function deleteFile(path) {
+    return client({
+        method: 'DELETE',
+        url: path,
+    });
+}
+
+export async function moveFile(path, destination) {
+    return client({
+        method: 'MOVE',
+        url: path,
+        headers: {
+            destination,
+            overwrite: 'T',
+        }
+    })
+}
 
 export function parsePropfindXML(xmlText) {
     const parser = new DOMParser();

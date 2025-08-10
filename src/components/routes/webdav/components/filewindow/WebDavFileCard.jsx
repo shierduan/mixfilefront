@@ -1,10 +1,14 @@
 import styled from "styled-components";
-import {formatFileSize, getFormattedDate} from "../../../../../utils/CommonUtils.js";
+import {formatFileSize, getFormattedDate, notifyMsg} from "../../../../../utils/CommonUtils.js";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile.js";
 import FolderCopyIcon from '@mui/icons-material/FolderCopy';
 import VideoFileIcon from '@mui/icons-material/VideoFile';
 import ImageIcon from '@mui/icons-material/Image';
 import {useLocation, useNavigate} from "react-router-dom";
+import RightClickMenu from "../../../../common/RightClickMenu.jsx";
+import {showConfirmWindow} from "../../../../common/ConfirmWindow.jsx";
+import {dialogProxy} from "../../../../../utils/DialogContainer.jsx";
+import {deleteFile} from "../../utils/WebDavUtils.js";
 
 const Container = styled.div`
     display: flex;
@@ -20,6 +24,10 @@ const Container = styled.div`
     height: 40px;
     user-select: none;
     color: rgb(64, 38, 83);
+
+    svg {
+        filter: drop-shadow(0px 1px 6px rgba(0, 0, 0, 0.2));
+    }
 
     &:hover {
         background-color: rgba(144, 35, 239, 0.11);
@@ -95,23 +103,40 @@ function WebDavFileCard({file}) {
     const navigate = useNavigate();
     const path = useLocation().pathname
 
-    return (
-        <Container onClick={() => {
-            if (isFolder) {
-                navigate(path + `/${name}`)
-                return
+    const menuItems = [
+        {label: "打开", onClick: () => console.log("打开")},
+        {label: "重命名", onClick: () => console.log("重命名")},
+        {
+            label: "删除",
+            onClick: () => {
+                showConfirmWindow('确认删除文件?', async () => {
+                    await deleteFile(url)
+                    notifyMsg('文件已删除')
+                    dialogProxy.pop()
+                })
             }
-            window.open(url)
-        }}>
-            <div class="file-name animate__animated animate__fadeIn animate__faster">
-                <div class="name">
-                    <FileIcon file={file}/>
-                    <h4>{name}</h4>
+        },
+    ];
+
+    return (
+        <RightClickMenu items={menuItems}>
+            <Container onClick={() => {
+                if (isFolder) {
+                    navigate(path + `/${name}`)
+                    return
+                }
+                window.open(url)
+            }}>
+                <div class="file-name animate__animated animate__fadeIn animate__faster">
+                    <div class="name">
+                        <FileIcon file={file}/>
+                        <h4>{name}</h4>
+                    </div>
+                    {fileSize}
                 </div>
-                {fileSize}
-            </div>
-            <div className={'file-date'}>{getFormattedDate(lastModified)}</div>
-        </Container>
+                <div className={'file-date'}>{getFormattedDate(lastModified)}</div>
+            </Container>
+        </RightClickMenu>
     );
 }
 

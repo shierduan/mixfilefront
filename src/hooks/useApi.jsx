@@ -1,9 +1,9 @@
 // useApi.jsx
-import {useEffect} from 'react'
 import {client} from "../config.js";
 import {CircularProgress} from "@mui/material";
 import styled from "styled-components";
 import useProxyState from "./useProxyState.js";
+import useDeepCompareEffect from "./useDeepCompareEffect.js";
 
 const MiddleContainer = styled.div`
     margin: 20px auto;
@@ -36,6 +36,7 @@ export default function useApi({
                                    method = 'GET',
                                    body = null,
                                    headers = {},
+                                   config = {},
                                    refreshInterval = -1,
                                    content = (data) => <></>,
                                    error = (err) => <DefaultError err={err}/>,
@@ -45,38 +46,39 @@ export default function useApi({
     const state = useProxyState({
         err: null,
         data: null,
-        isLoading: true
+        isLoading: true,
     })
 
-    const {err, data, isLoading} = state
-
     const fetchData = async () => {
-        try {
-            const response = await client({
-                url: path,
-                method: method.toUpperCase(),
-                data: body,
-                headers,
-            })
-            state.data = response.data
-            state.err = null
-        } catch (e) {
-            if (!state.data) {
-                state.err = e
-            }
-        } finally {
-            state.isLoading = false
-        }
+        const response = await client({
+            ...config,
+            url: path,
+            method: method.toUpperCase(),
+            data: body,
+            headers,
+        })
+        state.data = response.data
+        state.err = null
     }
 
-    useEffect(() => {
-        state.isLoading = true
-        fetchData()
+    useDeepCompareEffect(() => {
+        (async () => {
+            state.isLoading = true
+            try {
+                await fetchData()
+            } catch (e) {
+                state.err = e
+            } finally {
+                state.isLoading = false
+            }
+        })()
         if (refreshInterval > 0) {
             const timer = setInterval(fetchData, refreshInterval)
             return () => clearInterval(timer)
         }
-    }, [path, method, JSON.stringify(body), refreshInterval])
+    }, [path, method, headers, config, body, refreshInterval])
+
+    const {err, data, isLoading} = state
 
     if (isLoading) return loading
     if (err) return error?.(err)

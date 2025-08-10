@@ -3,10 +3,10 @@ import useApi from "../../../../../hooks/useApi.jsx";
 import {parsePropfindXML} from "../../utils/WebDavUtils.js";
 import WebDavFileCard from "./WebDavFileCard.jsx";
 import {compareByName} from "../../../../../utils/CommonUtils.js";
-import {AutoSizer, List} from "react-virtualized";
 import {useLocation} from "react-router-dom";
-import FileSort from "./FileSort.js";
+import FileSort from "./FileSort.jsx";
 import {useState} from "react";
+import VirtualList from "../../../../common/VirtualList.jsx";
 
 const Container = styled.div`
     display: flex;
@@ -69,32 +69,28 @@ function FileWindow(props) {
                 return <h4 className={'empty'}>文件夹为空</h4>
             }
 
-            const renderer = ({
-                                  index, // Index of row
-                                  isScrolling, // The List is currently being scrolled
-                                  isVisible, // This row is visible within the List (eg it is not an overscanned row)
-                                  key, // Unique key within array of rendered rows
-                                  parent, // Reference to the parent List (instance)
-                                  style, // Style object to be applied to row (to position it);
-                                  // This must be passed through to the rendered row element.
-                              }) => {
-                const file = files[index]
+            return (
+                <VirtualList rowCount={files.length}
+                             rowHeight={40}
+                             rowRenderer={(ctx) => {
 
-                return <div key={key} style={style}>
-                    <WebDavFileCard file={file}/>
-                </div>
-            }
+                                 const {
+                                     index, // Index of row
+                                     isScrolling, // The List is currently being scrolled
+                                     isVisible, // This row is visible within the List (eg it is not an overscanned row)
+                                     key, // Unique key within array of rendered rows
+                                     parent, // Reference to the parent List (instance)
+                                     style, // Style object to be applied to row (to position it);
+                                     // This must be passed through to the rendered row element.
+                                 } = ctx
 
-            return <AutoSizer>
-                {({width, height}) => (
-                    <List
-                        width={width}
-                        height={height}
-                        rowCount={files.length}
-                        rowHeight={40}
-                        rowRenderer={renderer}/>
-                )}
-            </AutoSizer>
+                                 const file = files[index]
+
+                                 return <div key={key} style={style}>
+                                     <WebDavFileCard file={file}/>
+                                 </div>
+                             }}/>
+            )
         }
     })
 

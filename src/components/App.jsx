@@ -12,7 +12,7 @@ import FileSelect from "./common/FileSelect.jsx";
 const theme = createTheme({
     palette: {
         primary: {
-            main: 'rgba(142,42,254,0.63)',
+            main: 'rgb(175,107,252)',
         },
     },
 });

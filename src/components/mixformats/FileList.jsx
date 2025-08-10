@@ -1,84 +1,76 @@
-import {useEffect, useMemo, useState} from "react";
 import {apiAddress} from "../../config.js";
-import {Button, CircularProgress} from "@mui/material";
-import {compareByName, fetchMixGzipTextData, formatFileSize, notifyError, notifyMsg} from "../../utils/CommonUtils.js";
-import {CopyToClipboard} from "react-copy-to-clipboard/src";
+import {Button} from "@mui/material";
+import {compareByName, copyText, formatFileSize, parseMixGzipText} from "../../utils/CommonUtils.js";
 import {addDialog} from "../../utils/DialogContainer.jsx";
-import {List} from "react-virtualized";
+import {AutoSizer, List} from "react-virtualized";
 import {resolveMixFile} from "../routes/home/components/FileResolve.jsx";
 import {MixFileChip, MixFileDataContainer} from "./StyleContainers.jsx";
+import useApi from "../../hooks/useApi.jsx";
 
 
 function FileListDialog({data}) {
 
+    const content = useApi({
+        path: `api/download?s=${data}`,
+        config: {
+            responseType: 'arraybuffer'
+        },
+        content(data) {
+            const text = parseMixGzipText(data)
+            const fileList = JSON.parse(text)
+            fileList.sort((a, b) => compareByName(a.name, b.name))
 
-    const [fileList, setList] = useState([])
-    // console.log(fileList)
-    const [loading, setLoading] = useState(true)
-
-    useEffect(() => {
-        (async () => {
-            const textData = await fetchMixGzipTextData(data)
-            setList(JSON.parse(textData))
-            setLoading(false)
-        })().catch(error => {
-            notifyError(`解析文件列表失败: ${error.msg}`, {
-                position: "top-center",
-            })
-        })
-    }, [data]);
-
-    const sortedFieList = useMemo(() => {
-        return [...fileList].sort((a, b) => compareByName(a.name, b.name));
-    }, [fileList]);
-
-    function rowRenderer({
-                             index, // Index of row
-                             isScrolling, // The List is currently being scrolled
-                             isVisible, // This row is visible within the List (eg it is not an overscanned row)
-                             key, // Unique key within array of rendered rows
-                             parent, // Reference to the parent List (instance)
-                             style, // Style object to be applied to row (to position it);
-                             // This must be passed through to the rendered row element.
-                         }) {
-        const file = sortedFieList[index];
+            function rowRenderer({
+                                     index, // Index of row
+                                     isScrolling, // The List is currently being scrolled
+                                     isVisible, // This row is visible within the List (eg it is not an overscanned row)
+                                     key, // Unique key within array of rendered rows
+                                     parent, // Reference to the parent List (instance)
+                                     style, // Style object to be applied to row (to position it);
+                                     // This must be passed through to the rendered row element.
+                                 }) {
+                const file = fileList[index];
 
 
-        const {name, size, time, shareInfoData} = file
-        return (
-            <MixFileChip key={key} style={style} onClick={() => {
-                resolveMixFile(shareInfoData)
-            }}>
-                <div class="content shadow">
-                    <h4 className={'text-hide'}>{name}</h4>
-                    <p>{formatFileSize(size)}</p>
+                const {name, size, time, shareInfoData} = file
+                return (
+                    <MixFileChip key={key} style={style} onClick={() => {
+                        resolveMixFile(shareInfoData)
+                    }}>
+                        <div class="content shadow">
+                            <h4 className={'text-hide'}>{name}</h4>
+                            <p>{formatFileSize(size)}</p>
+                        </div>
+                    </MixFileChip>
+                );
+            }
+
+            return <>
+                <h3>共{fileList.length}个文件</h3>
+                <div class="content">
+                    <AutoSizer>
+                        {({width, height}) => (
+                            <List
+                                width={width}
+                                height={height}
+                                rowCount={fileList.length}
+                                rowHeight={100}
+                                rowRenderer={rowRenderer}
+                            />
+                        )}
+                    </AutoSizer>
                 </div>
-            </MixFileChip>
-        );
-    }
+            </>
+        }
+    })
 
-    let content = <CircularProgress/>
-    if (!loading) {
-        content = <List
-            width={480}
-            height={window.innerHeight / 2}
-            rowCount={fileList.length}
-            rowHeight={100}
-            rowRenderer={rowRenderer}
-        />
-    }
 
     return (
         <MixFileDataContainer className={'shadow'}>
-            <h3>共{fileList.length}个文件</h3>
-            <div class="content">
-                {content}
-            </div>
-            <CopyToClipboard text={`mf://${data}`} onCopy={() => {
-                notifyMsg('复制成功!', {toastId: 'copy-to-clipboard'})
-            }}>
-                <Button variant={'outlined'}>复制分享码</Button>
-            </CopyToClipboard>
+            {content}
+            <Button variant={'outlined'} onClick={() => {
+                copyText(`mf://${data}`)
+            }}>复制分享码</Button>
             <Button variant={'contained'} onClick={() => {
                 window.open(`${apiAddress}api/download?s=${encodeURIComponent(data)}`)
             }}>下载列表文件</Button>

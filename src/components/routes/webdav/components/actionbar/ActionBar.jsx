@@ -3,7 +3,7 @@ import AddIcon from '@mui/icons-material/Add';
 import {Fab} from "@mui/material";
 import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder';
 import {addDialog} from "../../../../../utils/DialogContainer.jsx";
-import NewFolder from "./NewFolder.jsx";
+import NewFolder from "../dialog/NewFolder.jsx";
 
 const Container = styled.div`
     width: 100%;
@@ -16,6 +16,7 @@ const Container = styled.div`
     background-color: rgba(142, 42, 254, 0.21);
 
     svg {
+        font-size: 25px;
         color: rgba(142, 42, 254, 0.77);
     }
 `

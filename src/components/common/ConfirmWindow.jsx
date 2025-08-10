@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import {Button} from "@mui/material";
 import {addDialog, dialogProxy} from "../../utils/DialogContainer.jsx";
+import {useState} from "react";
 
 const Container = styled.div`
     display: flex;
@@ -43,18 +44,22 @@ export function showConfirmWindow(title, onConfirm, onCancel) {
 
 function ConfirmWindow({title, onConfirm, onCancel}) {
 
+    const [disabled, setDisabled] = useState(false);
+
 
     return (
         <Container className={'shadow'}>
             <h4>{title}</h4>
             <div class="content">
-                <Button variant={'contained'} onClick={async () => {
+                <Button variant={'contained'} disabled={disabled} onClick={async () => {
+                    setDisabled(true)
                     dialogProxy.pop()
-                    onConfirm()
+                    await onConfirm?.()
                 }}>确认</Button>
-                <Button variant={'outlined'} onClick={async () => {
+                <Button variant={'outlined'} disabled={disabled} onClick={async () => {
+                    setDisabled(true)
                     dialogProxy.pop()
-                    onCancel?.()
+                    await onCancel?.()
                 }}>取消</Button>
             </div>
 

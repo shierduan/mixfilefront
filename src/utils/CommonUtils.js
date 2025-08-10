@@ -4,6 +4,7 @@ import pako from "pako";
 import {apiAddress, client} from "../config.js";
 import {proxy} from "valtio";
 import {watch} from "valtio/utils";
+import copy from "copy-to-clipboard";
 
 const debounceMap = {}
 
@@ -48,6 +49,12 @@ export async function fetchMixGzipTextData(code) {
     return decoder.decode(originalRaw)
 }
 
+export function parseMixGzipText(data) {
+    const decoder = new TextDecoder('utf-8');
+    const originalRaw = pako.ungzip(data)
+    return decoder.decode(originalRaw)
+}
+
 /**
  * 生成一个带有更新参数的新 URL（不会修改浏览器地址）
  * @param {Object} params - 需要更新的参数
@@ -86,6 +93,11 @@ export function updateURLParams(params, replace = false) {
         }
         window.dispatchEvent(new PopStateEvent('popstate', {state: history.state}));
     }
+}
+
+export function copyText(text) {
+    copy(text)
+    notifyMsg('复制成功')
 }
 
 

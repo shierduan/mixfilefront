@@ -29,6 +29,7 @@ const Container = styled.div`
     .file-drop {
         width: 100%;
         height: 100%;
+        user-select: none;
     }
 
     .file-drop-target {

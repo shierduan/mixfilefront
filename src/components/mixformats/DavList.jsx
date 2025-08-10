@@ -1,8 +1,7 @@
 import {useEffect, useMemo, useState} from "react";
 import {apiAddress} from "../../config.js";
 import {Button, CircularProgress} from "@mui/material";
-import {compareByName, fetchMixGzipTextData, formatFileSize, notifyError, notifyMsg} from "../../utils/CommonUtils.js";
-import {CopyToClipboard} from "react-copy-to-clipboard/src";
+import {compareByName, copyText, fetchMixGzipTextData, formatFileSize, notifyError} from "../../utils/CommonUtils.js";
 import {addDialog} from "../../utils/DialogContainer.jsx";
 import {List} from "react-virtualized";
 import {resolveMixFile} from "../routes/home/components/FileResolve.jsx";
@@ -135,11 +134,9 @@ function FileDavDialog({data}) {
             <div class="content">
                 {content}
             </div>
-            <CopyToClipboard text={`mf://${data}`} onCopy={() => {
-                notifyMsg('复制成功!', {toastId: 'copy-to-clipboard'})
-            }}>
-                <Button variant={'outlined'}>复制分享码</Button>
-            </CopyToClipboard>
+            <Button variant={'outlined'} onClick={() => {
+                copyText(`mf://${data}`)
+            }}>复制分享码</Button>
             <Button variant={'contained'} onClick={() => {
                 window.open(`${apiAddress}api/download?s=${encodeURIComponent(data)}`)
             }}>下载存档文件</Button>
