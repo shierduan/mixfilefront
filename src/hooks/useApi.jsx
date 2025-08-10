@@ -26,7 +26,7 @@ export function DefaultLoading() {
 
 export function DefaultError({err}) {
     return <MiddleContainer>
-        <div className={'error'}>Error: {err.message}</div>
+        <div className={'error'}>Error: {err.message ?? err}</div>
     </MiddleContainer>
 }
 
@@ -37,6 +37,8 @@ export default function useApi({
                                    body = null,
                                    headers = {},
                                    config = {},
+                                   callback = (data) => {
+                                   },
                                    refreshInterval = -1,
                                    content = (data) => <></>,
                                    error = (err) => <DefaultError err={err}/>,
@@ -58,6 +60,7 @@ export default function useApi({
             headers,
         })
         state.data = response.data
+        callback(state.data)
         state.err = null
     }
 

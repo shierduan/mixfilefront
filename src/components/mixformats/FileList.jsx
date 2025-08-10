@@ -2,13 +2,14 @@ import {apiAddress} from "../../config.js";
 import {Button} from "@mui/material";
 import {compareByName, copyText, formatFileSize, parseMixGzipText} from "../../utils/CommonUtils.js";
 import {addDialog} from "../../utils/DialogContainer.jsx";
-import {AutoSizer, List} from "react-virtualized";
 import {resolveMixFile} from "../routes/home/components/FileResolve.jsx";
 import {MixFileChip, MixFileDataContainer} from "./StyleContainers.jsx";
 import useApi from "../../hooks/useApi.jsx";
+import VirtualList from "../common/VirtualList.jsx";
 
 
 function FileListDialog({data}) {
+
 
     const content = useApi({
         path: `api/download?s=${data}`,
@@ -20,45 +21,40 @@ function FileListDialog({data}) {
             const fileList = JSON.parse(text)
             fileList.sort((a, b) => compareByName(a.name, b.name))
 
-            function rowRenderer({
-                                     index, // Index of row
-                                     isScrolling, // The List is currently being scrolled
-                                     isVisible, // This row is visible within the List (eg it is not an overscanned row)
-                                     key, // Unique key within array of rendered rows
-                                     parent, // Reference to the parent List (instance)
-                                     style, // Style object to be applied to row (to position it);
-                                     // This must be passed through to the rendered row element.
-                                 }) {
-                const file = fileList[index];
-
-
-                const {name, size, time, shareInfoData} = file
-                return (
-                    <MixFileChip key={key} style={style} onClick={() => {
-                        resolveMixFile(shareInfoData)
-                    }}>
-                        <div class="content shadow">
-                            <h4 className={'text-hide'}>{name}</h4>
-                            <p>{formatFileSize(size)}</p>
-                        </div>
-                    </MixFileChip>
-                );
-            }
 
             return <>
                 <h3>共{fileList.length}个文件</h3>
                 <div class="content">
-                    <AutoSizer>
-                        {({width, height}) => (
-                            <List
-                                width={width}
-                                height={height}
-                                rowCount={fileList.length}
-                                rowHeight={100}
-                                rowRenderer={rowRenderer}
-                            />
-                        )}
-                    </AutoSizer>
+                    <VirtualList
+                        rowCount={fileList.length}
+                        rowHeight={100}
+                        rowRenderer={(ctx) => {
+                            const {
+                                index, // Index of row
+                                isScrolling, // The List is currently being scrolled
+                                isVisible, // This row is visible within the List (eg it is not an overscanned row)
+                                key, // Unique key within array of rendered rows
+                                parent, // Reference to the parent List (instance)
+                                style, // Style object to be applied to row (to position it);
+                                // This must be passed through to the rendered row element.
+                            } = ctx
+                            const file = fileList[index];
+
+
+                            const {name, size, time, shareInfoData} = file
+                            return (
+                                <MixFileChip key={key} style={style} onClick={() => {
+                                    resolveMixFile(shareInfoData)
+                                }}>
+                                    <div class="content shadow">
+                                        <h4 className={'text-hide'}>{name}</h4>
+                                        <p>{formatFileSize(size)}</p>
+                                    </div>
+                                </MixFileChip>
+                            );
+                        }
+                        }
+                    />
                 </div>
             </>
         }
