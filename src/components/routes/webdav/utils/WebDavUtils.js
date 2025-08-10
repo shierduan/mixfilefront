@@ -8,12 +8,19 @@ export async function deleteFile(path) {
     });
 }
 
+export async function createFolder(path) {
+    return client({
+        method: 'MKCOL',
+        url: path
+    })
+}
+
 export async function moveFile(path, destination) {
     return client({
         method: 'MOVE',
         url: path,
         headers: {
-            destination,
+            destination: apiAddress + destination,
             overwrite: 'T',
         }
     })

@@ -7,8 +7,9 @@ import ImageIcon from '@mui/icons-material/Image';
 import {useLocation, useNavigate} from "react-router-dom";
 import RightClickMenu from "../../../../common/RightClickMenu.jsx";
 import {showConfirmWindow} from "../../../../common/ConfirmWindow.jsx";
-import {dialogProxy} from "../../../../../utils/DialogContainer.jsx";
+import {addDialog, dialogProxy} from "../../../../../utils/DialogContainer.jsx";
 import {deleteFile} from "../../utils/WebDavUtils.js";
+import RenameFile from "../dialog/RenameFile.jsx";
 
 const Container = styled.div`
     display: flex;
@@ -104,8 +105,18 @@ function WebDavFileCard({file}) {
     const path = useLocation().pathname
 
     const menuItems = [
-        {label: "打开", onClick: () => console.log("打开")},
-        {label: "重命名", onClick: () => console.log("重命名")},
+        {
+            label: "打开",
+            onClick() {
+                console.log("打开")
+            }
+        },
+        {
+            label: "重命名",
+            onClick() {
+                addDialog(<RenameFile path={path} name={name}/>)
+            }
+        },
         {
             label: "删除",
             onClick: () => {
