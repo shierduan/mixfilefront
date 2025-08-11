@@ -8,6 +8,13 @@ export async function deleteFile(path) {
     });
 }
 
+function encodeUrlPath(path) {
+    return path
+        .split('/')
+        .map(segment => encodeURIComponent(segment))
+        .join('/');
+}
+
 export async function createFolder(path) {
     return client({
         method: 'MKCOL',
@@ -15,24 +22,24 @@ export async function createFolder(path) {
     })
 }
 
-export async function moveFile(path, destination) {
+export async function moveFile(path, destination, overwrite = false) {
     return client({
         method: 'MOVE',
         url: path,
         headers: {
-            destination: apiAddress + destination,
-            overwrite: 'T',
+            destination: apiAddress + encodeUrlPath(destination),
+            overwrite: overwrite ? 'T' : 'F',
         }
     })
 }
 
-export async function copyFile(path, destination) {
+export async function copyFile(path, destination, overwrite = false) {
     return client({
         method: 'COPY',
         url: path,
         headers: {
-            destination: apiAddress + destination,
-            overwrite: 'T',
+            destination: apiAddress + encodeUrlPath(destination),
+            overwrite: overwrite ? 'T' : 'F',
         }
     })
 }

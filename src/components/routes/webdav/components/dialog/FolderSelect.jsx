@@ -65,8 +65,7 @@ function FolderTreeItem({path}) {
             return (
                 folders.map(({name}) => {
 
-                    const encodedName = encodeURIComponent(name)
-                    const folderPath = `${path}/${encodedName}`
+                    const folderPath = `${path}/${name}`
 
                     return (
                         <TreeItem itemId={folderPath} label={name} key={folderPath}>

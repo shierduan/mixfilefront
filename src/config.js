@@ -25,10 +25,9 @@ client.interceptors.response.use((config) => {
     if (error instanceof CanceledError) {
         return
     }
-    const msg = `连接失败: ${error.response?.body ?? error.message}`;
+    const msg = `请求失败: ${error.response?.body ?? error.message}`;
     notifyError(msg, {
-        position: "top-center",
-        toastId: msg
+        id: msg
     });
     return Promise.reject(error)
 })

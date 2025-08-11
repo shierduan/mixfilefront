@@ -110,7 +110,7 @@ function WebDavFileCard({file}) {
             label: "复制",
             async onClick() {
                 const folder = await selectFolder()
-                await copyFile(url, `api/webdav${folder}/${encodeURIComponent(name)}`)
+                await copyFile(url, `api/webdav${folder}/${name}`)
                 notifyMsg('操作成功')
             }
         },
@@ -118,7 +118,7 @@ function WebDavFileCard({file}) {
             label: "移动",
             async onClick() {
                 const folder = await selectFolder()
-                await moveFile(url, `api/webdav${folder}/${encodeURIComponent(name)}`)
+                await moveFile(url, `api/webdav${folder}/${name}`)
                 notifyMsg('操作成功')
             }
         },

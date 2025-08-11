@@ -42,9 +42,7 @@ export function resolveMixFile(input) {
     code = decodeMixShareCode(code)
     let {fileName, fileSize} = decodeMixFileName(code)
     if (!fileName) {
-        return notifyError('解密分享码失败', {
-            position: "top-center",
-        });
+        return notifyError('解密分享码失败');
     }
     if (fileName.endsWith(".mix_list")) {
         return openFileListDialog(code)

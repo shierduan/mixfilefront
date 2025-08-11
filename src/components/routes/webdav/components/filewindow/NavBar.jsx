@@ -70,7 +70,7 @@ function NavBar(props) {
     })
 
     return (
-        <Container className={'shadow'}>
+        <Container className={'shadow no-select'}>
             <Breadcrumbs aria-label="breadcrumb">
                 {crumbs}
             </Breadcrumbs>

@@ -142,7 +142,7 @@ function UploadDialog() {
             <Button variant={'contained'} onClick={() => {
                 if (!complete) {
                     showConfirmWindow('确认取消上传?', () => {
-                        notifyMsg('上传已取消', {toastId: 'cancel-upload'})
+                        notifyMsg('上传已取消')
                         dialogProxy.pop()
                         uploadFileList.length = 0
                     })

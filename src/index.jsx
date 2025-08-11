@@ -6,7 +6,6 @@ import 'sanitize.css/forms.css';
 import './config.js'
 import 'animate.css'
 import {debounce} from "./utils/CommonUtils.js";
-import 'react-toastify/dist/ReactToastify.css';
 import {App} from "./components/App.jsx";
 
 

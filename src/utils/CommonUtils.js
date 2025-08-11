@@ -1,10 +1,10 @@
-import {toast} from "react-toastify";
 import moment from "moment";
 import pako from "pako";
 import {apiAddress, client} from "../config.js";
 import {proxy} from "valtio";
 import {watch} from "valtio/utils";
 import copy from "copy-to-clipboard";
+import toast from "react-hot-toast";
 
 const debounceMap = {}
 
@@ -16,11 +16,15 @@ export function debounce(key, fn, delay) {
 }
 
 export function notifyMsg(msg, options) {
-    toast(msg, options)
+    return toast.success(msg, options)
 }
 
 export function notifyError(msg, options) {
-    toast.error(msg, options)
+    return toast.error(msg, options)
+}
+
+export function notifyPromise(promise, msg, options) {
+    return toast.promise(promise, {loading: msg}, options)
 }
 
 

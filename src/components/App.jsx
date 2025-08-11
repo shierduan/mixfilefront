@@ -1,12 +1,12 @@
 import {createTheme, ThemeProvider} from "@mui/material";
 import {TopBar} from "./common/TopBar.jsx";
 import Home from "./routes/home/Home.jsx";
-import {ToastContainer} from "react-toastify";
 import {DialogContainer} from "../utils/DialogContainer.jsx";
 import WebDav from "./routes/webdav/WebDAV.jsx";
 import Footer from "./common/Footer.jsx";
 import {HashRouter, Outlet, Route, Routes} from "react-router-dom";
 import FileSelect from "./common/FileSelect.jsx";
+import {Toaster} from "react-hot-toast";
 
 
 const theme = createTheme({
@@ -22,7 +22,7 @@ function Layout() {
         <>
             <TopBar/>
             <Outlet/>
-            <ToastContainer/>
+            <Toaster />
             <DialogContainer/>
             <Footer/>
             <FileSelect/>
