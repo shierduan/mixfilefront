@@ -49,7 +49,7 @@ function ConfirmWindow({title, onConfirm, onCancel}) {
 
     return (
         <Container className={'shadow'}>
-            <h4>{title}</h4>
+            <h4 className={'no-select'}>{title}</h4>
             <div class="content">
                 <Button variant={'contained'} disabled={disabled} onClick={async () => {
                     setDisabled(true)

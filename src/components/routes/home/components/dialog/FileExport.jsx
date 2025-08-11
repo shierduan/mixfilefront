@@ -15,7 +15,7 @@ function FileExportDialog({fileList}) {
 
     return (
         <DialogDiv className={'shadow'}>
-            <h4>导出文件列表</h4>
+            <h4 className={'no-select'}>导出文件列表</h4>
             <div class="content">
                 <TextField label={'文件列表名称'} variant={'outlined'} value={listName} onChange={(event) => {
                     setListName(event.target.value.trim())

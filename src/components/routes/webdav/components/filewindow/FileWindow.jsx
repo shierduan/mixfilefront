@@ -19,7 +19,7 @@ const Container = styled.div`
     .content {
         flex-direction: column;
         display: flex;
-        min-height: 50vh;
+        min-height: 60vh;
     }
 
     .empty {
@@ -58,7 +58,10 @@ function FileWindow(props) {
         },
         refreshInterval: 1000,
         content(data) {
-            const files = parsePropfindXML(data).slice(1)
+            const files = parsePropfindXML(data)
+
+            //去掉目录文件
+            files.shift()
 
             //去掉存档文件
             files.pop()

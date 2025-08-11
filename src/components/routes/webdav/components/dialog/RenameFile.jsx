@@ -12,7 +12,7 @@ function RenameFile({path, name}) {
 
     return (
         <DialogDiv className={'shadow'}>
-            <h4>重命名文件</h4>
+            <h4 className={'no-select'}>重命名文件</h4>
             <div class="content">
                 <TextField label={'文件名称'} variant={'outlined'} value={newName} onChange={(event) => {
                     setNewName(event.target.value.trim())

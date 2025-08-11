@@ -26,6 +26,17 @@ export async function moveFile(path, destination) {
     })
 }
 
+export async function copyFile(path, destination) {
+    return client({
+        method: 'COPY',
+        url: path,
+        headers: {
+            destination: apiAddress + destination,
+            overwrite: 'T',
+        }
+    })
+}
+
 export function parsePropfindXML(xmlText) {
     const parser = new DOMParser();
     const xml = parser.parseFromString(xmlText, "application/xml");

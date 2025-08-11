@@ -8,8 +8,9 @@ import {useLocation, useNavigate} from "react-router-dom";
 import RightClickMenu from "../../../../common/RightClickMenu.jsx";
 import {showConfirmWindow} from "../../../../common/ConfirmWindow.jsx";
 import {addDialog, dialogProxy} from "../../../../../utils/DialogContainer.jsx";
-import {deleteFile} from "../../utils/WebDavUtils.js";
+import {copyFile, deleteFile, moveFile} from "../../utils/WebDavUtils.js";
 import RenameFile from "../dialog/RenameFile.jsx";
+import {selectFolder} from "../dialog/FolderSelect.jsx";
 
 const Container = styled.div`
     display: flex;
@@ -106,9 +107,19 @@ function WebDavFileCard({file}) {
 
     const menuItems = [
         {
-            label: "打开",
-            onClick() {
-                console.log("打开")
+            label: "复制",
+            async onClick() {
+                const folder = await selectFolder()
+                await copyFile(url, `api/webdav${folder}/${encodeURIComponent(name)}`)
+                notifyMsg('操作成功')
+            }
+        },
+        {
+            label: "移动",
+            async onClick() {
+                const folder = await selectFolder()
+                await moveFile(url, `api/webdav${folder}/${encodeURIComponent(name)}`)
+                notifyMsg('操作成功')
             }
         },
         {

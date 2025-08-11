@@ -15,7 +15,7 @@ function NewFolder(props) {
 
     return (
         <DialogDiv className={'shadow'}>
-            <h4>新建文件夹</h4>
+            <h4 className={'no-select'}>新建文件夹</h4>
             <div class="content">
                 <TextField label={'文件夹名称'} variant={'outlined'} value={folderName} onChange={(event) => {
                     setFolderName(event.target.value.trim())

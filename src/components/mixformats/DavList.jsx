@@ -66,7 +66,7 @@ function FileDavDialog({data}) {
             const fileList = Object.values(currentFile.files ?? {}).sort(FILE_SORTS.name.func);
 
             return <>
-                <h3>{[...pathHistory, currentFile].map((it) => it.name).join("/")} 共{fileList.length}个文件</h3>
+                <h3 className={'no-select'}>{[...pathHistory, currentFile].map((it) => it.name).join("/")} 共{fileList.length}个文件</h3>
                 {topButton}
                 <div class="content">
                     <VirtualList

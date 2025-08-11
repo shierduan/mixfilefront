@@ -23,7 +23,7 @@ function FileListDialog({data}) {
 
 
             return <>
-                <h3>共{fileList.length}个文件</h3>
+                <h3 className={'no-select'}>共{fileList.length}个文件</h3>
                 <div class="content">
                     <VirtualList
                         rowCount={fileList.length}
