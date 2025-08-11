@@ -22,7 +22,7 @@ function Layout() {
         <>
             <TopBar/>
             <Outlet/>
-            <Toaster />
+            <Toaster/>
             <DialogContainer/>
             <Footer/>
             <FileSelect/>
