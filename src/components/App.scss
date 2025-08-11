@@ -1,0 +1,24 @@
+html body #app {
+
+  .MuiTypography-root {
+    font-size: 16px;
+  }
+
+  .MuiSvgIcon-root {
+    font-size: 24px;
+  }
+
+  .MuiInputBase-input {
+    font-size: max(.6rem, 16px)
+  }
+
+  .MuiFormLabel-root {
+    font-size: max(.6rem, 16px)
+  }
+
+  .MuiTreeItem-label {
+    font-size: 16px;
+    user-select: none;
+  }
+
+}

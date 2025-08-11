@@ -3,17 +3,12 @@ import {SimpleTreeView, TreeItem} from "@mui/x-tree-view";
 import styled from "styled-components";
 import useApi from "../../../../../hooks/useApi.jsx";
 import {parsePropfindXML} from "../../utils/WebDavUtils.js";
-import {Button, CircularProgress} from "@mui/material";
-import {useState} from "react";
+import {Button, Checkbox, CircularProgress, FormControlLabel} from "@mui/material";
 import {addDialog, dialogProxy} from "../../../../../utils/DialogContainer.jsx";
 import {FILE_SORTS} from "../filewindow/FileWindow.jsx";
+import useProxyState from "../../../../../hooks/useProxyState.js";
 
 const Container = styled(DialogDiv)`
-    .MuiTreeItem-label {
-        font-size: 16px;
-        user-select: none;
-    }
-
     .info {
         width: 100%;
         padding: 10px 5px;
@@ -25,18 +20,24 @@ const Container = styled(DialogDiv)`
         color: gray;
     }
 
-    .tip {
-        color: rgba(120, 86, 158, 0.86);
-        font-weight: bold;
+    .bottom {
         padding: 0px 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        .tip {
+            color: rgba(120, 86, 158, 0.86);
+            font-weight: bold;
+        }
+
+        .actions {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
     }
 
-    .actions {
-        padding: 10px;
-        display: flex;
-        gap: 20px;
-        flex-wrap: wrap;
-    }
 
 `
 
@@ -81,7 +82,11 @@ function FolderTreeItem({path}) {
 
 function FolderSelect({callback}) {
 
-    const [path, setPath] = useState("");
+    const state = useProxyState({
+        path: '',
+        overwrite: false,
+    })
+    const {path, overwrite} = state;
 
 
     return (
@@ -94,7 +99,7 @@ function FolderSelect({callback}) {
                         itemId,
                         isSelected
                     ) => {
-                        setPath(itemId)
+                        state.path = itemId;
                     }}
                     defaultExpandedItems={['']}
                     defaultSelectedItems={['']}
@@ -104,17 +109,30 @@ function FolderSelect({callback}) {
                     </TreeItem>
                 </SimpleTreeView>
             </div>
-            <div class="tip no-select">
-                已选择: {path || '根目录'}
-            </div>
-            <div class="actions">
-                <Button variant={'contained'} onClick={async () => {
-                    dialogProxy.pop()
-                    callback?.(path)
-                }}>确认</Button>
-                <Button variant={'outlined'} onClick={async () => {
-                    dialogProxy.pop()
-                }}>取消</Button>
+            <div class="bottom">
+                <div class="tip no-select">
+                    已选择: {path || '根目录'}
+                </div>
+                <FormControlLabel
+                    className={'no-select'}
+                    control={
+                        <Checkbox
+                            onChange={(event) => {
+                                state.overwrite = event.target.checked;
+                            }}
+                        />
+                    }
+                    label="覆盖文件"
+                />
+                <div class="actions">
+                    <Button variant={'contained'} onClick={async () => {
+                        dialogProxy.pop()
+                        callback?.(state)
+                    }}>确认</Button>
+                    <Button variant={'outlined'} onClick={async () => {
+                        dialogProxy.pop()
+                    }}>取消</Button>
+                </div>
             </div>
         </Container>
     );

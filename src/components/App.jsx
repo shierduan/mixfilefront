@@ -7,6 +7,7 @@ import Footer from "./common/Footer.jsx";
 import {HashRouter, Outlet, Route, Routes} from "react-router-dom";
 import FileSelect from "./common/FileSelect.jsx";
 import {Toaster} from "react-hot-toast";
+import './App.scss'
 
 
 const theme = createTheme({

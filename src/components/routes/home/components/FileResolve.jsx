@@ -21,14 +21,6 @@ const Container = styled.div`
         width: 70%;
     }
 
-    input {
-        font-size: max(.6rem, 16px)
-    }
-
-    label {
-        font-size: max(.6rem, 16px)
-    }
-
     button {
         max-width: 100px;
         width: 30%;

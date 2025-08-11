@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import {formatFileSize, getFormattedDate, notifyMsg} from "../../../../../utils/CommonUtils.js";
+import {formatFileSize, getFormattedDate, notifyMsg, notifyPromise} from "../../../../../utils/CommonUtils.js";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile.js";
 import FolderCopyIcon from '@mui/icons-material/FolderCopy';
 import VideoFileIcon from '@mui/icons-material/VideoFile';
@@ -109,16 +109,18 @@ function WebDavFileCard({file}) {
         {
             label: "复制",
             async onClick() {
-                const folder = await selectFolder()
-                await copyFile(url, `api/webdav${folder}/${name}`)
+                const {path, overwrite} = await selectFolder()
+                const task = copyFile(url, `api/webdav${path}/${name}`, overwrite)
+                await notifyPromise(task, '复制文件')
                 notifyMsg('操作成功')
             }
         },
         {
             label: "移动",
             async onClick() {
-                const folder = await selectFolder()
-                await moveFile(url, `api/webdav${folder}/${name}`)
+                const {path, overwrite} = await selectFolder()
+                const task = moveFile(url, `api/webdav${path}/${name}`, overwrite)
+                await notifyPromise(task, '移动文件')
                 notifyMsg('操作成功')
             }
         },
@@ -132,7 +134,8 @@ function WebDavFileCard({file}) {
             label: "删除",
             onClick: () => {
                 showConfirmWindow('确认删除文件?', async () => {
-                    await deleteFile(url)
+                    const task = deleteFile(url)
+                    await notifyPromise(task, '删除文件')
                     notifyMsg('文件已删除')
                     dialogProxy.pop()
                 })

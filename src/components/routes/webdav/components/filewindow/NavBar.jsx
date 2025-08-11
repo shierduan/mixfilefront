@@ -11,10 +11,6 @@ const Container = styled.div`
     padding: 5px 10px;
     border-radius: 10px;
 
-    .MuiBreadcrumbs-separator {
-        font-size: 16px;
-    }
-
     a {
         display: flex;
         align-items: center;
@@ -30,11 +26,6 @@ const Container = styled.div`
         &:hover {
             background-color: rgba(142, 42, 254, 0.18);
         }
-    }
-
-    .MuiBreadcrumbs-li {
-        display: flex;
-        align-items: center;
     }
 
     .MuiSvgIcon-root {

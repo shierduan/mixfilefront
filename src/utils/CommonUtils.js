@@ -5,6 +5,7 @@ import {proxy} from "valtio";
 import {watch} from "valtio/utils";
 import copy from "copy-to-clipboard";
 import toast from "react-hot-toast";
+import {CircularProgress} from "@mui/material";
 
 const debounceMap = {}
 
@@ -24,7 +25,7 @@ export function notifyError(msg, options) {
 }
 
 export function notifyPromise(promise, msg, options) {
-    return toast.promise(promise, {loading: msg}, options)
+    return toast.promise(promise, {loading: msg}, {icon: <CircularProgress size={20}/>, ...options})
 }
 
 

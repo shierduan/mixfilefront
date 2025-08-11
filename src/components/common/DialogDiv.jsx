@@ -20,14 +20,6 @@ const DialogDiv = styled.div`
         flex-direction: column;
         max-height: 60vh;
         overflow-y: auto;
-
-        input {
-            font-size: max(.6rem, 16px)
-        }
-
-        label {
-            font-size: max(.6rem, 16px)
-        }
     }
 
     p {
