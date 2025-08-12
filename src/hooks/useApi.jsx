@@ -4,7 +4,7 @@ import {CircularProgress} from "@mui/material";
 import styled from "styled-components";
 import useProxyState from "./useProxyState.js";
 import useDeepCompareEffect from "./useDeepCompareEffect.js";
-import {noProxy} from "../utils/CommonUtils.js";
+import {noProxy} from "../utils/CommonUtils.jsx";
 
 const MiddleContainer = styled.div`
     margin: 20px auto;

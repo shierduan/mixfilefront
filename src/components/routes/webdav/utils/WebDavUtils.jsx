@@ -1,14 +1,14 @@
 import {apiAddress, client} from "../../../../config.js";
-import {notifyPromise} from "../../../../utils/CommonUtils.js";
+import {getRoutePath} from "../../../../utils/CommonUtils.jsx";
+import {addDialog} from "../../../../utils/DialogContainer.jsx";
+import RenameFile from "../components/dialog/RenameFile.jsx";
 
 
 export async function deleteFile(path) {
-    const task = client({
+    return client({
         method: 'DELETE',
         url: path,
     });
-    await notifyPromise(task, '删除文件')
-    return task
 }
 
 function encodeUrlPath(path) {
@@ -19,16 +19,14 @@ function encodeUrlPath(path) {
 }
 
 export async function createFolder(path) {
-    const task = client({
+    return client({
         method: 'MKCOL',
         url: path
     })
-    await notifyPromise(task, '新建文件夹')
-    return task
 }
 
 export async function moveFile(path, destination, overwrite = false) {
-    const task = client({
+    return client({
         method: 'MOVE',
         url: path,
         headers: {
@@ -36,12 +34,10 @@ export async function moveFile(path, destination, overwrite = false) {
             overwrite: overwrite ? 'T' : 'F',
         }
     })
-    await notifyPromise(task, '移动文件')
-    return task
 }
 
 export async function copyFile(path, destination, overwrite = false) {
-    const task = client({
+    return await client({
         method: 'COPY',
         url: path,
         headers: {
@@ -49,8 +45,6 @@ export async function copyFile(path, destination, overwrite = false) {
             overwrite: overwrite ? 'T' : 'F',
         }
     })
-    await notifyPromise(task, '复制文件')
-    return task
 }
 
 export function parsePropfindXML(xmlText) {
@@ -83,6 +77,27 @@ export function parsePropfindXML(xmlText) {
         const isFolder = !!parseTagFirst(prop, "collection");
         const url = (apiAddress + href).replace(/([^:]\/)\/+/g, '$1')
 
-        return {name, isFolder, href, size, etag, mimeType, lastModified, url};
+        return {
+            name,
+            isFolder,
+            href,
+            size,
+            etag,
+            mimeType,
+            lastModified,
+            url,
+            async copyFile({path, overwrite}) {
+                await copyFile(url, `api/webdav${path}/${name}`, overwrite)
+            },
+            async moveFile({path, overwrite}) {
+                await moveFile(url, `api/webdav${path}/${name}`, overwrite)
+            },
+            async deleteFile() {
+                await deleteFile(url)
+            },
+            renameFile() {
+                addDialog(<RenameFile path={getRoutePath()} name={name}/>)
+            }
+        };
     })
 }

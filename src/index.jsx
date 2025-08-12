@@ -5,7 +5,7 @@ import 'sanitize.css/typography.css';
 import 'sanitize.css/forms.css';
 import './config.js'
 import 'animate.css'
-import {debounce} from "./utils/CommonUtils.js";
+import {debounce} from "./utils/CommonUtils.jsx";
 import {App} from "./components/App.jsx";
 
 

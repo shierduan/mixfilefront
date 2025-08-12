@@ -3,8 +3,8 @@ import {useState} from "react";
 import {useLocation} from "react-router-dom";
 import {dialogProxy} from "../../../../../utils/DialogContainer.jsx";
 import DialogDiv from "../../../../common/DialogDiv.jsx";
-import {notifyMsg} from "../../../../../utils/CommonUtils.js";
-import {createFolder} from "../../utils/WebDavUtils.js";
+import {notifyMsg} from "../../../../../utils/CommonUtils.jsx";
+import {createFolder} from "../../utils/WebDavUtils.jsx";
 
 function NewFolder(props) {
 

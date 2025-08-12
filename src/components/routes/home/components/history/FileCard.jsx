@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import {resolveMixFile} from "../FileResolve.jsx";
-import {formatFileSize} from "../../../../../utils/CommonUtils.js";
+import {formatFileSize} from "../../../../../utils/CommonUtils.jsx";
 
 const CardContainer = styled.div`
     transition: .3s;

@@ -1,6 +1,6 @@
 import {Button} from "@mui/material";
 import {apiAddress} from "../../../../../config.js";
-import {copyText, formatFileSize} from "../../../../../utils/CommonUtils.js";
+import {copyText, formatFileSize} from "../../../../../utils/CommonUtils.jsx";
 import DialogDiv from "../../../../common/DialogDiv.jsx";
 
 

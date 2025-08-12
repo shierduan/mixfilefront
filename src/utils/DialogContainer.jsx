@@ -1,6 +1,6 @@
 import {proxy, useSnapshot} from "valtio";
 import {Backdrop} from "@mui/material";
-import {noProxy} from "./CommonUtils.js";
+import {noProxy} from "./CommonUtils.jsx";
 
 export const dialogProxy = proxy([])
 

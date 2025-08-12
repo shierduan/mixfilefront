@@ -1,12 +1,15 @@
 import styled from "styled-components";
 import useApi from "../../../../../hooks/useApi.jsx";
-import {parsePropfindXML} from "../../utils/WebDavUtils.js";
+import {parsePropfindXML} from "../../utils/WebDavUtils.jsx";
 import WebDavFileCard from "./WebDavFileCard.jsx";
-import {compareByName} from "../../../../../utils/CommonUtils.js";
+import {compareByName, noProxy} from "../../../../../utils/CommonUtils.jsx";
 import {useLocation} from "react-router-dom";
 import FileSort from "./FileSort.jsx";
-import {useState} from "react";
 import VirtualList from "../../../../common/VirtualList.jsx";
+import {proxy, useSnapshot} from "valtio";
+import {Checkbox} from "@mui/material";
+import useProxyState from "../../../../../hooks/useProxyState.js";
+import useDeepCompareEffect from "../../../../../hooks/useDeepCompareEffect.js";
 
 const Container = styled.div`
     display: flex;
@@ -43,12 +46,29 @@ export const FILE_SORTS = {
     }
 }
 
+export const selectedFiles = proxy([])
+
 
 function FileWindow(props) {
 
     const path = useLocation().pathname;
 
-    const [sort, setSort] = useState(FILE_SORTS.name);
+    useSnapshot(selectedFiles)
+
+    const state = useProxyState({
+        sort: noProxy(FILE_SORTS.name),
+        files: []
+    })
+
+    const {sort, files} = state
+
+    useDeepCompareEffect(() => {
+        const fileLocations = files.map((it) => it.href)
+        //remove deleted files from selectedFiles
+        const filtered = selectedFiles.filter((it) => fileLocations.includes(it.href))
+        selectedFiles.length = 0
+        selectedFiles.push(...filtered)
+    }, [state.files])
 
     const content = useApi({
         path: `api${path}`,
@@ -56,8 +76,7 @@ function FileWindow(props) {
         headers: {
             depth: 1
         },
-        refreshInterval: 1000,
-        content(data) {
+        callback(data) {
             const files = parsePropfindXML(data)
 
             //去掉目录文件
@@ -65,7 +84,10 @@ function FileWindow(props) {
 
             //去掉存档文件
             files.pop()
-
+            state.files = files;
+        },
+        refreshInterval: 1000,
+        content() {
             files.sort(sort.func)
 
             if (files.length === 0) {
@@ -99,7 +121,25 @@ function FileWindow(props) {
 
     return (
         <Container className={"shadow"}>
-            <FileSort setSort={setSort} sort={sort}/>
+            <FileSort
+                setSort={(sort) => {
+                    state.sort = noProxy(sort)
+                }}
+                sort={sort}
+            >
+                <Checkbox
+                    checked={selectedFiles.length === files.length && files.length > 0}
+                    sx={{
+                        width: '30px',
+                        height: '20px'
+                    }}
+                    onChange={(event, checked) => {
+                        selectedFiles.length = 0
+                        if (checked) {
+                            selectedFiles.push(...files)
+                        }
+                    }}/>
+            </FileSort>
             <div class="content">
                 {content}
             </div>

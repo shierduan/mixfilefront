@@ -5,7 +5,7 @@ import {decodeMixFileName, decodeMixShareCode} from "../../../../utils/ShareCode
 import {openFileListDialog} from "../../../mixformats/FileList.jsx";
 import {addDialog} from "../../../../utils/DialogContainer.jsx";
 import FileDialog from "./dialog/FileDialog.jsx";
-import {notifyError} from "../../../../utils/CommonUtils.js";
+import {notifyError} from "../../../../utils/CommonUtils.jsx";
 import {openFileDavDialog} from "../../../mixformats/DavList.jsx";
 
 const Container = styled.div`

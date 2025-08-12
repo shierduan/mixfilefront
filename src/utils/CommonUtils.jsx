@@ -26,6 +26,9 @@ export function notifyPromise(promise, msg, options) {
     return toast.promise(promise, {loading: msg}, {icon: <CircularProgress size={20}/>, ...options})
 }
 
+export function getRoutePath() {
+    return window.location.hash.substring(1)
+}
 
 export function formatFileSize(bytes, mb) {
     if (bytes === 0) return '0 B';

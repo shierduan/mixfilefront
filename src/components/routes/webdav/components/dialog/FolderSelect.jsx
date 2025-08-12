@@ -2,7 +2,7 @@ import DialogDiv from "../../../../common/DialogDiv.jsx";
 import {SimpleTreeView, TreeItem} from "@mui/x-tree-view";
 import styled from "styled-components";
 import useApi from "../../../../../hooks/useApi.jsx";
-import {parsePropfindXML} from "../../utils/WebDavUtils.js";
+import {parsePropfindXML} from "../../utils/WebDavUtils.jsx";
 import {Button, Checkbox, CircularProgress, FormControlLabel} from "@mui/material";
 import {addDialog, dialogProxy} from "../../../../../utils/DialogContainer.jsx";
 import {FILE_SORTS} from "../filewindow/FileWindow.jsx";

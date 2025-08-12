@@ -1,6 +1,6 @@
 import {useState} from 'react';
 import {TextField} from "@mui/material";
-import {getFormattedDate} from "../../../../../utils/CommonUtils.js";
+import {getFormattedDate} from "../../../../../utils/CommonUtils.jsx";
 import {apiAddress, client} from "../../../../../config.js";
 import {openFileListDialog} from "../../../../mixformats/FileList.jsx";
 import pako from "pako";

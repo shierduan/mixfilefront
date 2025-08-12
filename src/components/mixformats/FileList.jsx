@@ -1,6 +1,6 @@
 import {apiAddress} from "../../config.js";
 import {Button} from "@mui/material";
-import {compareByName, copyText, formatFileSize} from "../../utils/CommonUtils.js";
+import {compareByName, copyText, formatFileSize} from "../../utils/CommonUtils.jsx";
 import {addDialog} from "../../utils/DialogContainer.jsx";
 import {resolveMixFile} from "../routes/home/components/FileResolve.jsx";
 import {MixFileChip, MixFileDataContainer} from "./StyleContainers.jsx";

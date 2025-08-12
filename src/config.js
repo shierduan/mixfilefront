@@ -1,6 +1,6 @@
 import axios, {CanceledError} from "axios";
 import axiosRetry from "axios-retry";
-import {notifyError} from "./utils/CommonUtils.js";
+import {notifyError} from "./utils/CommonUtils.jsx";
 
 const params = new URLSearchParams(window.location.search);
 

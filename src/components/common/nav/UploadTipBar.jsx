@@ -1,5 +1,5 @@
 import {useSnapshot} from "valtio";
-import {purgeUploadFileList, uploadFileList, uploadingCount} from "../../../utils/upload/FileUpload.js";
+import {uploadFileList, uploadingCount} from "../../../utils/upload/FileUpload.js";
 import {CircularProgress} from "@mui/material";
 import styled from "styled-components";
 import {addDialog} from "../../../utils/DialogContainer.jsx";

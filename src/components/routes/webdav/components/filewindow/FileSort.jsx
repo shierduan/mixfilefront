@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import {FILE_SORTS} from "./FileWindow.jsx";
-import {reverseSort} from "../../../../../utils/CommonUtils.js";
+import {FILE_SORTS, selectedFiles} from "./FileWindow.jsx";
+import {reverseSort} from "../../../../../utils/CommonUtils.jsx";
 
 const Container = styled.div`
     width: 100%;
@@ -9,7 +9,7 @@ const Container = styled.div`
     align-items: center;
     padding: 10px 10px;
     font-weight: bold;
-    color: rgb(64, 38, 83);
+    color: rgb(133, 105, 153);
 
     span {
         cursor: pointer;
@@ -19,6 +19,7 @@ const Container = styled.div`
     .file-name {
         display: flex;
         gap: 20px;
+        align-items: center;
 
         .name {
             width: 430px;
@@ -33,7 +34,7 @@ const Container = styled.div`
     }
 `
 
-function FileSort({setSort, sort}) {
+function FileSort({setSort, sort, children}) {
 
     const {name, size, date} = FILE_SORTS
 
@@ -51,7 +52,10 @@ function FileSort({setSort, sort}) {
     return (
         <Container>
             <div class={'file-name'}>
-                <span class="name" onClick={() => handleSort(name)}>名称</span>
+                {children}
+                <span class="name" onClick={() => handleSort(name)}>
+                    {selectedFiles.length > 0 ? `已选中${selectedFiles.length}个文件` : '名称'}
+                </span>
                 <span onClick={() => handleSort(size)}>大小</span>
             </div>
             <span class={'date'} onClick={() => handleSort(date)}>修改时间</span>

@@ -1,16 +1,22 @@
 import styled from "styled-components";
-import {formatFileSize, getFormattedDate, notifyMsg} from "../../../../../utils/CommonUtils.js";
+import {
+    formatFileSize,
+    getFormattedDate,
+    getRoutePath,
+    notifyMsg,
+    notifyPromise
+} from "../../../../../utils/CommonUtils.jsx";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile.js";
 import FolderCopyIcon from '@mui/icons-material/FolderCopy';
 import VideoFileIcon from '@mui/icons-material/VideoFile';
 import ImageIcon from '@mui/icons-material/Image';
-import {useLocation, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import RightClickMenu from "../../../../common/RightClickMenu.jsx";
+import {useSnapshot} from "valtio";
+import {Checkbox} from "@mui/material";
 import {showConfirmWindow} from "../../../../common/ConfirmWindow.jsx";
-import {addDialog, dialogProxy} from "../../../../../utils/DialogContainer.jsx";
-import {copyFile, deleteFile, moveFile} from "../../utils/WebDavUtils.js";
-import RenameFile from "../dialog/RenameFile.jsx";
 import {selectFolder} from "../dialog/FolderSelect.jsx";
+import {selectedFiles} from "./FileWindow.jsx";
 
 const Container = styled.div`
     display: flex;
@@ -49,6 +55,7 @@ const Container = styled.div`
         .name {
             display: flex;
             gap: 5px;
+            align-items: center;
         }
 
         h4 {
@@ -98,43 +105,58 @@ function WebDavFileCard({file}) {
     } = file
 
     let fileSize = null
+
     if (!isFolder) {
         fileSize = <div>{formatFileSize(size)}</div>
     }
 
+
+    useSnapshot(selectedFiles)
+
+    function getSelectedIndex() {
+        return selectedFiles.findIndex(file => file.name === name)
+    }
+
+    function unselect() {
+        const selectedIndex = getSelectedIndex()
+        if (selectedIndex > -1) {
+            selectedFiles.splice(selectedIndex, 1);
+        }
+    }
+
+    const selectedIndex = getSelectedIndex()
+
+    const checked = selectedIndex > -1
+
     const navigate = useNavigate();
-    const path = useLocation().pathname
 
     const menuItems = [
         {
             label: "复制",
             async onClick() {
-                const {path, overwrite} = await selectFolder()
-                await copyFile(url, `api/webdav${path}/${name}`, overwrite)
+                await notifyPromise(file.copyFile(await selectFolder()), '复制文件')
                 notifyMsg('操作成功')
             }
         },
         {
             label: "移动",
             async onClick() {
-                const {path, overwrite} = await selectFolder()
-                await moveFile(url, `api/webdav${path}/${name}`, overwrite)
+                await notifyPromise(file.moveFile(await selectFolder()), '移动文件')
                 notifyMsg('操作成功')
             }
         },
         {
             label: "重命名",
             onClick() {
-                addDialog(<RenameFile path={path} name={name}/>)
+                file.renameFile()
             }
         },
         {
             label: "删除",
             onClick: () => {
                 showConfirmWindow('确认删除文件?', async () => {
-                    await deleteFile(url)
+                    await notifyPromise(file.deleteFile(), '删除文件')
                     notifyMsg('文件已删除')
-                    dialogProxy.pop()
                 })
             }
         },
@@ -144,13 +166,26 @@ function WebDavFileCard({file}) {
         <RightClickMenu items={menuItems}>
             <Container onClick={() => {
                 if (isFolder) {
-                    navigate(path + `/${name}`)
+                    navigate(getRoutePath() + `/${name}`)
                     return
                 }
                 window.open(url)
             }}>
                 <div class="file-name animate__animated animate__fadeIn animate__faster">
                     <div class="name">
+                        <Checkbox
+                            checked={checked}
+                            onClick={(event) => {
+                                event.stopPropagation();
+                            }}
+                            onChange={(event, selected) => {
+                                if (selected) {
+                                    selectedFiles.push(file)
+                                    return
+                                }
+                                unselect()
+                            }}
+                        />
                         <FileIcon file={file}/>
                         <h4>{name}</h4>
                     </div>

@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import {getURLParam, updateURLParams} from "../utils/CommonUtils.js";
+import {getURLParam, updateURLParams} from "../utils/CommonUtils.jsx";
 
 export function useParamState(key, defaultValue, options) {
     options = options || {};
