@@ -4,6 +4,9 @@ import {Fab} from "@mui/material";
 import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder';
 import {addDialog} from "../../../../../utils/DialogContainer.jsx";
 import NewFolder from "../dialog/NewFolder.jsx";
+import {selectFiles} from "../../../../common/FileSelect.jsx";
+import {addUploadFile} from "../../../../../utils/upload/FileUpload.js";
+import {apiAddress} from "../../../../../config.js";
 
 const Container = styled.div`
     width: 100%;
@@ -25,8 +28,11 @@ const fabs = [
     {
         name: '上传文件',
         icon: <AddIcon/>,
-        onClick() {
-
+        async onClick() {
+            const files = await selectFiles()
+            addUploadFile(files, (file) => {
+                return `${apiAddress}api${window.location.hash.substring(1)}/${file.name}`
+            })
         }
     }, {
         name: '新建文件夹',

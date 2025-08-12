@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import FileHistory from "./components/history/FileHistory.jsx";
 import FileResolve from "./components/FileResolve.jsx";
-import FileUpload from "./components/FileUpload.jsx";
+import UploadArea from "./components/UploadArea.jsx";
 
 const Container = styled.div`
     margin: 5vh auto;
@@ -22,7 +22,7 @@ function Home(props) {
     return (
         <Container>
             <FileResolve/>
-            <FileUpload/>
+            <UploadArea/>
             <FileHistory/>
         </Container>
     );

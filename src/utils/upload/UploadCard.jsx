@@ -1,10 +1,7 @@
 import {Box, LinearProgress} from "@mui/material";
-import {useEffect} from "react";
 import styled from "styled-components";
-import useUnmountEffect from "../../../../../../hooks/useUnmountEffect.js";
-import {uploadFile} from "../../FileUpload.jsx";
 import {useSnapshot} from "valtio";
-import {resolveMixFile} from "../../FileResolve.jsx";
+import {resolveMixFile} from "../../components/routes/home/components/FileResolve.jsx";
 
 function LinearProgressWithLabel(props) {
     return (
@@ -62,15 +59,7 @@ export function ProgressCard({file: upFile}) {
 
     const {tip, progress, cancel, title, error, result, file} = useSnapshot(upFile)
 
-    useUnmountEffect(() => {
-        cancel?.()
-    }, [cancel])
-
-    useEffect(() => {
-        uploadFile(upFile)
-    }, []);
-
-    const classes = ['shadow']
+    const classes = ['shadow no-select']
 
     if (error) {
         classes.push('error')

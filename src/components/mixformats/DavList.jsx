@@ -54,7 +54,6 @@ function FileDavDialog({data}) {
     const content = useApi({
         path: `api/download?s=${data}&response-content-encoding=gzip`,
         callback(data) {
-            console.log(data)
             state.davFile = JSON.parse(data.substring(5))
         },
         content() {

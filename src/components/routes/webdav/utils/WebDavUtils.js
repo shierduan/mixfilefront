@@ -1,11 +1,14 @@
 import {apiAddress, client} from "../../../../config.js";
+import {notifyPromise} from "../../../../utils/CommonUtils.js";
 
 
 export async function deleteFile(path) {
-    return client({
+    const task = client({
         method: 'DELETE',
         url: path,
     });
+    await notifyPromise(task, '删除文件')
+    return task
 }
 
 function encodeUrlPath(path) {
@@ -16,14 +19,16 @@ function encodeUrlPath(path) {
 }
 
 export async function createFolder(path) {
-    return client({
+    const task = client({
         method: 'MKCOL',
         url: path
     })
+    await notifyPromise(task, '新建文件夹')
+    return task
 }
 
 export async function moveFile(path, destination, overwrite = false) {
-    return client({
+    const task = client({
         method: 'MOVE',
         url: path,
         headers: {
@@ -31,10 +36,12 @@ export async function moveFile(path, destination, overwrite = false) {
             overwrite: overwrite ? 'T' : 'F',
         }
     })
+    await notifyPromise(task, '移动文件')
+    return task
 }
 
 export async function copyFile(path, destination, overwrite = false) {
-    return client({
+    const task = client({
         method: 'COPY',
         url: path,
         headers: {
@@ -42,6 +49,8 @@ export async function copyFile(path, destination, overwrite = false) {
             overwrite: overwrite ? 'T' : 'F',
         }
     })
+    await notifyPromise(task, '复制文件')
+    return task
 }
 
 export function parsePropfindXML(xmlText) {

@@ -71,7 +71,7 @@ export default function useApi({
             try {
                 await fetchData()
             } catch (e) {
-                console.log(e)
+                console.error(e)
                 state.err = e
             } finally {
                 state.isLoading = false

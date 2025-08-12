@@ -1,10 +1,9 @@
 import styled from "styled-components";
 import {FileDrop} from "react-file-drop";
-import {apiAddress, client} from "../../../../config.js";
-import {formatFileSize} from "../../../../utils/CommonUtils.js";
-import Semaphore from "@chriscdn/promise-semaphore";
-import {addUploadFile} from "./dialog/upload/UploadDialog.jsx";
 import {selectFiles} from "../../../common/FileSelect.jsx";
+import {addUploadFile} from "../../../../utils/upload/FileUpload.js";
+import {addDialog} from "../../../../utils/DialogContainer.jsx";
+import UploadDialog from "../../../../utils/upload/UploadDialog.jsx";
 
 const Container = styled.div`
     display: flex;
@@ -57,55 +56,18 @@ const Container = styled.div`
     }
 `
 
-const semaphore = new Semaphore(2)
-
-export async function uploadFile(upFile) {
-    const controller = new AbortController();
-    const {file} = upFile;
-    const uploadAddress = `${apiAddress}api/upload?name=${encodeURIComponent(file.name)}`
-    upFile.tip = '等待中'
-    upFile.cancel = () => {
-        controller.abort()
-    }
-    await semaphore.acquire()
-    upFile.tip = `上传中: 0/${formatFileSize(file.size)}`
-    try {
-        let response = await client.put(uploadAddress, file, {
-            onUploadProgress: progressEvent => {
-                const {loaded, total} = progressEvent
-                upFile.tip = `上传中: ${formatFileSize(loaded, true)}/${formatFileSize(total)}`
-                upFile.progress = loaded / total * 100
-            },
-            signal: controller.signal
-        })
-        // fileResultProxy.push({components: upFile, shareInfoData: response.data})
-        upFile.result = response.data
-    } catch (e) {
-        upFile.error = true
-        upFile.tip = '上传失败'
-        upFile.progress = 0
-        if (e.message === 'canceled') {
-        }
-        return
-    } finally {
-        upFile.complete = true
-        semaphore.release()
-    }
-    upFile.progress = 100
-    upFile.tip = `上传成功 ${formatFileSize(file.size)}`
-}
-
-
-function FileUpload(props) {
+function UploadArea(props) {
     return (
         <Container>
             <FileDrop
                 onTargetClick={async () => {
                     const files = await selectFiles()
-                    addUploadFile(...files)
+                    addUploadFile(files)
+                    addDialog(<UploadDialog/>)
                 }}
                 onDrop={(files, event) => {
-                    addUploadFile(...files)
+                    addUploadFile(files)
+                    addDialog(<UploadDialog/>)
                 }}
             >
                 选择/拖入文件
@@ -114,4 +76,4 @@ function FileUpload(props) {
     );
 }
 
-export default FileUpload;
+export default UploadArea;

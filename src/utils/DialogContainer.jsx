@@ -25,7 +25,7 @@ export function DialogContainer(props) {
                 dialogProxy.pop()
             }
         }} style={{
-            zIndex: '99'
+            zIndex: '1000'
         }}>
             {item.content}
         </Backdrop>

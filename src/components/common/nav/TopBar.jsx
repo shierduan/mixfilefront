@@ -1,10 +1,15 @@
 import styled from "styled-components";
 import {AppBar, Tab, Tabs} from "@mui/material";
-import logo from "../../assets/logo.png";
+import logo from "../../../assets/logo.png";
 import {useLocation, useNavigate} from "react-router-dom";
 
 
 const Container = styled(AppBar)`
+    
+    && {
+        z-index: 999;
+    }
+
     .content {
         display: flex;
         gap: 10px;

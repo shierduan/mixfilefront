@@ -1,6 +1,6 @@
 import DialogDiv from "../../../../common/DialogDiv.jsx";
 import {Checkbox, FormControlLabel, TextField} from "@mui/material";
-import {notifyError, notifyMsg, notifyPromise} from "../../../../../utils/CommonUtils.js";
+import {notifyError, notifyMsg} from "../../../../../utils/CommonUtils.js";
 import {dialogProxy} from "../../../../../utils/DialogContainer.jsx";
 import {moveFile} from "../../utils/WebDavUtils.js";
 import useProxyState from "../../../../../hooks/useProxyState.js";
@@ -40,8 +40,7 @@ function RenameFile({path, name}) {
                     notifyError('文件名称相同')
                     return
                 }
-                const task = moveFile(`api${path}/${name}`, `api${path}/${newName}`, overwrite)
-                await notifyPromise(task, '重命名文件')
+                await moveFile(`api${path}/${name}`, `api${path}/${newName}`, overwrite)
                 notifyMsg('重命名文件成功')
                 dialogProxy.pop()
             }}>重命名文件</LoadingButton>
