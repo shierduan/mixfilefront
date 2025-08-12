@@ -5,26 +5,31 @@ import {Link, useLocation} from "react-router-dom";
 
 const Container = styled.div`
     width: 100%;
-    height: 40px;
+    min-height: 40px;
     display: flex;
     align-items: center;
     padding: 5px 10px;
     border-radius: 10px;
+    flex-wrap: wrap;
 
-    a {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 5px;
-        font-size: 16px;
-        color: rgba(67, 4, 116, 0.86);
-        transition: .3s;
-        text-decoration: none;
-        border-radius: 10px;
-        padding: 2px 7px;
+    .MuiBreadcrumbs-li {
+        a {
+            max-width: 100px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            display: block;
+            gap: 5px;
+            font-size: 16px;
+            color: rgba(67, 4, 116, 0.86);
+            transition: .3s;
+            text-decoration: none;
+            border-radius: 10px;
+            padding: 2px 7px;
 
-        &:hover {
-            background-color: rgba(142, 42, 254, 0.18);
+            &:hover {
+                background-color: rgba(142, 42, 254, 0.18);
+            }
         }
     }
 `

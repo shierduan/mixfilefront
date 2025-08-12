@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import {Button} from "@mui/material";
-import {ProgressCard} from "./UploadCard.jsx";
+import {ProgressCard} from "./ProgressCard.jsx";
 import {notifyMsg} from "../CommonUtils.jsx";
 import {dialogProxy} from "../DialogContainer.jsx";
 import {useSnapshot} from "valtio";

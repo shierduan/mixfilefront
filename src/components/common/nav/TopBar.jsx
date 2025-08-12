@@ -5,7 +5,7 @@ import {useLocation, useNavigate} from "react-router-dom";
 
 
 const Container = styled(AppBar)`
-    
+
     && {
         z-index: 999;
     }
@@ -21,6 +21,7 @@ const Container = styled(AppBar)`
         }
 
         .tabs {
+
             button {
                 font-weight: bold;
                 font-size: 16px;
