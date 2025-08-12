@@ -102,14 +102,12 @@ export async function uploadFile(
             return
         }
         console.error(e)
-        upFile.tip = '上传失败'
+        upFile.tip = '上传失败: ' + (e?.response?.data?.message || e.message || '未知错误')
         return
-
     } finally {
         upFile.complete = true
         semaphore.release()
     }
-
     upFile.progress = 100
     upFile.tip = `上传成功 ${formatFileSize(file.size)}`
 }

@@ -47,9 +47,11 @@ const Container = styled.div`
         align-items: center;
         height: 100%;
 
-        .MuiSvgIcon-root {
-            font-size: 30px;
-            color: rgba(142, 42, 254, 0.44);
+        .icon {
+            .MuiSvgIcon-root {
+                font-size: 30px;
+                color: rgba(142, 42, 254, 0.44);
+            }
         }
 
         .name {
@@ -60,7 +62,7 @@ const Container = styled.div`
 
         h4 {
             font-weight: normal;
-            max-width: 50vw;
+            max-width: 40vw;
             width: 400px;
             overflow: hidden;
             white-space: nowrap;
@@ -186,7 +188,9 @@ function WebDavFileCard({file}) {
                                 unselect()
                             }}
                         />
-                        <FileIcon file={file}/>
+                        <dic class="icon">
+                            <FileIcon file={file}/>
+                        </dic>
                         <h4>{name}</h4>
                     </div>
                     {fileSize}

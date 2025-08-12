@@ -27,11 +27,6 @@ const Container = styled.div`
             background-color: rgba(142, 42, 254, 0.18);
         }
     }
-
-    .MuiSvgIcon-root {
-        color: rgba(142, 42, 254, 0.44);
-        font-size: 24px;
-    }
 `
 
 

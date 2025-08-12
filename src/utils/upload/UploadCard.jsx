@@ -33,8 +33,8 @@ const Container = styled.div`
     background-color: rgba(229, 207, 254, 0.25);
 
     &.error {
-        color: red;
-        border: 2px solid red;
+        color: #f64141;
+        border: 2px solid #f64141;
     }
 
     &.done {
@@ -46,8 +46,10 @@ const Container = styled.div`
     }
 
     p {
+        overflow: hidden;
         white-space: nowrap;
         font-weight: bold;
+        text-overflow: ellipsis;
     }
 
     button {
@@ -57,7 +59,7 @@ const Container = styled.div`
 
 export function ProgressCard({file: upFile}) {
 
-    const {tip, progress, cancel, title, error, result, file} = useSnapshot(upFile)
+    const {tip, progress, cancel, title, error, result, file, complete} = useSnapshot(upFile)
 
     const classes = ['shadow no-select']
 
@@ -74,7 +76,7 @@ export function ProgressCard({file: upFile}) {
         }
     }}>
         <h4 className={'text-hide'}>{title}</h4>
-        {!result && <LinearProgressWithLabel value={progress}/>}
+        {!complete && <LinearProgressWithLabel value={progress}/>}
         <p>{tip}</p>
     </Container>
 }
