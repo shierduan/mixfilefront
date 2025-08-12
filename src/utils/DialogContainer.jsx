@@ -1,11 +1,12 @@
-import {proxy, ref, useSnapshot} from "valtio";
+import {proxy, useSnapshot} from "valtio";
 import {Backdrop} from "@mui/material";
+import {noProxy} from "./CommonUtils.js";
 
 export const dialogProxy = proxy([])
 
 export function addDialog(dialog, autoClose = true) {
     dialogProxy.push({
-        content: ref(dialog),
+        content: noProxy(dialog),
         autoClose,
     })
 }

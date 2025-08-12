@@ -1,6 +1,6 @@
 import {apiAddress} from "../../config.js";
 import {Button} from "@mui/material";
-import {compareByName, copyText, formatFileSize, parseMixGzipText} from "../../utils/CommonUtils.js";
+import {compareByName, copyText, formatFileSize} from "../../utils/CommonUtils.js";
 import {addDialog} from "../../utils/DialogContainer.jsx";
 import {resolveMixFile} from "../routes/home/components/FileResolve.jsx";
 import {MixFileChip, MixFileDataContainer} from "./StyleContainers.jsx";
@@ -12,15 +12,10 @@ function FileListDialog({data}) {
 
 
     const content = useApi({
-        path: `api/download?s=${data}`,
-        config: {
-            responseType: 'arraybuffer'
-        },
-        content(data) {
-            const text = parseMixGzipText(data)
-            const fileList = JSON.parse(text)
-            fileList.sort((a, b) => compareByName(a.name, b.name))
+        path: `api/download?s=${data}&response-content-encoding=gzip`,
+        content(fileList) {
 
+            fileList.sort((a, b) => compareByName(a.name, b.name))
 
             return <>
                 <h3 className={'no-select'}>共{fileList.length}个文件</h3>

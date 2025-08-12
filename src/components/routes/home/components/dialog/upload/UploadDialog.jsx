@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import {Button} from "@mui/material";
 import {ProgressCard} from "./UploadCard.jsx";
-import {notifyMsg} from "../../../../../../utils/CommonUtils.js";
+import {noProxy, notifyMsg} from "../../../../../../utils/CommonUtils.js";
 import {addDialog, dialogProxy} from "../../../../../../utils/DialogContainer.jsx";
-import {proxy, ref, useSnapshot} from "valtio";
+import {proxy, useSnapshot} from "valtio";
 import FileExportDialog from "../FileExport.jsx";
 import {useEffect} from "react";
 import {showConfirmWindow} from "../../../../../common/ConfirmWindow.jsx";
@@ -45,7 +45,7 @@ export const uploadFileList = proxy([])
 export function addUploadFile(...files) {
     files.forEach((file) => {
         uploadFileList.push({
-            file: ref(file),
+            file: noProxy(file),
             result: null,
             complete: false,
             error: false,

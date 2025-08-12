@@ -1,7 +1,7 @@
 import {useEffect} from "react";
 import {apiAddress} from "../../config.js";
 import {Button} from "@mui/material";
-import {copyText, formatFileSize, parseMixGzipText} from "../../utils/CommonUtils.js";
+import {copyText, formatFileSize} from "../../utils/CommonUtils.js";
 import {addDialog} from "../../utils/DialogContainer.jsx";
 import {resolveMixFile} from "../routes/home/components/FileResolve.jsx";
 import {MixFileChip, MixFileDataContainer} from "./StyleContainers.jsx";
@@ -52,13 +52,10 @@ function FileDavDialog({data}) {
     }
 
     const content = useApi({
-        path: `api/download?s=${data}`,
-        config: {
-            responseType: 'arraybuffer'
-        },
+        path: `api/download?s=${data}&response-content-encoding=gzip`,
         callback(data) {
-            const text = parseMixGzipText(data)
-            state.davFile = JSON.parse(text.substring(5))
+            console.log(data)
+            state.davFile = JSON.parse(data.substring(5))
         },
         content() {
             const {currentFile, pathHistory} = state

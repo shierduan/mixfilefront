@@ -1,7 +1,5 @@
 import moment from "moment";
-import pako from "pako";
-import {apiAddress, client} from "../config.js";
-import {proxy} from "valtio";
+import {proxy, ref} from "valtio";
 import {watch} from "valtio/utils";
 import copy from "copy-to-clipboard";
 import toast from "react-hot-toast";
@@ -44,20 +42,11 @@ export function getFormattedDate(date) {
     return moment(date).format('YYYY-MM-DD HH:mm:ss');
 }
 
-export async function fetchMixGzipTextData(code) {
-    const downloadAddress = `${apiAddress}api/download?s=${code}`
-    const fileData = (await client.get(downloadAddress, {
-        responseType: 'arraybuffer'
-    })).data
-    const decoder = new TextDecoder('utf-8');
-    const originalRaw = pako.ungzip(fileData)
-    return decoder.decode(originalRaw)
-}
-
-export function parseMixGzipText(data) {
-    const decoder = new TextDecoder('utf-8');
-    const originalRaw = pako.ungzip(data)
-    return decoder.decode(originalRaw)
+export function noProxy(obj) {
+    if (typeof obj !== 'object' || obj === null) {
+        return obj; // 如果不是对象或为null，直接返回
+    }
+    return ref(obj)
 }
 
 /**
