@@ -4,10 +4,10 @@ import styled from "styled-components";
 import {createPortal} from "react";
 import {Backdrop} from "@mui/material";
 
-export const dialogProxy = proxy([])
+export const dialogList = proxy([])
 
 export function addDialog(dialog, autoClose = true) {
-    dialogProxy.push({
+    dialogList.push({
         content: noProxy(dialog),
         autoClose,
     })
@@ -19,7 +19,7 @@ const Container = styled(Backdrop)`
 
 export function DialogContainer(props) {
 
-    let dialogState = useSnapshot(dialogProxy)
+    let dialogState = useSnapshot(dialogList)
 
     if (dialogState.length === 0) {
         return null
@@ -30,7 +30,7 @@ export function DialogContainer(props) {
         const content = (
             <Container open onClick={(event, key = index) => {
                 if (event.target === event.currentTarget && item.autoClose) {
-                    dialogProxy.pop()
+                    dialogList.pop()
                 }
             }}>
 

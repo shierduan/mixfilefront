@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import {FileDrop} from "react-file-drop";
-import {selectFiles} from "../../../common/FileSelect.jsx";
+import {selectFiles} from "../../components/common/FileSelect.jsx";
 
 const Container = styled.div`
     display: flex;
@@ -53,16 +53,17 @@ const Container = styled.div`
     }
 `
 
-function UploadArea({callback}) {
+function UploadArea({callback, ...restProps}) {
+
     return (
-        <Container>
+        <Container {...restProps}>
             <FileDrop
                 onTargetClick={async () => {
                     const files = await selectFiles()
                     callback?.(files)
                 }}
                 onDrop={(files, event) => {
-                    callback?.(files)
+                    callback?.([...files])
                 }}
             >
                 选择/拖入文件

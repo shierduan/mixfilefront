@@ -30,6 +30,10 @@ export function getRoutePath() {
     return window.location.hash.substring(1)
 }
 
+export async function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms))
+}
+
 export function formatFileSize(bytes, mb) {
     if (bytes === 0) return '0 B';
     if (mb && bytes > 1024 * 1024) {

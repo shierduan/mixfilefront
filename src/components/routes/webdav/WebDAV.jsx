@@ -2,6 +2,8 @@ import styled from "styled-components";
 import FileWindow from "./components/filewindow/FileWindow.jsx";
 import NavBar from "./components/filewindow/NavBar.jsx";
 import ActionBar from "./components/actionbar/ActionBar.jsx";
+import {addDialog} from "../../../utils/DialogContainer.jsx";
+import DragUpload from "./components/dragupload/DragUpload.jsx";
 
 const Container = styled.div`
     margin: 50px auto 10px auto;
@@ -21,7 +23,7 @@ function WebDav(props) {
 
     return (
         <Container onDragEnter={() => {
-            console.log('enter')
+            addDialog(<DragUpload/>)
         }}>
             <NavBar/>
             <FileWindow/>

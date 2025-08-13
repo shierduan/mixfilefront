@@ -4,7 +4,7 @@ import styled from "styled-components";
 import useApi from "../../../../../hooks/useApi.jsx";
 import {parsePropfindXML} from "../../utils/WebDavUtils.jsx";
 import {Button, Checkbox, CircularProgress, FormControlLabel} from "@mui/material";
-import {addDialog, dialogProxy} from "../../../../../utils/DialogContainer.jsx";
+import {addDialog, dialogList} from "../../../../../utils/DialogContainer.jsx";
 import {FILE_SORTS} from "../filewindow/FileWindow.jsx";
 import useProxyState from "../../../../../hooks/useProxyState.js";
 
@@ -126,11 +126,11 @@ function FolderSelect({callback}) {
                 />
                 <div class="actions">
                     <Button variant={'contained'} onClick={async () => {
-                        dialogProxy.pop()
+                        dialogList.pop()
                         callback?.(state)
                     }}>确认</Button>
                     <Button variant={'outlined'} onClick={async () => {
-                        dialogProxy.pop()
+                        dialogList.pop()
                     }}>取消</Button>
                 </div>
             </div>

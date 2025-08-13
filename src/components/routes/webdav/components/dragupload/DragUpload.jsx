@@ -1,10 +1,36 @@
 import DialogDiv from "../../../../common/DialogDiv.jsx";
+import UploadArea from "../../../../../utils/upload/UploadArea.jsx";
+import {addUploadFile} from "../../../../../utils/upload/FileUpload.js";
+import {apiAddress} from "../../../../../config.js";
+import {getRoutePath, sleep} from "../../../../../utils/CommonUtils.jsx";
+import {addDialog, dialogList} from "../../../../../utils/DialogContainer.jsx";
+import UploadDialog from "../../../../../utils/upload/UploadDialog.jsx";
+import styled from "styled-components";
+
+
+const Container = styled(DialogDiv)`
+    min-width: 80vw;
+    background-color: #f8eefe;
+    padding: 0;
+
+    .upload-area {
+        height: 80vh;
+    }
+`
 
 function DragUpload(props) {
+
     return (
-        <DialogDiv>
-            <h4>测试</h4>
-        </DialogDiv>
+        <Container className={'shadow no-select'}>
+            <UploadArea className={'upload-area'} callback={async (files) => {
+                await sleep(100)
+                dialogList.pop()
+                addDialog(<UploadDialog/>)
+                addUploadFile(files, (file) => {
+                    return `${apiAddress}api${getRoutePath()}/${file.name}`
+                })
+            }}/>
+        </Container>
     );
 }
 

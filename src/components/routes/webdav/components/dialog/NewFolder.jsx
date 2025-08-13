@@ -1,17 +1,18 @@
-import {Button, TextField} from "@mui/material";
+import {TextField} from "@mui/material";
 import {useState} from "react";
 import {useLocation} from "react-router-dom";
-import {dialogProxy} from "../../../../../utils/DialogContainer.jsx";
+import {dialogList} from "../../../../../utils/DialogContainer.jsx";
 import DialogDiv from "../../../../common/DialogDiv.jsx";
 import {notifyMsg} from "../../../../../utils/CommonUtils.jsx";
 import {createFolder} from "../../utils/WebDavUtils.jsx";
+import LoadingButton from "../../../../common/LoadingButton.jsx";
 
 function NewFolder(props) {
 
     const path = useLocation().pathname
 
-    const [loading, setLoading] = useState(false)
-    const [folderName, setFolderName] = useState(`新建文件夹`)
+
+    const [folderName, setFolderName] = useState(``)
 
     return (
         <DialogDiv className={'shadow'}>
@@ -21,16 +22,17 @@ function NewFolder(props) {
                     setFolderName(event.target.value.trim())
                 }}/>
             </div>
-            <Button variant={'contained'} disabled={loading} onClick={async () => {
-                setLoading(true)
-                try {
+            <LoadingButton
+                variant={'contained'}
+                disabled={!folderName.trim()}
+                onClick={async () => {
                     await createFolder(`api${path}/${folderName}`)
                     notifyMsg('新建文件夹成功')
-                    dialogProxy.pop()
-                } finally {
-                    setLoading(false)
-                }
-            }}>新建文件夹</Button>
+                    dialogList.pop()
+                }}
+            >
+                新建文件夹
+            </LoadingButton>
         </DialogDiv>
     );
 }

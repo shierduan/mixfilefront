@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import {Button} from "@mui/material";
-import {addDialog, dialogProxy} from "../../utils/DialogContainer.jsx";
+import {addDialog, dialogList} from "../../utils/DialogContainer.jsx";
 import {useState} from "react";
 
 const Container = styled.div`
@@ -53,12 +53,12 @@ function ConfirmWindow({title, onConfirm, onCancel}) {
             <div class="content">
                 <Button variant={'contained'} disabled={disabled} onClick={async () => {
                     setDisabled(true)
-                    dialogProxy.pop()
+                    dialogList.pop()
                     await onConfirm?.()
                 }}>确认</Button>
                 <Button variant={'outlined'} disabled={disabled} onClick={async () => {
                     setDisabled(true)
-                    dialogProxy.pop()
+                    dialogList.pop()
                     await onCancel?.()
                 }}>取消</Button>
             </div>

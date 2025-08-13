@@ -2,7 +2,7 @@ import styled from "styled-components";
 import {Button} from "@mui/material";
 import {ProgressCard} from "./ProgressCard.jsx";
 import {notifyMsg} from "../CommonUtils.jsx";
-import {dialogProxy} from "../DialogContainer.jsx";
+import {dialogList} from "../DialogContainer.jsx";
 import {useSnapshot} from "valtio";
 import {showConfirmWindow} from "../../components/common/ConfirmWindow.jsx";
 import {cancelAllUpload, isUploading, uploadFileList} from "./FileUpload.js";
@@ -59,7 +59,7 @@ function UploadDialog() {
                     当前没有文件正在上传
                 </h3>
                 <Button variant={'outlined'} onClick={() => {
-                    dialogProxy.pop()
+                    dialogList.pop()
                 }}>{'关闭'}</Button>
             </Container>
         )
@@ -98,7 +98,7 @@ function UploadDialog() {
                 showConfirmWindow('确认取消上传?', () => {
                     notifyMsg('上传已取消')
                     cancelAllUpload()
-                    dialogProxy.pop()
+                    dialogList.pop()
                 })
             }}>{'取消全部上传'}</Button>
         )
@@ -121,7 +121,7 @@ function UploadDialog() {
             }
 
             <Button variant={'outlined'} onClick={() => {
-                dialogProxy.pop()
+                dialogList.pop()
             }}>{'关闭'}</Button>
         </Container>
 
