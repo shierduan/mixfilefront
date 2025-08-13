@@ -32,14 +32,14 @@ const Container = styled(Link)`
     height: 40px;
     user-select: none;
     color: rgb(64, 38, 83);
-    -webkit-user-drag: none;  /* 禁用拖动 (适用于Webkit浏览器) */
+    -webkit-user-drag: none; /* 禁用拖动 (适用于Webkit浏览器) */
 
     svg {
         filter: drop-shadow(0px 1px 6px rgba(0, 0, 0, 0.2));
     }
 
     &:hover, &.selected {
-        background-color: rgba(144, 35, 239, 0.09);
+        background-color: rgba(73, 69, 76, 0.07);
     }
 
     &:hover {

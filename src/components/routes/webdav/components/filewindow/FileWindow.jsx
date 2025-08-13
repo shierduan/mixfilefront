@@ -35,9 +35,6 @@ const Container = styled.div`
         color: gray;
     }
 
-    .sort-box {
-        width: 10px;
-    }
 
 `
 const isFolderFirst = (a, b) => a.isFolder === b.isFolder ? 0 : a.isFolder ? -1 : 1;
@@ -190,7 +187,6 @@ function FileWindow(props) {
                 sort={sort}
             >
                 <Checkbox
-                    className={'sort-box'}
                     checked={selectedFiles.length === files.length && files.length > 0}
                     onChange={(event, checked) => {
                         selectedFiles.length = 0
