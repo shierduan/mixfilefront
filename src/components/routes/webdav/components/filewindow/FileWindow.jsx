@@ -91,27 +91,16 @@ function FileWindow(props) {
     const {DragSelection} = useSelectionContainer({
         eventsElement: document.body,
         onSelectionChange: (box) => {
-            /**
-             * Here we make sure to adjust the box's left and top with the scroll position of the window
-             * @see https://github.com/AirLabsTeam/react-drag-to-select/#scrolling
-             */
-            const scrollAwareBox = {
-                ...box,
-                top: box.top + window.scrollY,
-                left: box.left + window.scrollX
-            };
-
             const fileLocationMap = files.reduce((acc, item, index) => {
                 acc[item.href] = item;
                 return acc;
             }, {});
 
-
             const filesToSelect = document.querySelectorAll('.dav-file-card')
                 .values()
                 .toArray()
                 .filter((it) => {
-                    return boxesIntersect(scrollAwareBox, it.getBoundingClientRect())
+                    return boxesIntersect(box, it.getBoundingClientRect())
                 })
                 .map((it) => {
                     return fileLocationMap[it.dataset.davFileHref]
