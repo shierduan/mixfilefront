@@ -89,7 +89,7 @@ function FileWindow(props) {
     }, [filesEffectDep])
 
     const {DragSelection} = useSelectionContainer({
-        eventsElement: document.body,
+        eventsElement: document.documentElement,
         onSelectionChange: (box) => {
             const fileLocationMap = files.reduce((acc, item, index) => {
                 acc[item.href] = item;

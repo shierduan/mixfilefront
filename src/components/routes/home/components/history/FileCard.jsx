@@ -25,7 +25,7 @@ export function FileCard({item}) {
     const {name, size, time, shareInfoData} = item
 
     return (
-        (<CardContainer className={'animate__animated animate__slideInDown animate__faster'} onClick={() => {
+        (<CardContainer className={'animate__animated animate__slideInDown animate__faster no-select'} onClick={() => {
             resolveMixFile(shareInfoData)
         }}>
             <h4 className={'text-hide'}>{name}</h4>
