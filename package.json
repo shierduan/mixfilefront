@@ -7,6 +7,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@air/react-drag-to-select": "^5.0.11",
     "@chriscdn/promise-semaphore": "^2.0.9",
     "@emotion/styled": "^11.13.0",
     "@mui/icons-material": "^6.0.0",

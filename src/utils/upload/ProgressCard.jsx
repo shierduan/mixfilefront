@@ -61,7 +61,7 @@ export function ProgressCard({file: upFile}) {
 
     const {tip, progress, cancel, title, error, result, file, complete} = useSnapshot(upFile)
 
-    const classes = ['shadow no-select']
+    const classes = []
 
     if (error) {
         classes.push('error')
@@ -70,7 +70,7 @@ export function ProgressCard({file: upFile}) {
         classes.push('done')
     }
 
-    return <Container className={classes.join(' ')} error={error} onClick={() => {
+    return <Container className={`shadow no-select ${classes.join(' ')}`} error={error} onClick={() => {
         if (result) {
             resolveMixFile(result)
         }

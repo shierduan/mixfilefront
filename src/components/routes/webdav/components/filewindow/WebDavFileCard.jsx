@@ -10,7 +10,7 @@ import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile.js";
 import FolderCopyIcon from '@mui/icons-material/FolderCopy';
 import VideoFileIcon from '@mui/icons-material/VideoFile';
 import ImageIcon from '@mui/icons-material/Image';
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import RightClickMenu from "../../../../common/RightClickMenu.jsx";
 import {useSnapshot} from "valtio";
 import {Checkbox} from "@mui/material";
@@ -18,10 +18,10 @@ import {showConfirmWindow} from "../../../../common/ConfirmWindow.jsx";
 import {selectFolder} from "../dialog/FolderSelect.jsx";
 import {selectedFiles} from "./FileWindow.jsx";
 
-const Container = styled.div`
+const Container = styled(Link)`
+    text-decoration: none;
     display: flex;
     padding: 0px 5px;
-    //border: 1px solid #239aef;
     word-break: break-word;
     gap: 10px;
     flex-wrap: wrap;
@@ -32,13 +32,18 @@ const Container = styled.div`
     height: 40px;
     user-select: none;
     color: rgb(64, 38, 83);
+    -webkit-user-drag: none;  /* 禁用拖动 (适用于Webkit浏览器) */
 
     svg {
         filter: drop-shadow(0px 1px 6px rgba(0, 0, 0, 0.2));
     }
 
+    &:hover, &.selected {
+        background-color: rgba(144, 35, 239, 0.09);
+    }
+
     &:hover {
-        background-color: rgba(144, 35, 239, 0.11);
+        transform: translateX(3px);
     }
 
     .file-name {
@@ -128,7 +133,7 @@ function WebDavFileCard({file}) {
 
     const selectedIndex = getSelectedIndex()
 
-    const checked = selectedIndex > -1
+    const selected = selectedIndex > -1
 
     const navigate = useNavigate();
 
@@ -164,19 +169,23 @@ function WebDavFileCard({file}) {
         },
     ];
 
+    const classes = []
+    if (selected) {
+        classes.push('selected')
+    }
+
+    const to = isFolder ? `${getRoutePath()}/${name}` : url;
+
     return (
         <RightClickMenu items={menuItems}>
-            <Container onClick={() => {
-                if (isFolder) {
-                    navigate(getRoutePath() + `/${name}`)
-                    return
-                }
-                window.open(url)
-            }}>
+            <Container
+                className={`${classes.join(' ')}`}
+                to={to}
+            >
                 <div class="file-name animate__animated animate__fadeIn animate__faster">
                     <div class="name">
                         <Checkbox
-                            checked={checked}
+                            checked={selected}
                             onClick={(event) => {
                                 event.stopPropagation();
                             }}

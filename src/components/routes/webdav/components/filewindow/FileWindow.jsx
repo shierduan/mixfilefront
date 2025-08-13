@@ -6,10 +6,13 @@ import {compareByName, noProxy} from "../../../../../utils/CommonUtils.jsx";
 import {useLocation} from "react-router-dom";
 import FileSort from "./FileSort.jsx";
 import VirtualList from "../../../../common/VirtualList.jsx";
-import {proxy, useSnapshot} from "valtio";
+import {proxy, ref, useSnapshot} from "valtio";
 import {Checkbox} from "@mui/material";
 import useProxyState from "../../../../../hooks/useProxyState.js";
 import useDeepCompareEffect from "../../../../../hooks/useDeepCompareEffect.js";
+import {boxesIntersect, useSelectionContainer} from "@air/react-drag-to-select";
+import {createPortal} from "react";
+
 
 const Container = styled.div`
     display: flex;
@@ -62,10 +65,22 @@ function FileWindow(props) {
 
     const state = useProxyState({
         sort: noProxy(FILE_SORTS.name),
-        files: []
+        files: [],
     })
 
     const {sort, files} = state
+    const filesEffectDep = files.map(
+        ({
+             size,
+             href,
+             isFolder,
+         }) => {
+            return {
+                size,
+                isFolder,
+                href
+            }
+        })
 
     useDeepCompareEffect(() => {
         const fileLocations = files.map((it) => it.href)
@@ -73,7 +88,45 @@ function FileWindow(props) {
         const filtered = selectedFiles.filter((it) => fileLocations.includes(it.href))
         selectedFiles.length = 0
         selectedFiles.push(...filtered)
-    }, [state.files])
+
+    }, [filesEffectDep])
+
+    const {DragSelection} = useSelectionContainer({
+        eventsElement: document.body,
+        onSelectionChange: (box) => {
+            /**
+             * Here we make sure to adjust the box's left and top with the scroll position of the window
+             * @see https://github.com/AirLabsTeam/react-drag-to-select/#scrolling
+             */
+            const scrollAwareBox = {
+                ...box,
+                top: box.top + window.scrollY,
+                left: box.left + window.scrollX
+            };
+
+            const fileLocationMap = files.reduce((acc, item, index) => {
+                acc[item.href] = item;
+                return acc;
+            }, {});
+
+
+            const filesToSelect = document.querySelectorAll('.dav-file-card')
+                .values()
+                .toArray()
+                .filter((it) => {
+                    return boxesIntersect(scrollAwareBox, it.getBoundingClientRect())
+                })
+                .map((it) => {
+                    return fileLocationMap[it.dataset.davFileHref]
+                })
+
+            selectedFiles.length = 0
+            selectedFiles.push(...filesToSelect)
+        },
+        selectionProps: {
+            className: 'dav-selection-box',
+        },
+    });
 
     const content = useApi({
         path: `api${path}`,
@@ -89,7 +142,7 @@ function FileWindow(props) {
 
             //去掉存档文件
             files.pop()
-            state.files = files;
+            state.files = ref(files);
         },
         refreshInterval: 1000,
         content() {
@@ -101,7 +154,7 @@ function FileWindow(props) {
 
             return (
                 <VirtualList rowCount={files.length}
-                             rowHeight={40}
+                             rowHeight={45}
                              rowRenderer={(ctx) => {
 
                                  const {
@@ -116,7 +169,8 @@ function FileWindow(props) {
 
                                  const file = files[index]
 
-                                 return <div key={key} style={style}>
+                                 return <div key={key} style={style} className={'dav-file-card'}
+                                             data-dav-file-href={file.href}>
                                      <WebDavFileCard file={file}/>
                                  </div>
                              }}/>
@@ -126,6 +180,9 @@ function FileWindow(props) {
 
     return (
         <Container className={"shadow"}>
+            {
+                createPortal(<DragSelection/>, document.body)
+            }
             <FileSort
                 setSort={(sort) => {
                     state.sort = noProxy(sort)
@@ -142,7 +199,7 @@ function FileWindow(props) {
                         }
                     }}/>
             </FileSort>
-            <div class="content">
+            <div class="content dav-file-window-content">
                 {content}
             </div>
         </Container>

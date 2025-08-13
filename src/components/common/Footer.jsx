@@ -18,7 +18,7 @@ const Container = styled.div`
 function Footer(props) {
     return (
         <Container>
-            <div class="github">
+            <div class="github no-select">
                 <a
                     href={'https://github.com/InvertGeek/MixFile'}
                     className={'gradient-text'}
