@@ -6,7 +6,7 @@ import {resolveMixFile} from "../../components/routes/home/components/FileResolv
 function LinearProgressWithLabel(props) {
     return (
         <Box sx={{display: 'flex', alignItems: 'center'}}>
-            <Box sx={{width: '100%', mr: 1}}>
+            <Box sx={{width: '85%', mr: 1}}>
                 <LinearProgress variant="determinate" {...props} />
             </Box>
             <Box sx={{minWidth: 35}}>
@@ -70,7 +70,7 @@ export function ProgressCard({file: upFile}) {
         classes.push('done')
     }
 
-    return <Container className={`shadow no-select ${classes.join(' ')}`} error={error} onClick={() => {
+    return <Container className={`shadow no-select ${classes.join(' ')}`} onClick={() => {
         if (result) {
             resolveMixFile(result)
         }

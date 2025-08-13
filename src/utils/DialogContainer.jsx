@@ -1,6 +1,8 @@
 import {proxy, useSnapshot} from "valtio";
-import {Backdrop} from "@mui/material";
 import {noProxy} from "./CommonUtils.jsx";
+import styled from "styled-components";
+import {createPortal} from "react";
+import {Backdrop} from "@mui/material";
 
 export const dialogProxy = proxy([])
 
@@ -11,6 +13,10 @@ export function addDialog(dialog, autoClose = true) {
     })
 }
 
+const Container = styled(Backdrop)`
+    z-index: 1000;
+`
+
 export function DialogContainer(props) {
 
     let dialogState = useSnapshot(dialogProxy)
@@ -20,14 +26,19 @@ export function DialogContainer(props) {
     }
 
     return dialogState.map((item, index) => {
-        return <Backdrop open onClick={(event, key = index) => {
-            if (event.target === event.currentTarget && item.autoClose) {
-                dialogProxy.pop()
-            }
-        }} style={{
-            zIndex: '1000'
-        }}>
-            {item.content}
-        </Backdrop>
+
+        const content = (
+            <Container open onClick={(event, key = index) => {
+                if (event.target === event.currentTarget && item.autoClose) {
+                    dialogProxy.pop()
+                }
+            }}>
+
+                {item.content}
+
+            </Container>
+        )
+
+        return createPortal(content, document.body)
     })
 }

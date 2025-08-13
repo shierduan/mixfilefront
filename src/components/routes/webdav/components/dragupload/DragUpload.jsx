@@ -1,6 +1,10 @@
+import DialogDiv from "../../../../common/DialogDiv.jsx";
+
 function DragUpload(props) {
     return (
-        <div></div>
+        <DialogDiv>
+            <h4>测试</h4>
+        </DialogDiv>
     );
 }
 

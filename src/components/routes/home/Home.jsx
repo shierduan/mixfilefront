@@ -2,6 +2,9 @@ import styled from "styled-components";
 import FileHistory from "./components/history/FileHistory.jsx";
 import FileResolve from "./components/FileResolve.jsx";
 import UploadArea from "./components/UploadArea.jsx";
+import {addUploadFile} from "../../../utils/upload/FileUpload.js";
+import {addDialog} from "../../../utils/DialogContainer.jsx";
+import UploadDialog from "../../../utils/upload/UploadDialog.jsx";
 
 const Container = styled.div`
     margin: 5vh auto;
@@ -22,7 +25,10 @@ function Home(props) {
     return (
         <Container>
             <FileResolve/>
-            <UploadArea/>
+            <UploadArea callback={(files) => {
+                addUploadFile(files)
+                addDialog(<UploadDialog/>)
+            }}/>
             <FileHistory/>
         </Container>
     );

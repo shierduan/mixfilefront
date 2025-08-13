@@ -1,6 +1,9 @@
 html {
-  perspective: 1000px;
   -webkit-font-smoothing: antialiased;
+
+  body {
+    min-height: 100vh;
+  }
 
   .dav-selection-box {
     border-radius: 5px;

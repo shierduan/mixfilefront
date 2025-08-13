@@ -1,9 +1,6 @@
 import styled from "styled-components";
 import {FileDrop} from "react-file-drop";
 import {selectFiles} from "../../../common/FileSelect.jsx";
-import {addUploadFile} from "../../../../utils/upload/FileUpload.js";
-import {addDialog} from "../../../../utils/DialogContainer.jsx";
-import UploadDialog from "../../../../utils/upload/UploadDialog.jsx";
 
 const Container = styled.div`
     display: flex;
@@ -56,18 +53,16 @@ const Container = styled.div`
     }
 `
 
-function UploadArea(props) {
+function UploadArea({callback}) {
     return (
         <Container>
             <FileDrop
                 onTargetClick={async () => {
                     const files = await selectFiles()
-                    addUploadFile(files)
-                    addDialog(<UploadDialog/>)
+                    callback?.(files)
                 }}
                 onDrop={(files, event) => {
-                    addUploadFile(files)
-                    addDialog(<UploadDialog/>)
+                    callback?.(files)
                 }}
             >
                 选择/拖入文件
