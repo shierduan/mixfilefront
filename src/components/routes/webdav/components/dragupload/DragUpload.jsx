@@ -6,12 +6,12 @@ import {getRoutePath, sleep} from "../../../../../utils/CommonUtils.jsx";
 import {addDialog, dialogList} from "../../../../../utils/DialogContainer.jsx";
 import UploadDialog from "../../../../../utils/upload/UploadDialog.jsx";
 import styled from "styled-components";
+import {Button} from "@mui/material";
 
 
 const Container = styled(DialogDiv)`
     min-width: 80vw;
     background-color: #f8eefe;
-    padding: 0;
 
     .upload-area {
         height: 80vh;
@@ -30,6 +30,9 @@ function DragUpload(props) {
                     return `${apiAddress}api${getRoutePath()}/${file.name}`
                 })
             }}/>
+            <Button variant={'outlined'} onClick={() => {
+                dialogList.pop()
+            }}>关闭</Button>
         </Container>
     );
 }
