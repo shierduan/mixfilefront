@@ -2,16 +2,17 @@ import styled from "styled-components";
 import useApi from "../../../../../hooks/useApi.jsx";
 import {parsePropfindXML} from "../../utils/WebDavUtils.jsx";
 import WebDavFileCard from "./WebDavFileCard.jsx";
-import {compareByName, noProxy} from "../../../../../utils/CommonUtils.jsx";
+import {deepEqual, noProxy} from "../../../../../utils/CommonUtils.jsx";
 import {useLocation} from "react-router-dom";
 import FileSort from "./FileSort.jsx";
 import VirtualList from "../../../../common/VirtualList.jsx";
-import {proxy, ref, useSnapshot} from "valtio";
+import {useSnapshot} from "valtio";
 import {Checkbox} from "@mui/material";
-import useProxyState from "../../../../../hooks/useProxyState.js";
 import useDeepCompareEffect from "../../../../../hooks/useDeepCompareEffect.js";
 import {boxesIntersect, useSelectionContainer} from "@air/react-drag-to-select";
 import {createPortal} from "react";
+import SingleFilePage from "./SingleFilePage.js";
+import {webDavState} from "../../state/WebDavState.js";
 
 
 const Container = styled.div`
@@ -37,60 +38,39 @@ const Container = styled.div`
 
 
 `
-const isFolderFirst = (a, b) => a.isFolder === b.isFolder ? 0 : a.isFolder ? -1 : 1;
-
-export const FILE_SORTS = {
-    name: {
-        func: (a, b) => isFolderFirst(a, b) || compareByName(a.name, b.name)
-    },
-    size: {
-        func: (a, b) => isFolderFirst(a, b) || a.size - b.size
-    },
-    date: {
-        func: (a, b) => isFolderFirst(a, b) || a.lastModified - b.lastModified
-    }
-}
-
-export const selectedFiles = proxy([])
 
 
 function FileWindow(props) {
 
     const path = useLocation().pathname;
 
-    useSnapshot(selectedFiles)
+    useSnapshot(webDavState)
 
-    const state = useProxyState({
-        sort: noProxy(FILE_SORTS.name),
-        files: [],
-    })
 
-    const {sort, files} = state
-    const filesEffectDep = files.map(
-        ({
-             size,
-             href,
-             isFolder,
-         }) => {
-            return {
-                size,
-                isFolder,
-                href
-            }
-        })
+    const {sort, files, sortedFiles, singleFile, selectedFiles} = webDavState
+
 
     useDeepCompareEffect(() => {
+        if (singleFile) {
+            selectedFiles.length = 0
+            selectedFiles.push(singleFile)
+            return
+        }
         const fileLocations = files.map((it) => it.href)
         //remove deleted files from selectedFiles
         const filtered = selectedFiles.filter((it) => fileLocations.includes(it.href))
         selectedFiles.length = 0
         selectedFiles.push(...filtered)
+    }, [files, singleFile])
 
-    }, [filesEffectDep])
 
     const {DragSelection} = useSelectionContainer({
         eventsElement: document.body,
+        shouldStartSelecting() {
+            return !webDavState.singleFile
+        },
         onSelectionChange: (box) => {
+
             const fileLocationMap = files.reduce((acc, item, index) => {
                 acc[item.href] = item;
                 return acc;
@@ -114,6 +94,11 @@ function FileWindow(props) {
         },
     });
 
+    useDeepCompareEffect(() => {
+        webDavState.sortedFiles = files.slice().sort(sort.func)
+    }, [sort, files])
+
+
     const content = useApi({
         path: `api${path}`,
         method: 'PROPFIND',
@@ -122,24 +107,45 @@ function FileWindow(props) {
         },
         callback(data) {
             const files = parsePropfindXML(data)
+            if (files.length === 0) {
+                return;
+            }
+
+            document.title = `${files[0].name} | MixFile`;
+            // 具体文件页面
+            if (files.length === 1 && !files[0].isFolder) {
+                webDavState.files = []
+                webDavState.singleFile = files[0]
+                return
+            }
+
+            webDavState.singleFile = false
 
             //去掉目录文件
             files.shift()
 
             //去掉存档文件
             files.pop()
-            state.files = ref(files);
+
+            //对比文件是否更新
+            if (deepEqual(webDavState.files, files)) {
+                return;
+            }
+
+            webDavState.files = files;
         },
         refreshInterval: 1000,
         content() {
-            files.sort(sort.func)
+            if (singleFile) {
+                return <SingleFilePage file={singleFile}/>
+            }
 
-            if (files.length === 0) {
+            if (sortedFiles.length === 0) {
                 return <h4 className={'empty'}>文件夹为空</h4>
             }
 
             return (
-                <VirtualList rowCount={files.length}
+                <VirtualList rowCount={sortedFiles.length}
                              rowHeight={45}
                              rowRenderer={(ctx) => {
 
@@ -153,7 +159,7 @@ function FileWindow(props) {
                                      // This must be passed through to the rendered row element.
                                  } = ctx
 
-                                 const file = files[index]
+                                 const file = sortedFiles[index]
 
                                  return <div key={key} style={style} className={'dav-file-card'}
                                              data-dav-file-href={file.href}>
@@ -164,26 +170,36 @@ function FileWindow(props) {
         }
     })
 
+    let header = (
+        <FileSort
+            setSort={(sort) => {
+                webDavState.sort = noProxy(sort)
+            }}
+            sort={sort}
+        >
+            <Checkbox
+                checked={selectedFiles.length === files.length && files.length > 0}
+                onChange={(event, checked) => {
+                    selectedFiles.length = 0
+                    if (checked) {
+                        selectedFiles.push(...files)
+                    }
+                }}/>
+        </FileSort>
+    )
+
+    if (singleFile !== false) {
+        header = null
+    }
+
     return (
         <Container className={"shadow"}>
             {
                 createPortal(<DragSelection/>, document.body)
             }
-            <FileSort
-                setSort={(sort) => {
-                    state.sort = noProxy(sort)
-                }}
-                sort={sort}
-            >
-                <Checkbox
-                    checked={selectedFiles.length === files.length && files.length > 0}
-                    onChange={(event, checked) => {
-                        selectedFiles.length = 0
-                        if (checked) {
-                            selectedFiles.push(...files)
-                        }
-                    }}/>
-            </FileSort>
+
+            {header}
+
             <div class="content dav-file-window-content">
                 {content}
             </div>

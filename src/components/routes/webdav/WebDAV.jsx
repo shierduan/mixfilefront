@@ -4,6 +4,8 @@ import NavBar from "./components/filewindow/NavBar.jsx";
 import ActionBar from "./components/actionbar/ActionBar.jsx";
 import {addDialog} from "../../../utils/DialogContainer.jsx";
 import DragUpload from "./components/dragupload/DragUpload.jsx";
+import {useSnapshot} from "valtio";
+import {webDavState} from "./state/WebDavState.js";
 
 const Container = styled.div`
     margin: 50px auto 10px auto;
@@ -21,8 +23,19 @@ const Container = styled.div`
 
 function WebDav(props) {
 
+    document.title = 'WebDAV | MixFile'
+
+    useSnapshot(webDavState)
+
     return (
-        <Container onDragEnter={() => {
+        <Container onDragEnter={(event) => {
+            if (webDavState.singleFile !== false) {
+                return;
+            }
+            const items = event.dataTransfer.items;
+            if (!items || ![...items].some(item => item.kind === 'file')) {
+                return
+            }
             addDialog(<DragUpload/>)
         }}>
             <NavBar/>

@@ -13,9 +13,10 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import {showConfirmWindow} from "../../../../common/ConfirmWindow.jsx";
 import FolderCopyIcon from "@mui/icons-material/FolderCopy";
 import {selectFolder} from "../dialog/FolderSelect.jsx";
-import {selectedFiles} from "../filewindow/FileWindow.jsx";
 import DriveFileMoveIcon from '@mui/icons-material/DriveFileMove';
 import Semaphore from "@chriscdn/promise-semaphore";
+import {webDavState} from "../../state/WebDavState.js";
+
 
 const Container = styled.div`
     width: 100%;
@@ -58,6 +59,8 @@ async function runWithSemaphore(items, asyncTask, semaphore) {
 
     return Promise.all(tasks)
 }
+
+const selectedFiles = webDavState.selectedFiles
 
 const fabs = [
     {

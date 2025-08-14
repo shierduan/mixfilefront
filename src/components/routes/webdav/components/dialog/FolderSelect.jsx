@@ -5,8 +5,8 @@ import useApi from "../../../../../hooks/useApi.jsx";
 import {parsePropfindXML} from "../../utils/WebDavUtils.jsx";
 import {Button, Checkbox, CircularProgress, FormControlLabel} from "@mui/material";
 import {addDialog, dialogList} from "../../../../../utils/DialogContainer.jsx";
-import {FILE_SORTS} from "../filewindow/FileWindow.jsx";
 import useProxyState from "../../../../../hooks/useProxyState.js";
+import {FILE_SORTS} from "../../state/WebDavState.js";
 
 const Container = styled(DialogDiv)`
     .info {

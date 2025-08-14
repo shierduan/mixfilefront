@@ -1,6 +1,9 @@
 import styled from "styled-components";
-import {FILE_SORTS, selectedFiles} from "./FileWindow.jsx";
+
 import {reverseSort} from "../../../../../utils/CommonUtils.jsx";
+import {FILE_SORTS, webDavState} from "../../state/WebDavState.js";
+import {useSnapshot} from "valtio";
+
 
 const Container = styled.div`
     width: 100%;
@@ -34,7 +37,11 @@ const Container = styled.div`
     }
 `
 
+const selectedFiles = webDavState.selectedFiles
+
 function FileSort({setSort, sort, children}) {
+
+    useSnapshot(selectedFiles)
 
     const {name, size, date} = FILE_SORTS
 

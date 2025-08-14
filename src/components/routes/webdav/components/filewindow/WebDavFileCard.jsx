@@ -16,7 +16,8 @@ import {useSnapshot} from "valtio";
 import {Checkbox} from "@mui/material";
 import {showConfirmWindow} from "../../../../common/ConfirmWindow.jsx";
 import {selectFolder} from "../dialog/FolderSelect.jsx";
-import {selectedFiles} from "./FileWindow.jsx";
+import {webDavState} from "../../state/WebDavState.js";
+
 
 const Container = styled(Link)`
     text-decoration: none;
@@ -82,7 +83,7 @@ const Container = styled(Link)`
     }
 
 `
-
+const selectedFiles = webDavState.selectedFiles
 
 function FileIcon({file: {isFolder, mimeType}}) {
     if (isFolder) {
@@ -174,13 +175,11 @@ function WebDavFileCard({file}) {
         classes.push('selected')
     }
 
-    const to = isFolder ? `${getRoutePath()}/${name}` : url;
-
     return (
         <RightClickMenu items={menuItems}>
             <Container
                 className={`${classes.join(' ')}`}
-                to={to}
+                to={`${getRoutePath()}/${name}`}
             >
                 <div class="file-name animate__animated animate__fadeIn animate__faster">
                     <div class="name">

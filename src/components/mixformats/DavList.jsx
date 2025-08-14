@@ -7,8 +7,8 @@ import {resolveMixFile} from "../routes/home/components/FileResolve.jsx";
 import {MixFileChip, MixFileDataContainer} from "./StyleContainers.jsx";
 import useApi from "../../hooks/useApi.jsx";
 import VirtualList from "../common/VirtualList.jsx";
-import {FILE_SORTS} from "../routes/webdav/components/filewindow/FileWindow.jsx";
 import useProxyState from "../../hooks/useProxyState.js";
+import {FILE_SORTS} from "../routes/webdav/state/WebDavState.js";
 
 function FileDavDialog({data}) {
 

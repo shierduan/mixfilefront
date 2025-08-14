@@ -148,6 +148,26 @@ function extractNumber(str, start) {
     return result;
 }
 
+export function deepEqual(a, b) {
+    // 基本类型和引用类型直接比较
+    if (a === b) return true;
+
+    // 不是对象，直接返回 false
+    if (typeof a !== 'object' || a === null || typeof b !== 'object' || b === null) {
+        return false;
+    }
+
+    // 获取对象的键集合，如果是数组，则是索引集合
+    const aKeys = Object.keys(a);
+    const bKeys = Object.keys(b);
+
+    // 如果键的数量不相同，直接返回 false
+    if (aKeys.length !== bKeys.length) return false;
+
+    // 比较键及其对应的值
+    return aKeys.every(key => b.hasOwnProperty(key) && deepEqual(a[key], b[key]));
+}
+
 export function compareByName(a, b) {
     let i1 = 0, i2 = 0;
     while (i1 < a.length && i2 < b.length) {

@@ -22,12 +22,14 @@ const Container = styled.div`
 
 function Home(props) {
 
+    document.title = '主页 | MixFile'
+
     return (
         <Container>
             <FileResolve/>
             <UploadArea callback={(files) => {
                 addUploadFile(files)
-                addDialog(<UploadDialog/>)
+                addDialog(<UploadDialog/>, false)
             }}/>
             <FileHistory/>
         </Container>
