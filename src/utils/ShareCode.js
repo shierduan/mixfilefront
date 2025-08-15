@@ -110,7 +110,8 @@ function extractIvAndData(dataBuffer) {
     return {iv, encrypted, authTag};
 }
 
-export function decodeMixFile(data) {
+
+export function decodeMixFileRaw(data) {
     data = decodeMixShareCode(data)
     const encData = mixBase.decode(data)
     if (!encData) {
@@ -125,9 +126,11 @@ export function decodeMixFile(data) {
     }
 }
 
-export function decodeMixFileName(shareInfo) {
+window.mixfile = decodeMixFile
+
+export function decodeMixFile(shareInfo) {
     try {
-        const {f, s, h, u, k, r} = decodeMixFile(shareInfo)
+        const {f, s, h, u, k, r} = decodeMixFileRaw(shareInfo)
         return {
             fileName: f,
             fileSize: s,

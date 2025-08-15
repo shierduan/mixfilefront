@@ -17,6 +17,7 @@ import {Checkbox} from "@mui/material";
 import {showConfirmWindow} from "../../../../common/ConfirmWindow.jsx";
 import {selectFolder} from "../dialog/FolderSelect.jsx";
 import {webDavState} from "../../state/WebDavState.js";
+import {addDownloadFile} from "../../../../../utils/transfer/download/FileDownload.js";
 
 
 const Container = styled(Link)`
@@ -139,6 +140,12 @@ function WebDavFileCard({file}) {
     const navigate = useNavigate();
 
     const menuItems = [
+        {
+            label: "下载",
+            async onClick() {
+                addDownloadFile(url, name)
+            }
+        },
         {
             label: "复制",
             async onClick() {

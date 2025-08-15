@@ -8,7 +8,7 @@ import {HashRouter, Outlet, Route, Routes} from "react-router-dom";
 import FileSelect from "./common/FileSelect.jsx";
 import {Toaster} from "react-hot-toast";
 import './App.scss'
-import UploadTipBar from "./common/nav/UploadTipBar.jsx";
+import TransferTipBar from "./common/nav/TransferTipBar.jsx";
 
 
 const theme = createTheme({
@@ -23,7 +23,7 @@ function Layout() {
     return (
         <>
             <TopBar/>
-            <UploadTipBar/>
+            <TransferTipBar/>
             <Outlet/>
             <Toaster/>
             <DialogContainer/>

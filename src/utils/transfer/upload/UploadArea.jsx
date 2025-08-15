@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import {FileDrop} from "react-file-drop";
-import {selectFiles} from "../../components/common/FileSelect.jsx";
+import {selectFiles} from "../../../components/common/FileSelect.jsx";
 
 const Container = styled.div`
     display: flex;

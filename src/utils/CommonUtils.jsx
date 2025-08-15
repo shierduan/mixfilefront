@@ -77,6 +77,29 @@ export function getParamUrl(params) {
     return url.toString();
 }
 
+export function saveBlob(data, fileName) {
+    // 1. 统一转成 Blob
+    const blob = data instanceof Blob
+        ? data
+        : new Blob([data]);
+
+    // 2. 创建临时 URL
+    const url = URL.createObjectURL(blob);
+
+    // 3. 创建隐藏 <a> 并触发点击
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = fileName || 'download';
+    a.style.display = 'none';
+    document.body.appendChild(a);
+    a.click();
+
+    // 4. 清理：DOM 节点 & 临时 URL
+    document.body.removeChild(a);
+    // 浏览器事件循环结束后释放更安全
+    setTimeout(() => URL.revokeObjectURL(url), 0);
+}
+
 export function reverseSort(compareFn) {
     return (a, b) => compareFn(b, a); // 反转 a 和 b 的位置
 }

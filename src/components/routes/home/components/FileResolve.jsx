@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import {useState} from "react";
 import {Button, TextField} from "@mui/material";
-import {decodeMixFileName, decodeMixShareCode} from "../../../../utils/ShareCode.js";
+import {decodeMixFile, decodeMixShareCode} from "../../../../utils/ShareCode.js";
 import {openFileListDialog} from "../../../mixformats/FileList.jsx";
 import {addDialog} from "../../../../utils/DialogContainer.jsx";
 import FileDialog from "./dialog/FileDialog.jsx";
@@ -32,7 +32,7 @@ const Container = styled.div`
 export function resolveMixFile(input) {
     let code = input.trim()
     code = decodeMixShareCode(code)
-    let {fileName, fileSize} = decodeMixFileName(code)
+    let {fileName, fileSize} = decodeMixFile(code)
     if (!fileName) {
         return notifyError('解密分享码失败');
     }

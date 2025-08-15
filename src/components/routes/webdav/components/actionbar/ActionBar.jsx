@@ -5,7 +5,7 @@ import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder';
 import {addDialog} from "../../../../../utils/DialogContainer.jsx";
 import NewFolder from "../dialog/NewFolder.jsx";
 import {selectFiles} from "../../../../common/FileSelect.jsx";
-import {addUploadFile} from "../../../../../utils/upload/FileUpload.js";
+import {addUploadFile} from "../../../../../utils/transfer/upload/FileUpload.js";
 import {apiAddress} from "../../../../../config.js";
 import {getRoutePath, notifyMsg, notifyPromise} from "../../../../../utils/CommonUtils.jsx";
 import {useSnapshot} from "valtio";
@@ -16,6 +16,9 @@ import {selectFolder} from "../dialog/FolderSelect.jsx";
 import DriveFileMoveIcon from '@mui/icons-material/DriveFileMove';
 import Semaphore from "@chriscdn/promise-semaphore";
 import {webDavState} from "../../state/WebDavState.js";
+import DownloadIcon from '@mui/icons-material/Download';
+import {addDownloadFile} from "../../../../../utils/transfer/download/FileDownload.js";
+import DownloadDialog from "../../../../../utils/transfer/download/DownloadDialog.jsx";
 
 
 const Container = styled.div`
@@ -65,6 +68,9 @@ const selectedFiles = webDavState.selectedFiles
 const fabs = [
     {
         name: '上传文件',
+        get disabled() {
+            return !!webDavState.singleFile
+        },
         icon: <AddIcon/>,
         async onClick() {
             const files = await selectFiles()
@@ -75,6 +81,9 @@ const fabs = [
     },
     {
         name: '新建文件夹',
+        get disabled() {
+            return !!webDavState.singleFile
+        },
         icon: <CreateNewFolderIcon/>,
         onClick() {
             addDialog(<NewFolder/>)
@@ -124,6 +133,19 @@ const fabs = [
                 '移动文件'
             )
             notifyMsg('移动成功')
+        }
+    },
+    {
+        name: '下载文件',
+        get disabled() {
+            return selectedFiles.length === 0
+        },
+        icon: <DownloadIcon/>,
+        async onClick() {
+            selectedFiles.forEach((file) => {
+                addDownloadFile(file.url, file.name)
+            })
+            addDialog(<DownloadDialog/>)
         }
     }
 ]

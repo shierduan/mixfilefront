@@ -1,6 +1,6 @@
 import Semaphore from "@chriscdn/promise-semaphore";
-import {apiAddress, client} from "../../config.js";
-import {formatFileSize, noProxy} from "../CommonUtils.jsx";
+import {apiAddress, client} from "../../../config.js";
+import {formatFileSize, noProxy} from "../../CommonUtils.jsx";
 import {proxy} from "valtio";
 import {CanceledError} from "axios";
 
@@ -20,16 +20,14 @@ export function uploadingCount() {
     return uploadFileList.filter((it) => !it.complete).length
 }
 
-const listener = function (event) {
+window.addEventListener('beforeunload', function (event) {
     if (isUploading()) {
         event.preventDefault()
         const msg = '文件正在上传中,是否确认关闭?'
         event.returnValue = msg
         return msg
     }
-}
-
-window.addEventListener('beforeunload', listener)
+})
 
 
 export function cancelAllUpload() {
@@ -49,6 +47,7 @@ export function addUploadFile(
 
     files.forEach(async (file) => {
         const upFile = proxy({
+            url: getPath(file),
             file: noProxy(file),
             result: null,
             complete: false,
@@ -60,7 +59,7 @@ export function addUploadFile(
         })
 
         uploadFileList.push(upFile)
-        await uploadFile(upFile, getPath(file))
+        await uploadFile(upFile)
     })
 
 }
@@ -69,12 +68,11 @@ const semaphore = new Semaphore(2)
 
 export async function uploadFile(
     upFile,
-    uploadAddress
 ) {
 
     const controller = new AbortController();
 
-    const {file} = upFile;
+    const {file, url} = upFile;
 
     upFile.tip = '等待中'
     upFile.cancel = () => {
@@ -85,7 +83,7 @@ export async function uploadFile(
     upFile.tip = `上传中: 0/${formatFileSize(file.size)}`
 
     try {
-        let response = await client.put(uploadAddress, file, {
+        let response = await client.put(url, file, {
             onUploadProgress: progressEvent => {
                 const {loaded, total} = progressEvent
                 upFile.tip = `上传中: ${formatFileSize(loaded, true)}/${formatFileSize(total)}`

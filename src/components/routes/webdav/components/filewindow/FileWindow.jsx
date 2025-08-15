@@ -13,6 +13,7 @@ import {boxesIntersect, useSelectionContainer} from "@air/react-drag-to-select";
 import {createPortal} from "react";
 import SingleFilePage from "./SingleFilePage.js";
 import {webDavState} from "../../state/WebDavState.js";
+import {dialogList} from "../../../../../utils/DialogContainer.jsx";
 
 
 const Container = styled.div`
@@ -23,7 +24,7 @@ const Container = styled.div`
     padding: 0px 10px;
     gap: 5px;
 
-    .content {
+    > .content {
         flex-direction: column;
         display: flex;
         min-height: 60vh;
@@ -67,7 +68,7 @@ function FileWindow(props) {
     const {DragSelection} = useSelectionContainer({
         eventsElement: document.body,
         shouldStartSelecting() {
-            return !webDavState.singleFile
+            return !webDavState.singleFile && dialogList.length === 0
         },
         onSelectionChange: (box) => {
 

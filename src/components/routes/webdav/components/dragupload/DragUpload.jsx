@@ -1,10 +1,10 @@
 import DialogDiv from "../../../../common/DialogDiv.jsx";
-import UploadArea from "../../../../../utils/upload/UploadArea.jsx";
-import {addUploadFile} from "../../../../../utils/upload/FileUpload.js";
+import UploadArea from "../../../../../utils/transfer/upload/UploadArea.jsx";
+import {addUploadFile} from "../../../../../utils/transfer/upload/FileUpload.js";
 import {apiAddress} from "../../../../../config.js";
 import {getRoutePath, sleep} from "../../../../../utils/CommonUtils.jsx";
 import {addDialog, dialogList} from "../../../../../utils/DialogContainer.jsx";
-import UploadDialog from "../../../../../utils/upload/UploadDialog.jsx";
+import UploadDialog from "../../../../../utils/transfer/upload/UploadDialog.jsx";
 import styled from "styled-components";
 import {Button} from "@mui/material";
 

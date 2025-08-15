@@ -1,10 +1,10 @@
 import styled from "styled-components";
 import FileHistory from "./components/history/FileHistory.jsx";
 import FileResolve from "./components/FileResolve.jsx";
-import UploadArea from "../../../utils/upload/UploadArea.jsx";
-import {addUploadFile} from "../../../utils/upload/FileUpload.js";
+import UploadArea from "../../../utils/transfer/upload/UploadArea.jsx";
+import {addUploadFile} from "../../../utils/transfer/upload/FileUpload.js";
 import {addDialog} from "../../../utils/DialogContainer.jsx";
-import UploadDialog from "../../../utils/upload/UploadDialog.jsx";
+import UploadDialog from "../../../utils/transfer/upload/UploadDialog.jsx";
 
 const Container = styled.div`
     margin: 5vh auto;

@@ -1,48 +1,16 @@
-import styled from "styled-components";
 import {Button} from "@mui/material";
-import {ProgressCard} from "./ProgressCard.jsx";
-import {notifyMsg} from "../CommonUtils.jsx";
-import {dialogList} from "../DialogContainer.jsx";
+import {UploadFileCard} from "./UploadFileCard.jsx";
+import {notifyMsg} from "../../CommonUtils.jsx";
+import {dialogList} from "../../DialogContainer.jsx";
 import {useSnapshot} from "valtio";
-import {showConfirmWindow} from "../../components/common/ConfirmWindow.jsx";
+import {showConfirmWindow} from "../../../components/common/ConfirmWindow.jsx";
 import {cancelAllUpload, isUploading, uploadFileList} from "./FileUpload.js";
-
-const Container = styled.div`
-    display: flex;
-    background-color: white;
-    padding: 10px;
-    border-radius: 10px;
-    justify-content: center;
-    width: 500px;
-    max-width: 95vw;
-    gap: 10px;
-    flex-direction: column;
-    color: #8e2afe;
-    word-break: break-all;
-
-    > .content {
-        gap: 10px;
-        display: flex;
-        flex-direction: column;
-        max-height: 60vh;
-        overflow-y: auto;
-    }
-
-    p {
-        white-space: nowrap;
-        font-weight: bold;
-    }
-
-    button {
-        font-size: max(.6rem, 14px);
-    }
-`
+import {TransferDialog} from "../components/TransferDialog.jsx";
 
 
 function UploadDialog() {
 
     const fileList = useSnapshot(uploadFileList)
-
 
     const results = fileList.filter(file => file.result !== null)
 
@@ -54,14 +22,14 @@ function UploadDialog() {
 
     if (fileList.length === 0) {
         return (
-            <Container className={'shadow'}>
-                <h3 className={'components-card animate__animated animate__bounceIn'}>
+            <TransferDialog className={'shadow'}>
+                <h3 className={'animate__animated animate__bounceIn'}>
                     当前没有文件正在上传
                 </h3>
                 <Button variant={'outlined'} onClick={() => {
                     dialogList.pop()
-                }}>{'关闭'}</Button>
-            </Container>
+                }}>关闭</Button>
+            </TransferDialog>
         )
     }
 
@@ -69,7 +37,7 @@ function UploadDialog() {
 
     if (complete) {
         title = (
-            <h3 className={'components-card animate__animated animate__bounceIn'}>
+            <h3 className={'animate__animated animate__bounceIn'}>
                 {fileList.length} 个文件全部上传成功
             </h3>
         )
@@ -77,13 +45,13 @@ function UploadDialog() {
 
     if (errorCount > 0) {
         title = (
-            <h3 className={'components-card animate__animated animate__bounceIn'}>
+            <h3 className={'animate__animated animate__bounceIn'}>
                 {uploaded} / {fileList.length} 个文件上传中 {errorCount} 个文件上传失败
             </h3>
         )
         if (complete) {
             title = (
-                <h3 className={'components-card animate__animated animate__bounceIn'}>
+                <h3 className={'animate__animated animate__bounceIn'}>
                     {uploaded} / {fileList.length} 个文件上传成功 {errorCount} 个文件上传失败
                 </h3>
             )
@@ -100,19 +68,19 @@ function UploadDialog() {
                     cancelAllUpload()
                     dialogList.pop()
                 })
-            }}>{'取消全部上传'}</Button>
+            }}>取消全部上传</Button>
         )
     }
 
     return (
-        <Container className={'shadow'}>
+        <TransferDialog className={'shadow'}>
             {
                 title
             }
             <div class="content">
                 {
                     uploadFileList.map((file, index) =>
-                        <ProgressCard file={file} key={index}/>
+                        <UploadFileCard file={file} key={index}/>
                     )
                 }
             </div>
@@ -122,8 +90,8 @@ function UploadDialog() {
 
             <Button variant={'outlined'} onClick={() => {
                 dialogList.pop()
-            }}>{'关闭'}</Button>
-        </Container>
+            }}>关闭</Button>
+        </TransferDialog>
 
     );
 }
