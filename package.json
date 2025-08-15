@@ -26,6 +26,7 @@
     "preact": "10.23.2",
     "react-file-drop": "3.1.6",
     "react-hot-toast": "2.5.2",
+    "react-photo-view": "^1.2.7",
     "react-router-dom": "7.8.0",
     "react-virtualized": "9.22.6",
     "sanitize.css": "13.0.0",
