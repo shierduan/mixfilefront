@@ -2,7 +2,7 @@ import {useEffect, useRef} from 'react';
 import styled from "styled-components";
 import ArtPlayer from 'artplayer';
 import useApi from "../../../../../hooks/useApi.jsx";
-import {getParentPath, notifyMsg} from "../../../../../utils/CommonUtils.jsx";
+import {getParentPath, notifyMsg, sha256} from "../../../../../utils/CommonUtils.jsx";
 import useProxyState from "../../../../../hooks/useProxyState.js";
 import {parsePropfindXML} from "../../utils/WebDavUtils.jsx";
 import {FILE_SORTS, webDavState} from "../../state/WebDavState.js";
@@ -84,7 +84,7 @@ function VideoPreview({file}) {
         if (art) {
             art.once('video:canplay', () => {
                 const history = videoCache.history;
-                const prevHistory = history.find((it) => it.key === etag)
+                const prevHistory = history.find((it) => it.key === sha256(etag))
                 if (prevHistory) {
                     notifyMsg('已恢复上次播放位置', {
                         icon: null,
@@ -137,7 +137,7 @@ function VideoPreview({file}) {
             state.videoList = videos
             const controls = player.current?.controls;
             if (videos.length > 1 && controls) {
-                controls.add({
+                controls.update({
                     name: "previous-button",
                     index: 10,
                     position: "left",
@@ -149,7 +149,7 @@ function VideoPreview({file}) {
                         navigate(`${getParentPath()}/${encodeURIComponent(item.name)}`)
                     },
                 })
-                controls.add({
+                controls.update({
                     name: "next-button",
                     index: 11,
                     position: "left",
@@ -189,11 +189,11 @@ function VideoPreview({file}) {
             if (time < 2) {
                 return
             }
-            const historyKey = state.videoFile.etag
-            const prevHistoryIndex = history.findIndex((it) => it.key === historyKey)
-            if (history.length > 10) {
+            if (history.length > 500) {
                 history.shift()
             }
+            const historyKey = sha256(state.videoFile.etag)
+            const prevHistoryIndex = history.findIndex((it) => it.key === historyKey)
             if (prevHistoryIndex > -1) {
                 history.splice(prevHistoryIndex, 1)
             }

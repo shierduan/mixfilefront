@@ -4,8 +4,16 @@ import {watch} from "valtio/utils";
 import copy from "copy-to-clipboard";
 import toast from "react-hot-toast";
 import {CircularProgress} from "@mui/material";
+import forge from "node-forge";
 
 const debounceMap = {}
+
+export function sha256(message) {
+    const md = forge.md.sha256.create();
+    md.update(message, "utf8");
+    return md.digest().toHex();
+}
+
 
 export function debounce(key, fn, delay) {
     if (debounceMap[key]) {
