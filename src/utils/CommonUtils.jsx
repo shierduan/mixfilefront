@@ -5,6 +5,7 @@ import copy from "copy-to-clipboard";
 import toast from "react-hot-toast";
 import {CircularProgress} from "@mui/material";
 import forge from "node-forge";
+import {gzipSync, strToU8} from "fflate";
 
 const debounceMap = {}
 
@@ -12,6 +13,18 @@ export function sha256(message) {
     const md = forge.md.sha256.create();
     md.update(message, "utf8");
     return md.digest().toHex();
+}
+
+/**
+ * gzip 压缩字符串或对象
+ * @param {any} data - 要压缩的数据，支持对象、数组、字符串
+ * @param {boolean} [toBuffer=false] - 是否返回 ArrayBuffer，默认返回 Uint8Array
+ * @returns {Uint8Array|ArrayBuffer}
+ */
+export function compressGzip(data, toBuffer = false) {
+    const str = typeof data === 'string' ? data : JSON.stringify(data);
+    const compressed = gzipSync(strToU8(str));
+    return toBuffer ? compressed.buffer : compressed;
 }
 
 

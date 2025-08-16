@@ -1,9 +1,8 @@
 import {useState} from 'react';
 import {TextField} from "@mui/material";
-import {getFormattedDate} from "../../../../../utils/CommonUtils.jsx";
+import {compressGzip, getFormattedDate} from "../../../../../utils/CommonUtils.jsx";
 import {apiAddress, client} from "../../../../../config.js";
 import {openFileListDialog} from "../../../../mixformats/FileList.jsx";
-import pako from "pako";
 import DialogDiv from "../../../../common/DialogDiv.jsx";
 import LoadingButton from "../../../../common/LoadingButton.jsx";
 
@@ -30,7 +29,7 @@ function FileExportDialog({fileList}) {
                         shareInfoData
                     }
                 })
-                const shareData = pako.gzip(JSON.stringify(dataList))
+                const shareData = compressGzip(JSON.stringify(dataList))
                 const uploadAddress = `${apiAddress}api/upload?name=${encodeURIComponent(`${listName}.mix_list`)}&add=false`
                 let response = await client.put(uploadAddress, shareData)
                 openFileListDialog(response.data)

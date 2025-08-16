@@ -1,5 +1,5 @@
 import {proxy} from "valtio";
-import Semaphore from "@chriscdn/promise-semaphore";
+import {Semaphore} from "@chriscdn/promise-semaphore";
 import {formatFileSize, saveBlob} from "../../CommonUtils.jsx";
 import {client} from "../../../config.js";
 import {CanceledError} from "axios";

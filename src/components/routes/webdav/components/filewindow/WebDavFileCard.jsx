@@ -6,7 +6,7 @@ import {
     notifyMsg,
     notifyPromise
 } from "../../../../../utils/CommonUtils.jsx";
-import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile.js";
+import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import FolderCopyIcon from '@mui/icons-material/FolderCopy';
 import VideoFileIcon from '@mui/icons-material/VideoFile';
 import ImageIcon from '@mui/icons-material/Image';

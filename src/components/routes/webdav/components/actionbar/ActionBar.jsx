@@ -14,7 +14,7 @@ import {showConfirmWindow} from "../../../../common/ConfirmWindow.jsx";
 import FolderCopyIcon from "@mui/icons-material/FolderCopy";
 import {selectFolder} from "../dialog/FolderSelect.jsx";
 import DriveFileMoveIcon from '@mui/icons-material/DriveFileMove';
-import Semaphore from "@chriscdn/promise-semaphore";
+import {Semaphore} from "@chriscdn/promise-semaphore";
 import {webDavState} from "../../state/WebDavState.js";
 import DownloadIcon from '@mui/icons-material/Download';
 import {addDownloadFile} from "../../../../../utils/transfer/download/FileDownload.js";

@@ -124,6 +124,12 @@ function SingleFilePage({file}) {
         )
     }
 
+    if (mimeType === 'application/pdf') {
+        filePreview = (
+            <iframe src={url} width="100%" height="600px"></iframe>
+        )
+    }
+
 
     return (
         <Container>

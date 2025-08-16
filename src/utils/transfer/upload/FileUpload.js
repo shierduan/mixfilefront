@@ -1,4 +1,4 @@
-import Semaphore from "@chriscdn/promise-semaphore";
+import {Semaphore} from "@chriscdn/promise-semaphore";
 import {apiAddress, client} from "../../../config.js";
 import {formatFileSize, noProxy} from "../../CommonUtils.jsx";
 import {proxy} from "valtio";
