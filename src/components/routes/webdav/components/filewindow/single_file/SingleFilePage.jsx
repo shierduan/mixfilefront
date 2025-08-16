@@ -2,6 +2,8 @@ import {useLocation} from "react-router-dom";
 import styled from "styled-components";
 import {copyText, formatFileSize} from "../../../../../../utils/CommonUtils.jsx";
 import {PhotoProvider, PhotoView} from "react-photo-view";
+import DocPreview from "./DocPreview.jsx";
+
 
 const Container = styled.div`
     width: 100%;
@@ -32,6 +34,12 @@ const Container = styled.div`
                 max-width: 80%;
                 max-height: 50vh;
                 filter: drop-shadow(0px 1px 6px rgba(0, 0, 0, 0.2));
+            }
+
+            .doc-view {
+                min-height: 500px;
+                width: 100%;
+                height: 100%;
             }
         }
 
@@ -127,6 +135,13 @@ function SingleFilePage({file}) {
     if (mimeType === 'application/pdf') {
         filePreview = (
             <iframe src={url} width="100%" height="600px"></iframe>
+        )
+    }
+    const docSuffixes = ['.doc', '.docx']
+
+    if (docSuffixes.some((suffix) => name.endsWith(suffix))) {
+        filePreview = (
+            <DocPreview file={file}/>
         )
     }
 
