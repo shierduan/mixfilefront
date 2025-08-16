@@ -141,12 +141,6 @@ function WebDavFileCard({file}) {
 
     const menuItems = [
         {
-            label: "下载",
-            async onClick() {
-                addDownloadFile(url, name)
-            }
-        },
-        {
             label: "复制",
             async onClick() {
                 await notifyPromise(file.copyFile(await selectFolder()), '复制文件')
@@ -176,6 +170,15 @@ function WebDavFileCard({file}) {
             }
         },
     ];
+
+    if (!isFolder) {
+        menuItems.push({
+            label: "下载",
+            async onClick() {
+                addDownloadFile(url, name)
+            }
+        },)
+    }
 
     const classes = []
     if (selected) {

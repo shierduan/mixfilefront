@@ -145,13 +145,17 @@ export function decodeMixFile(shareInfo) {
     return {}
 }
 
+function substringAfter(str, delimiter) {
+    const index = str.indexOf(delimiter);
+    if (index === -1) return str; // 没有找到分隔符返回空字符串
+    return str.substring(index + delimiter.length);
+}
+
+
 
 export function decodeMixShareCode(str) {
     let result = hex2a(decodeHex(str)) || str
-    if (result.startsWith('mf://')) {
-        result = result.substring(5)
-    }
-    return result
+    return substringAfter(result, '://')
 }
 
 
