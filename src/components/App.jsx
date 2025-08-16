@@ -9,6 +9,7 @@ import FileSelect from "./common/FileSelect.jsx";
 import {Toaster} from "react-hot-toast";
 import './App.scss'
 import TransferTipBar from "./common/nav/TransferTipBar.jsx";
+import NotFound from "./common/NotFound.jsx";
 
 
 const theme = createTheme({
@@ -44,6 +45,7 @@ export function App() {
                     <Route element={<Layout/>}>
                         <Route path="/" element={<Home/>}/>
                         <Route path="/webdav/*" element={<WebDav/>}/>
+                        <Route path="*" element={<NotFound/>}/>
                     </Route>
                 </Routes>
             </HashRouter>

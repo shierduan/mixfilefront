@@ -10,26 +10,33 @@ html {
     background-color: rgba(160, 84, 245, 0.14) !important;
   }
 
-  .MuiTypography-root {
-    font-size: 16px;
+  .MuiNativeSelect-select {
+    padding: 10px;
   }
+
 
   .MuiSvgIcon-root {
     font-size: 24px;
     color: rgba(142, 42, 254, 0.44);
   }
 
-  .MuiInputBase-input {
-    font-size: max(.6rem, 16px)
+  .MuiInputBase-input,
+  .MuiFormLabel-root,
+  .MuiTypography-root,
+  .MuiMenuItem-root,
+  {
+    font-size: 16px
   }
+
+  .MuiMenuItem-root {
+    overflow: hidden;
+    max-width: 100px;
+  }
+
 
   .MuiCheckbox-root {
     width: 30px;
     height: 30px;
-  }
-
-  .MuiFormLabel-root {
-    font-size: max(.6rem, 16px)
   }
 
   .MuiTreeItem-label {

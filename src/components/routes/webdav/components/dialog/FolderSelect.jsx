@@ -43,7 +43,8 @@ const Container = styled(DialogDiv)`
 
 
 function FolderTreeItem({path}) {
-    return useApi({
+
+    const {content} = useApi({
         path: `api/webdav${path}`,
         method: 'PROPFIND',
         headers: {
@@ -77,6 +78,8 @@ function FolderTreeItem({path}) {
             )
         }
     })
+
+    return content
 }
 
 

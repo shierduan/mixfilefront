@@ -186,7 +186,7 @@ function WebDavFileCard({file}) {
         <RightClickMenu items={menuItems}>
             <Container
                 className={`${classes.join(' ')}`}
-                to={`${getRoutePath()}/${name}`}
+                to={`${getRoutePath()}/${encodeURIComponent(name)}`}
             >
                 <div class="file-name animate__animated animate__fadeIn animate__faster">
                     <div class="name">

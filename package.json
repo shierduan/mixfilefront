@@ -16,6 +16,7 @@
     "@mui/styled-engine-sc": "6.0.0",
     "@mui/x-tree-view": "8.10.0",
     "animate.css": "4.1.1",
+    "artplayer": "^5.2.5",
     "axios": "1.8.2",
     "axios-retry": "4.5.0",
     "base-x": "5.0.1",

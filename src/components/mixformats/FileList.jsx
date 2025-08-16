@@ -11,7 +11,7 @@ import VirtualList from "../common/VirtualList.jsx";
 function FileListDialog({data}) {
 
 
-    const content = useApi({
+    const {content} = useApi({
         path: `api/download?s=${data}&response-content-encoding=gzip`,
         content(fileList) {
 

@@ -1,5 +1,5 @@
 import {apiAddress, client} from "../../../../config.js";
-import {getRoutePath} from "../../../../utils/CommonUtils.jsx";
+import {encodeUrlPath, getRoutePath} from "../../../../utils/CommonUtils.jsx";
 import {addDialog} from "../../../../utils/DialogContainer.jsx";
 import RenameFile from "../components/dialog/RenameFile.jsx";
 
@@ -9,13 +9,6 @@ export async function deleteFile(path) {
         method: 'DELETE',
         url: path,
     });
-}
-
-function encodeUrlPath(path) {
-    return path
-        .split('/')
-        .map(segment => encodeURIComponent(segment))
-        .join('/');
 }
 
 export async function createFolder(path) {

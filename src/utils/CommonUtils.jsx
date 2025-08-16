@@ -130,6 +130,29 @@ export function getURLParam(key) {
     return url.searchParams.get(key);
 }
 
+export function encodeUrlPath(path) {
+    return path
+        .split('/')
+        .map(segment => encodeURIComponent(segment))
+        .join('/');
+}
+
+export function getParentPath(path = getRoutePath()) {
+    if (!path) return "";
+
+    // 去掉结尾的 /，避免空段
+    let normalized = path.replace(/\/+$/, "");
+
+    // 找到最后一个 /
+    const lastSlash = normalized.lastIndexOf("/");
+
+    if (lastSlash === -1) {
+        return ""; // 没有父路径
+    }
+
+    return normalized.substring(0, lastSlash) || "/";
+}
+
 export function paramProxy(defaults) {
     const state = proxy({})
 

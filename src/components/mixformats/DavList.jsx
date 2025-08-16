@@ -51,7 +51,7 @@ function FileDavDialog({data}) {
         }}>上一级</Button>
     }
 
-    const content = useApi({
+    const {content} = useApi({
         path: `api/download?s=${data}&response-content-encoding=gzip`,
         callback(data) {
             state.davFile = JSON.parse(data.substring(5))

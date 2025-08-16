@@ -27,7 +27,7 @@ const Container = styled.div`
 
 function FileHistory(props) {
 
-    const content = useApi({
+    const {content} = useApi({
         path: 'api/upload_history',
         refreshInterval: 1000,
         content(data) {

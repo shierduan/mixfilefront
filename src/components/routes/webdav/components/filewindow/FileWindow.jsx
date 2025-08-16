@@ -11,9 +11,10 @@ import {Checkbox} from "@mui/material";
 import useDeepCompareEffect from "../../../../../hooks/useDeepCompareEffect.js";
 import {boxesIntersect, useSelectionContainer} from "@air/react-drag-to-select";
 import {createPortal} from "react";
-import SingleFilePage from "./SingleFilePage.js";
+import SingleFilePage from "./single_file/SingleFilePage.jsx";
 import {webDavState} from "../../state/WebDavState.js";
 import {dialogList} from "../../../../../utils/DialogContainer.jsx";
+import VideoPreview from "../video/VideoPreview.jsx";
 
 
 const Container = styled.div`
@@ -100,7 +101,7 @@ function FileWindow(props) {
     }, [sort, files])
 
 
-    const content = useApi({
+    const {content} = useApi({
         path: `api${path}`,
         method: 'PROPFIND',
         headers: {
@@ -193,6 +194,14 @@ function FileWindow(props) {
         header = null
     }
 
+    let videoPreview = null
+
+    if (singleFile?.mimeType?.startsWith('video/')) {
+        videoPreview = (
+            <VideoPreview file={singleFile}/>
+        )
+    }
+
     return (
         <Container className={"shadow"}>
             {
@@ -202,6 +211,7 @@ function FileWindow(props) {
             {header}
 
             <div class="content dav-file-window-content">
+                {videoPreview}
                 {content}
             </div>
         </Container>

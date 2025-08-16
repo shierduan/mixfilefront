@@ -1,6 +1,6 @@
 import {useLocation} from "react-router-dom";
 import styled from "styled-components";
-import {copyText, formatFileSize} from "../../../../../utils/CommonUtils.jsx";
+import {copyText, formatFileSize} from "../../../../../../utils/CommonUtils.jsx";
 import {PhotoProvider, PhotoView} from "react-photo-view";
 
 const Container = styled.div`
@@ -14,7 +14,7 @@ const Container = styled.div`
     gap: 20px;
 
     > .content {
-        padding-top: 50px;
+        padding: 50px 0;
         width: 100%;
         height: 100%;
         display: flex;

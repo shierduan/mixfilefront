@@ -85,7 +85,20 @@ export default function useApi({
 
     const {err, data, isLoading} = state
 
-    if (isLoading) return loading
-    if (err) return error?.(err)
-    return content?.(data) || null
+    function getContent() {
+        if (isLoading) {
+            return loading
+        }
+        if (err) {
+            return error?.(err);
+        }
+        return content?.(data);
+    }
+
+    return {
+        content: getContent(),
+        data: data,
+        isLoading,
+        error: err,
+    }
 }
