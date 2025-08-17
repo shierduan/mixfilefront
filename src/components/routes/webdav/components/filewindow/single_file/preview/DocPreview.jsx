@@ -10,8 +10,8 @@ const Container = styled.div`
 `
 
 function DocPreview({file}) {
-
-    useApi({
+    //loading content
+    const {content} = useApi({
         path: file.url,
         config: {
             responseType: "blob",
@@ -23,6 +23,7 @@ function DocPreview({file}) {
 
     return (
         <Container>
+            {content}
             <div id={'doc-preview-content'}>
 
             </div>
