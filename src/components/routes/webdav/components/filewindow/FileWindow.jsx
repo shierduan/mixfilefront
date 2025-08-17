@@ -2,7 +2,7 @@ import styled from "styled-components";
 import useApi from "../../../../../hooks/useApi.jsx";
 import {parsePropfindXML} from "../../utils/WebDavUtils.jsx";
 import WebDavFileCard from "./WebDavFileCard.jsx";
-import {deepEqual, noProxy} from "../../../../../utils/CommonUtils.jsx";
+import {deepEqual, noProxy, run} from "../../../../../utils/CommonUtils.jsx";
 import {useLocation} from "react-router-dom";
 import FileSort from "./FileSort.jsx";
 import VirtualList from "../../../../common/VirtualList.jsx";
@@ -172,35 +172,39 @@ function FileWindow(props) {
         }
     })
 
-    let header = (
-        <FileSort
-            setSort={(sort) => {
-                webDavState.sort = noProxy(sort)
-            }}
-            sort={sort}
-        >
-            <Checkbox
-                checked={selectedFiles.length === files.length && files.length > 0}
-                onChange={(event, checked) => {
-                    selectedFiles.length = 0
-                    if (checked) {
-                        selectedFiles.push(...files)
-                    }
-                }}/>
-        </FileSort>
-    )
 
-    if (singleFile !== false) {
-        header = null
-    }
-
-    let videoPreview = null
-
-    if (singleFile?.mimeType?.startsWith('video/')) {
-        videoPreview = (
-            <VideoPreview file={singleFile}/>
+    const header = run(() => {
+        if (singleFile !== false) {
+            return null
+        }
+        return (
+            <FileSort
+                setSort={(sort) => {
+                    webDavState.sort = noProxy(sort)
+                }}
+                sort={sort}
+            >
+                <Checkbox
+                    checked={selectedFiles.length === files.length && files.length > 0}
+                    onChange={(event, checked) => {
+                        selectedFiles.length = 0
+                        if (checked) {
+                            selectedFiles.push(...files)
+                        }
+                    }}/>
+            </FileSort>
         )
-    }
+    })
+
+
+    const videoPreview = run(() => {
+        if (singleFile?.mimeType?.startsWith('video/')) {
+            return (
+                <VideoPreview file={singleFile}/>
+            )
+        }
+        return null
+    })
 
     return (
         <Container className={"shadow"}>

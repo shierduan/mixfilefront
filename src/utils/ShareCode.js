@@ -152,7 +152,6 @@ function substringAfter(str, delimiter) {
 }
 
 
-
 export function decodeMixShareCode(str) {
     let result = hex2a(decodeHex(str)) || str
     return substringAfter(result, '://')

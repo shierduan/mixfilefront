@@ -1,6 +1,6 @@
 import {Button} from "@mui/material";
 import {UploadFileCard} from "./UploadFileCard.jsx";
-import {notifyMsg} from "../../CommonUtils.jsx";
+import {notifyMsg, run} from "../../CommonUtils.jsx";
 import {dialogList} from "../../DialogContainer.jsx";
 import {useSnapshot} from "valtio";
 import {showConfirmWindow} from "../../../components/common/ConfirmWindow.jsx";
@@ -33,44 +33,47 @@ function UploadDialog() {
         )
     }
 
-    let title = <h3>{uploaded} / {fileList.length} 个文件正在上传</h3>
-
-    if (complete) {
-        title = (
-            <h3 className={'animate__animated animate__bounceIn'}>
-                {fileList.length} 个文件全部上传成功
-            </h3>
-        )
-    }
-
-    if (errorCount > 0) {
-        title = (
-            <h3 className={'animate__animated animate__bounceIn'}>
-                {uploaded} / {fileList.length} 个文件上传中 {errorCount} 个文件上传失败
-            </h3>
-        )
-        if (complete) {
-            title = (
+    const title = run(() => {
+        if (errorCount > 0) {
+            if (complete) {
+                return (
+                    <h3 className={'animate__animated animate__bounceIn'}>
+                        {uploaded} / {fileList.length} 个文件上传成功 {errorCount} 个文件上传失败
+                    </h3>
+                )
+            }
+            return (
                 <h3 className={'animate__animated animate__bounceIn'}>
-                    {uploaded} / {fileList.length} 个文件上传成功 {errorCount} 个文件上传失败
+                    {uploaded} / {fileList.length} 个文件上传中 {errorCount} 个文件上传失败
                 </h3>
             )
         }
-    }
+        if (complete) {
+            return (
+                <h3 className={'animate__animated animate__bounceIn'}>
+                    {fileList.length} 个文件全部上传成功
+                </h3>
+            )
+        }
+        return <h3>{uploaded} / {fileList.length} 个文件正在上传</h3>
+    })
 
-    let cancelButton = null
 
-    if (!complete) {
-        cancelButton = (
-            <Button variant={'contained'} onClick={() => {
-                showConfirmWindow('确认取消上传?', () => {
-                    notifyMsg('上传已取消')
-                    cancelAllUpload()
-                    dialogList.pop()
-                })
-            }}>取消全部上传</Button>
-        )
-    }
+    const cancelButton = run(() => {
+        if (!complete) {
+            return (
+                <Button variant={'contained'} onClick={() => {
+                    showConfirmWindow('确认取消上传?', () => {
+                        notifyMsg('上传已取消')
+                        cancelAllUpload()
+                        dialogList.pop()
+                    })
+                }}>取消全部上传</Button>
+            )
+        }
+        return null
+    })
+
 
     return (
         <TransferDialog className={'shadow'}>

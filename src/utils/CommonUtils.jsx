@@ -15,6 +15,10 @@ export function sha256(message) {
     return md.digest().toHex();
 }
 
+export function run(func, ...args) {
+    return func(...args)
+}
+
 /**
  * gzip 压缩字符串或对象
  * @param {any} data - 要压缩的数据，支持对象、数组、字符串

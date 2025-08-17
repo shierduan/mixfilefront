@@ -1,8 +1,7 @@
 import {useLocation} from "react-router-dom";
 import styled from "styled-components";
 import {copyText, formatFileSize} from "../../../../../../utils/CommonUtils.jsx";
-import {PhotoProvider, PhotoView} from "react-photo-view";
-import DocPreview from "./DocPreview.jsx";
+import {FilePreview} from "./Previews.jsx";
 
 
 const Container = styled.div`
@@ -113,44 +112,12 @@ function SingleFilePage({file}) {
         },
     }
 
-    let filePreview = null
-
-    if (mimeType.startsWith("image/")) {
-        filePreview = (
-            <PhotoProvider maskClosable={true} maskOpacity={0.5}>
-                <PhotoView src={url}>
-                    <img src={url} alt={name}/>
-                </PhotoView>
-            </PhotoProvider>
-        )
-    }
-
-    //audio
-    if (mimeType.startsWith("audio/")) {
-        filePreview = (
-            <audio src={url} controls/>
-        )
-    }
-
-    if (mimeType === 'application/pdf') {
-        filePreview = (
-            <iframe src={url} width="100%" height="600px"></iframe>
-        )
-    }
-    const docSuffixes = ['.doc', '.docx']
-
-    if (docSuffixes.some((suffix) => name.endsWith(suffix))) {
-        filePreview = (
-            <DocPreview file={file}/>
-        )
-    }
-
 
     return (
         <Container>
             <div class="content">
                 <div className={'preview'}>
-                    {filePreview}
+                    <FilePreview file={file}/>
                 </div>
                 <div class="info-content shadow">
                     <h4 className={'no-select'}>文件信息</h4>

@@ -2,7 +2,7 @@ import {useSnapshot} from "valtio";
 import {Button} from "@mui/material";
 import {dialogList} from "../../DialogContainer.jsx";
 import {showConfirmWindow} from "../../../components/common/ConfirmWindow.jsx";
-import {notifyMsg} from "../../CommonUtils.jsx";
+import {notifyMsg, run} from "../../CommonUtils.jsx";
 import {cancelAllDownload, downloadFileList, downloadingCount, isDownloading} from "./FileDownload.js";
 import {TransferDialog} from "../components/TransferDialog.jsx";
 import {DownloadFileCard} from "./DownloadFileCard.jsx";
@@ -31,44 +31,48 @@ function DownloadDialog(props) {
         )
     }
 
-    let title = <h3>{downloading} / {fileList.length} 个文件正在下载</h3>
 
-    if (complete) {
-        title = (
-            <h3 className={'animate__animated animate__bounceIn'}>
-                {fileList.length} 个文件全部下载成功
-            </h3>
-        )
-    }
-
-    if (errorCount > 0) {
-        title = (
-            <h3 className={'animate__animated animate__bounceIn'}>
-                {downloading} / {fileList.length} 个文件下载中 {errorCount} 个文件下载失败
-            </h3>
-        )
-        if (complete) {
-            title = (
+    const title = run(() => {
+        if (errorCount > 0) {
+            if (complete) {
+                return (
+                    <h3 className={'animate__animated animate__bounceIn'}>
+                        {downloading} / {fileList.length} 个文件下载成功 {errorCount} 个文件下载失败
+                    </h3>
+                )
+            }
+            return (
                 <h3 className={'animate__animated animate__bounceIn'}>
-                    {downloading} / {fileList.length} 个文件下载成功 {errorCount} 个文件下载失败
+                    {downloading} / {fileList.length} 个文件下载中 {errorCount} 个文件下载失败
                 </h3>
             )
         }
-    }
+        if (complete) {
+            return (
+                <h3 className={'animate__animated animate__bounceIn'}>
+                    {fileList.length} 个文件全部下载成功
+                </h3>
+            )
+        }
+        return <h3>{downloading} / {fileList.length} 个文件正在下载</h3>
+    })
 
-    let cancelButton = null
 
-    if (!complete) {
-        cancelButton = (
-            <Button variant={'contained'} onClick={() => {
-                showConfirmWindow('确认取消下载?', () => {
-                    notifyMsg('下载已取消')
-                    cancelAllDownload()
-                    dialogList.pop()
-                })
-            }}>取消全部下载</Button>
-        )
-    }
+    const cancelButton = run(() => {
+        if (!complete) {
+            return (
+                <Button variant={'contained'} onClick={() => {
+                    showConfirmWindow('确认取消下载?', () => {
+                        notifyMsg('下载已取消')
+                        cancelAllDownload()
+                        dialogList.pop()
+                    })
+                }}>取消全部下载</Button>
+            )
+        }
+        return null
+    })
+
 
     return (
         <TransferDialog className={'shadow'}>

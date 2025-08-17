@@ -23,6 +23,7 @@ function DocPreview({file}) {
 
         }
     })
+
     return (
         <Container>
             {content}
