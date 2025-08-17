@@ -1,11 +1,12 @@
 import {apiAddress} from "../../config.js";
 import {Button} from "@mui/material";
-import {compareByName, copyText, formatFileSize} from "../../utils/CommonUtils.jsx";
+import {compareByName, formatFileSize} from "../../utils/CommonUtils.jsx";
 import {addDialog} from "../../utils/DialogContainer.jsx";
-import {resolveMixFile} from "../routes/home/components/FileResolve.jsx";
+import {resolveMixFile} from "../common/FileResolve.jsx";
 import {MixFileChip, MixFileDataContainer} from "./StyleContainers.jsx";
 import useApi from "../../hooks/useApi.jsx";
 import VirtualList from "../common/VirtualList.jsx";
+import {copyShareCode} from "../../utils/ShareCode.js";
 
 
 function FileListDialog({data}) {
@@ -60,7 +61,7 @@ function FileListDialog({data}) {
         <MixFileDataContainer className={'shadow'}>
             {content}
             <Button variant={'outlined'} onClick={() => {
-                copyText(`mf://${data}`)
+                copyShareCode(data)
             }}>复制分享码</Button>
             <Button variant={'contained'} onClick={() => {
                 window.open(`${apiAddress}api/download?s=${encodeURIComponent(data)}`)

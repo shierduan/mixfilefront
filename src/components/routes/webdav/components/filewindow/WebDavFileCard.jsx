@@ -18,6 +18,7 @@ import {showConfirmWindow} from "../../../../common/ConfirmWindow.jsx";
 import {selectFolder} from "../dialog/FolderSelect.jsx";
 import {webDavState} from "../../state/WebDavState.js";
 import {addDownloadFile} from "../../../../../utils/transfer/download/FileDownload.js";
+import {copyShareCode} from "../../../../../utils/ShareCode.js";
 
 
 const Container = styled(Link)`
@@ -109,7 +110,7 @@ function WebDavFileCard({file}) {
         size,
         href,
         url,
-        shareInfo,
+        etag,
         lastModified,
     } = file
 
@@ -177,7 +178,12 @@ function WebDavFileCard({file}) {
             async onClick() {
                 addDownloadFile(url, name)
             }
-        },)
+        }, {
+            label: "复制分享码",
+            async onClick() {
+                copyShareCode(etag)
+            }
+        })
     }
 
     const classes = []

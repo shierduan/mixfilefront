@@ -77,7 +77,7 @@ export function TopBar() {
     return <Container position="sticky" className={"animate__animated animate__slideInDown animate__faster"} sx={{
         zIndex: 10,
     }}>
-        <div class="content">
+        <div class="content no-select">
             <div className="logo">
                 <img src={logo} alt="logo"/>
             </div>

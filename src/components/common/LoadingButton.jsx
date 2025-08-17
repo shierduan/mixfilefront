@@ -6,6 +6,7 @@ function LoadingButton(props) {
     const {onClick, disabled, children} = props
 
     const [loading, setLoading] = useState(false);
+
     return (
         <Button
             {...props}

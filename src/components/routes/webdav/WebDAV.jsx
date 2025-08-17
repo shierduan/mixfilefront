@@ -6,6 +6,8 @@ import {addDialog} from "../../../utils/DialogContainer.jsx";
 import DragUpload from "./components/dragupload/DragUpload.jsx";
 import {useSnapshot} from "valtio";
 import {webDavState} from "./state/WebDavState.js";
+import FileResolve from "../../common/FileResolve.jsx";
+import FileImport from "./components/dialog/FileImport.jsx";
 
 const Container = styled.div`
     margin: 50px auto 10px auto;
@@ -38,6 +40,9 @@ function WebDav(props) {
             }
             addDialog(<DragUpload/>)
         }}>
+            <FileResolve callback={(code, file) => {
+                addDialog(<FileImport file={file} code={code}/>)
+            }}/>
             <NavBar/>
             <FileWindow/>
             <ActionBar/>

@@ -26,9 +26,5 @@ const DialogDiv = styled.div`
         white-space: nowrap;
         font-weight: bold;
     }
-
-    button {
-        font-size: max(.6rem, 14px);
-    }
 `
 export default DialogDiv

@@ -33,8 +33,4 @@ export const TransferFileCard = styled.div`
         font-weight: bold;
         text-overflow: ellipsis;
     }
-
-    button {
-        font-size: max(.6rem, 14px);
-    }
 `

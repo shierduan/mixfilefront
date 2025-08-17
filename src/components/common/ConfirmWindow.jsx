@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import {Button} from "@mui/material";
 import {addDialog, dialogList} from "../../utils/DialogContainer.jsx";
 import {useState} from "react";
+import LoadingButton from "./LoadingButton.jsx";
 
 const Container = styled.div`
     display: flex;
@@ -51,16 +51,27 @@ function ConfirmWindow({title, onConfirm, onCancel}) {
         <Container className={'shadow'}>
             <h4 className={'no-select'}>{title}</h4>
             <div class="content">
-                <Button variant={'contained'} disabled={disabled} onClick={async () => {
-                    setDisabled(true)
-                    dialogList.pop()
-                    await onConfirm?.()
-                }}>确认</Button>
-                <Button variant={'outlined'} disabled={disabled} onClick={async () => {
-                    setDisabled(true)
-                    dialogList.pop()
-                    await onCancel?.()
-                }}>取消</Button>
+                <LoadingButton
+                    variant={'contained'}
+                    disabled={disabled}
+                    onClick={async () => {
+                        setDisabled(true)
+                        dialogList.pop()
+                        await onConfirm?.()
+                    }}>
+                    确认<
+                /LoadingButton>
+
+                <LoadingButton
+                    variant={'outlined'}
+                    disabled={disabled}
+                    onClick={async () => {
+                        setDisabled(true)
+                        dialogList.pop()
+                        await onCancel?.()
+                    }}>
+                    取消
+                </LoadingButton>
             </div>
 
         </Container>

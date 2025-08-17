@@ -20,17 +20,26 @@ html {
     color: rgba(142, 42, 254, 0.44);
   }
 
+  .MuiButtonBase-root {
+    font-size: 14px;
+  }
+
+  .MuiFormLabel-root {
+    user-select: none;
+  }
+
+
   .MuiInputBase-input,
   .MuiFormLabel-root,
   .MuiTypography-root,
-  .MuiMenuItem-root,
-  {
+  .MuiMenuItem-root, {
     font-size: 16px
   }
 
   .MuiMenuItem-root {
     overflow: hidden;
-    max-width: 100px;
+    width: fit-content;
+    //max-width: 100px;
   }
 
 
@@ -39,7 +48,7 @@ html {
     height: 30px;
   }
 
-  .MuiTreeItem-label {
+  .MuiTreeItem-label, {
     font-size: 16px;
     user-select: none;
   }

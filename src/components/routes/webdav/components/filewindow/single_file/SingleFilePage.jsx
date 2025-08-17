@@ -2,6 +2,7 @@ import {useLocation} from "react-router-dom";
 import styled from "styled-components";
 import {copyText, formatFileSize} from "../../../../../../utils/CommonUtils.jsx";
 import {FilePreview} from "./preview/Previews.jsx";
+import {copyShareCode} from "../../../../../../utils/ShareCode.js";
 
 
 const Container = styled.div`
@@ -106,7 +107,7 @@ function SingleFilePage({file}) {
         },
         '分享码': {
             onClick() {
-                copyText(etag)
+                copyShareCode(etag)
             },
             value: etag
         },

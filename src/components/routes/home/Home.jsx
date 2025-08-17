@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import FileHistory from "./components/history/FileHistory.jsx";
-import FileResolve from "./components/FileResolve.jsx";
+import FileResolve from "../../common/FileResolve.jsx";
 import UploadArea from "../../../utils/transfer/upload/UploadArea.jsx";
 import {addUploadFile} from "../../../utils/transfer/upload/FileUpload.js";
 import {addDialog} from "../../../utils/DialogContainer.jsx";

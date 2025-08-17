@@ -1,9 +1,32 @@
 import {PhotoProvider, PhotoView} from "react-photo-view";
 import DocPreview from "./DocPreview.jsx";
 import TextPreview from "./TextPreview.jsx";
+import {Button} from "@mui/material";
+import {openFileListDialog} from "../../../../../../mixformats/FileList.jsx";
+import {openFileDavDialog} from "../../../../../../mixformats/DavList.jsx";
 
 export function FilePreview({file}) {
-    const {mimeType, name, url, size} = file
+    const {mimeType, name, url, size, etag} = file
+
+    if (name.endsWith(".mix_list")) {
+        return (
+            <Button variant={'contained'} onClick={() => {
+                openFileListDialog(etag)
+            }}>
+                查看文件列表
+            </Button>
+        )
+    }
+
+    if (name.endsWith(".mix_dav")) {
+        return (
+            <Button variant={'contained'} onClick={() => {
+                openFileDavDialog(etag)
+            }}>
+                查看文件存档
+            </Button>
+        )
+    }
 
     if (mimeType.startsWith("image/")) {
         return (

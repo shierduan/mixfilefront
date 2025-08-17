@@ -1,5 +1,5 @@
 import {useSnapshot} from "valtio";
-import {resolveMixFile} from "../../../components/routes/home/components/FileResolve.jsx";
+import {resolveMixFile} from "../../../components/common/FileResolve.jsx";
 import {TransferFileCard} from "../components/TransferFileCard.jsx";
 import {LinearProgressWithLabel} from "../components/Progress.jsx";
 

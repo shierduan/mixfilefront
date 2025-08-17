@@ -1,5 +1,7 @@
 import basex from 'base-x'
 import * as JsCrypto from "jscrypto";
+import {copyText, substringAfter} from "./CommonUtils.jsx";
+import {apiAddress} from "../config.js";
 
 const replaceMap = {}
 
@@ -57,7 +59,7 @@ function bufferToHex(buffer) {
 const keyHex = "202cb962ac59075b964b07152d234b70"
 
 // 解密函数
-async function decryptAESGCM(encryptedData, iv, authTag) {
+function decryptAESGCM(encryptedData, iv, authTag) {
     try {
         // 1. 转换 key
         const key = JsCrypto.Hex.parse(keyHex);
@@ -122,14 +124,14 @@ function extractIvAndData(dataBuffer) {
 }
 
 
-export async function decodeMixFileRaw(data) {
+export function decodeMixFileRaw(data) {
     data = decodeMixShareCode(data)
     const encData = mixBase.decode(data)
     if (!encData) {
         return null
     }
     const {iv, encrypted, authTag} = extractIvAndData(encData);
-    const dData = await decryptAESGCM(encrypted, iv, authTag)
+    const dData = decryptAESGCM(encrypted, iv, authTag)
     try {
         return JSON.parse(dData)
     } catch (e) {
@@ -139,10 +141,10 @@ export async function decodeMixFileRaw(data) {
 
 window.mixfile = decodeMixFile
 
-export async function decodeMixFile(shareInfo) {
+export function decodeMixFile(shareInfo) {
     try {
         const code = decodeMixShareCode(shareInfo.trim())
-        const {f, s, h, u, k, r} = await decodeMixFileRaw(code)
+        const {f, s, h, u, k, r} = decodeMixFileRaw(code)
         return {
             fileName: f,
             fileSize: s,
@@ -157,16 +159,18 @@ export async function decodeMixFile(shareInfo) {
     return {}
 }
 
-function substringAfter(str, delimiter) {
-    const index = str.indexOf(delimiter);
-    if (index === -1) return str; // 没有找到分隔符返回空字符串
-    return str.substring(index + delimiter.length);
-}
-
-
 export function decodeMixShareCode(str) {
+    str = str.trim()
     let result = hex2a(decodeHex(str)) || str
     return substringAfter(result, '://')
 }
 
+export function getShareCodeUrl(code) {
+    const {fileName} = decodeMixFile(code)
+    return `${apiAddress}api/download/${encodeURIComponent(fileName)}?s=${decodeMixShareCode(code)}`
+}
+
+export function copyShareCode(code) {
+    copyText(`mf://${decodeMixShareCode(code)}`)
+}
 

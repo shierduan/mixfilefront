@@ -154,6 +154,13 @@ export function getURLParam(key) {
     return url.searchParams.get(key);
 }
 
+export function substringAfter(str, delimiter) {
+    const index = str.indexOf(delimiter);
+    if (index === -1) return str; // 没有找到分隔符返回空字符串
+    return str.substring(index + delimiter.length);
+}
+
+
 export function encodeUrlPath(path) {
     return path
         .split('/')

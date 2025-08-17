@@ -6,6 +6,7 @@ import {addDialog} from "../../../utils/DialogContainer.jsx";
 import UploadDialog from "../../../utils/transfer/upload/UploadDialog.jsx";
 import {downloadFileList, downloadingCount} from "../../../utils/transfer/download/FileDownload.js";
 import DownloadDialog from "../../../utils/transfer/download/DownloadDialog.jsx";
+import {run} from "../../../utils/CommonUtils.jsx";
 
 const Container = styled.div`
     > .content {
@@ -42,41 +43,45 @@ function TransferTipBar(props) {
     const uploadCount = uploadingCount()
     const downloadCount = downloadingCount()
 
-    let tip = null
 
-    if (uploadCount > 0 || downloadCount > 0) {
+    const tip = run(() => {
+        if (uploadCount > 0 || downloadCount > 0) {
+            const uploadTip = run(() => {
+                if (uploadCount > 0) {
+                    return (
+                        <div class="upload" onClick={() => {
+                            addDialog(<UploadDialog/>)
+                        }}>
+                            {uploadCount} 个文件正在上传中
+                        </div>
+                    )
+                }
+                return null
+            })
 
-        let uploadTip = null
+            const downloadTip = run(() => {
+                if (downloadCount > 0) {
+                    return (
+                        <div class="upload" onClick={() => {
+                            addDialog(<DownloadDialog/>)
+                        }}>
+                            {downloadCount} 个文件正在下载中
+                        </div>
+                    )
+                }
+                return null
+            })
 
-        let downloadTip = null
-
-        if (uploadCount > 0) {
-            uploadTip = (
-                <div class="upload" onClick={() => {
-                    addDialog(<UploadDialog/>)
-                }}>
-                    {uploadCount} 个文件正在上传中
+            return (
+                <div class="content shadow animate__animated animate__slideInDown">
+                    <CircularProgress size={20}/>
+                    {uploadTip} {downloadTip}
                 </div>
             )
         }
+        return null
+    })
 
-        if (downloadCount > 0) {
-            downloadTip = (
-                <div class="upload" onClick={() => {
-                    addDialog(<DownloadDialog/>)
-                }}>
-                    {downloadCount} 个文件正在下载中
-                </div>
-            )
-        }
-
-        tip = (
-            <div class="content shadow animate__animated animate__slideInDown">
-                <CircularProgress size={20}/>
-                {uploadTip} {downloadTip}
-            </div>
-        )
-    }
 
     return (
         <Container>
