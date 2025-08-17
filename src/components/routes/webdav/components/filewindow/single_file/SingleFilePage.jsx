@@ -1,7 +1,7 @@
 import {useLocation} from "react-router-dom";
 import styled from "styled-components";
 import {copyText, formatFileSize} from "../../../../../../utils/CommonUtils.jsx";
-import {FilePreview} from "./Previews.jsx";
+import {FilePreview} from "./preview/Previews.jsx";
 
 
 const Container = styled.div`

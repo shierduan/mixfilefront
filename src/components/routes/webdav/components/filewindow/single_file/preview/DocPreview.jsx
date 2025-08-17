@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import useApi from "../../../../../../hooks/useApi.jsx";
+import useApi from "../../../../../../../hooks/useApi.jsx";
 import * as docx from "docx-preview";
 
 const Container = styled.div`
@@ -11,7 +11,7 @@ const Container = styled.div`
 
 function DocPreview({file}) {
 
-    const {content} = useApi({
+    useApi({
         path: file.url,
         config: {
             responseType: "blob",
@@ -19,14 +19,10 @@ function DocPreview({file}) {
         callback: async (data) => {
             await docx.renderAsync(data, document.querySelector('#doc-preview-content'))
         },
-        content(data) {
-
-        }
     })
 
     return (
         <Container>
-            {content}
             <div id={'doc-preview-content'}>
 
             </div>
