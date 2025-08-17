@@ -1,18 +1,17 @@
-import moment from "moment";
 import {proxy, ref} from "valtio";
 import {watch} from "valtio/utils";
 import copy from "copy-to-clipboard";
 import toast from "react-hot-toast";
 import {CircularProgress} from "@mui/material";
-import forge from "node-forge";
+
 import {gzipSync, strToU8} from "fflate";
+import dayjs from "dayjs";
+import * as JsCrypto from "jscrypto";
 
 const debounceMap = {}
 
 export function sha256(message) {
-    const md = forge.md.sha256.create();
-    md.update(message, "utf8");
-    return md.digest().toHex();
+    return JsCrypto.SHA256.hash(message).toString(JsCrypto.Hex);
 }
 
 export function run(func, ...args) {
@@ -70,8 +69,8 @@ export function formatFileSize(bytes, mb) {
     return `${formattedSize} ${sizes[i]}`;
 }
 
-export function getFormattedDate(date) {
-    return moment(date).format('YYYY-MM-DD HH:mm:ss');
+export function getFormattedDate(date = new Date()) {
+    return dayjs(date).format('YYYY-MM-DD HH:mm:ss');
 }
 
 export function noProxy(obj) {

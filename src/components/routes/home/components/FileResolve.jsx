@@ -1,11 +1,11 @@
 import styled from "styled-components";
 import {useState} from "react";
 import {Button, TextField} from "@mui/material";
-import {decodeMixFile, decodeMixShareCode} from "../../../../utils/ShareCode.js";
+import {decodeMixFile} from "../../../../utils/ShareCode.js";
 import {openFileListDialog} from "../../../mixformats/FileList.jsx";
 import {addDialog} from "../../../../utils/DialogContainer.jsx";
 import FileDialog from "./dialog/FileDialog.jsx";
-import {notifyError} from "../../../../utils/CommonUtils.jsx";
+import {notifyError, run} from "../../../../utils/CommonUtils.jsx";
 import {openFileDavDialog} from "../../../mixformats/DavList.jsx";
 
 const Container = styled.div`
@@ -29,24 +29,24 @@ const Container = styled.div`
 
 `
 
-export function resolveMixFile(input) {
-    let code = input.trim()
-    code = decodeMixShareCode(code)
-    let {fileName, fileSize} = decodeMixFile(code)
-    if (!fileName) {
-        return notifyError('解密分享码失败');
-    }
-    if (fileName.endsWith(".mix_list")) {
-        return openFileListDialog(code)
-    }
-    if (fileName.endsWith(".mix_dav")) {
-        return openFileDavDialog(code)
-    }
-    addDialog(<FileDialog data={{
-        name: fileName,
-        size: fileSize,
-        shareInfoData: code
-    }}/>)
+export function resolveMixFile(code) {
+    run(async () => {
+        let {fileName, fileSize} = await decodeMixFile(code)
+        if (!fileName) {
+            return notifyError('解密分享码失败');
+        }
+        if (fileName.endsWith(".mix_list")) {
+            return openFileListDialog(code)
+        }
+        if (fileName.endsWith(".mix_dav")) {
+            return openFileDavDialog(code)
+        }
+        addDialog(<FileDialog data={{
+            name: fileName,
+            size: fileSize,
+            shareInfoData: code
+        }}/>)
+    })
 }
 
 function FileResolve(props) {

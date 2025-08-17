@@ -1,5 +1,5 @@
 import basex from 'base-x'
-import forge from 'node-forge'
+import * as JsCrypto from "jscrypto";
 
 const replaceMap = {}
 
@@ -27,7 +27,7 @@ function hex2a(hexx) {
     const hex = hexx.toString();//force conversion
     let str = '';
     for (let i = 0; i < hex.length; i += 2)
-        str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+        str += String.fromCharCode(parseInt(hex.substring(i, 2), 16));
     return str;
 }
 
@@ -36,7 +36,7 @@ const mixBase = basex('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTU
 function hexToArrayBuffer(hex) {
     const bytes = new Uint8Array(hex.length / 2);
     for (let i = 0; i < hex.length; i += 2) {
-        bytes[i / 2] = parseInt(hex.substr(i, 2), 16);
+        bytes[i / 2] = parseInt(hex.substring(i, 2), 16);
     }
     return bytes.buffer;
 }
@@ -54,39 +54,50 @@ function bufferToHex(buffer) {
 }
 
 
+const keyHex = "202cb962ac59075b964b07152d234b70"
+
 // 解密函数
-function decryptAESGCM(encryptedData, iv, authTag) {
+async function decryptAESGCM(encryptedData, iv, authTag) {
     try {
+        // 1. 转换 key
+        const key = JsCrypto.Hex.parse(keyHex);
 
-        encryptedData = forge.util.createBuffer(encryptedData)
-        iv = forge.util.createBuffer(iv)
-        authTag = forge.util.createBuffer(authTag)
+        // 2. 转换 iv 和密文
+        const ivParsed = JsCrypto.Hex.parse(bufferToHex(iv));
+        const cipherParsed = JsCrypto.Hex.parse(bufferToHex(encryptedData));
 
+        const tagLength = authTag.length;
 
-        // 将输入数据转换为 forge 缓冲区格式
-        const keyBytes = forge.util.hexToBytes('202cb962ac59075b964b07152d234b70'); // 密钥 (16 字节 = 128 位)
+        // 3. 解密
+        const decryptedData = JsCrypto.AES.decrypt(
+            {
+                cipherText: cipherParsed
+            },
+            key,
+            {
+                iv: ivParsed,
+                padding: JsCrypto.pad.NoPadding,
+                mode: JsCrypto.mode.GCM
+            }
+        );
 
+        // 4. 验证认证标签
+        const computedTag = JsCrypto.mode.GCM.mac(
+            JsCrypto.AES,
+            key,
+            ivParsed,
+            null,        // 如果有 AAD，可传 Uint8Array 或字符串
+            cipherParsed,
+            tagLength
+        );
 
-        // 创建 AES-GCM 解密器
-        const decipher = forge.cipher.createDecipher('AES-GCM', keyBytes);
-
-        // 设置 IV
-        decipher.start({
-            iv: iv,
-            tag: authTag, // GCM 模式需要提供认证标签,
-            tagLength: 96
-        });
-
-        // 解密密文
-        decipher.update(forge.util.createBuffer(encryptedData));
-
-        // 完成解密并验证
-        const pass = decipher.finish();
-
-        if (pass) {
-            // 解密成功，返回明文
-            return decipher.output.toString('utf8');
+        // // 转换 authTag 为 hex 字符串比较
+        const authTagHex = bufferToHex(authTag)
+        if (computedTag.toString() !== authTagHex) {
+            throw new Error("认证标签验证失败！");
         }
+        // 5. 返回明文字符串
+        return decryptedData.toString(JsCrypto.Utf8);
     } catch (error) {
         console.error("解密失败:", error);
         throw error;
@@ -111,14 +122,14 @@ function extractIvAndData(dataBuffer) {
 }
 
 
-export function decodeMixFileRaw(data) {
+export async function decodeMixFileRaw(data) {
     data = decodeMixShareCode(data)
     const encData = mixBase.decode(data)
     if (!encData) {
         return null
     }
     const {iv, encrypted, authTag} = extractIvAndData(encData);
-    const dData = decryptAESGCM(encrypted, iv, authTag)
+    const dData = await decryptAESGCM(encrypted, iv, authTag)
     try {
         return JSON.parse(dData)
     } catch (e) {
@@ -128,9 +139,10 @@ export function decodeMixFileRaw(data) {
 
 window.mixfile = decodeMixFile
 
-export function decodeMixFile(shareInfo) {
+export async function decodeMixFile(shareInfo) {
     try {
-        const {f, s, h, u, k, r} = decodeMixFileRaw(shareInfo)
+        const code = decodeMixShareCode(shareInfo.trim())
+        const {f, s, h, u, k, r} = await decodeMixFileRaw(code)
         return {
             fileName: f,
             fileSize: s,
