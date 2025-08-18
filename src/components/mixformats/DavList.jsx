@@ -44,13 +44,15 @@ function FileDavDialog({data}) {
     }, [state.davFile]);
 
 
-    let topButton = <></>
+    const topButton = run(() => {
+        if (state.pathHistory.length > 0) {
+            return (<Button variant={'outlined'} onClick={() => {
+                state.currentFile = state.pathHistory.pop()
+            }}>上一级</Button>)
+        }
+        return null
+    })
 
-    if (state.pathHistory.length > 0) {
-        topButton = <Button variant={'outlined'} onClick={() => {
-            state.currentFile = state.pathHistory.pop()
-        }}>上一级</Button>
-    }
 
     const {content} = useApi({
         path: `api/download?s=${data}&response-content-encoding=gzip`,

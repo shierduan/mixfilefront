@@ -83,7 +83,7 @@ export async function uploadFile(
     upFile.tip = `上传中: 0/${formatFileSize(file.size)}`
 
     try {
-        let response = await client.put(url, file, {
+        const response = await client.put(url, file, {
             onUploadProgress: progressEvent => {
                 const {loaded, total} = progressEvent
                 upFile.tip = `上传中: ${formatFileSize(loaded, true)}/${formatFileSize(total)}`

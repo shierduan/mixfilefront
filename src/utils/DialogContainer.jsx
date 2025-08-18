@@ -19,7 +19,7 @@ const Container = styled(Backdrop)`
 
 export function DialogContainer(props) {
 
-    let dialogState = useSnapshot(dialogList)
+    const dialogState = useSnapshot(dialogList)
 
     if (dialogState.length === 0) {
         return null

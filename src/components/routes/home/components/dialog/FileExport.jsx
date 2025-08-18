@@ -37,7 +37,7 @@ function FileExportDialog({fileList}) {
                     })
                     const shareData = compressGzip(JSON.stringify(dataList))
                     const uploadAddress = `${apiAddress}api/upload?name=${encodeURIComponent(`${listName}.mix_list`)}&add=false`
-                    let response = await client.put(uploadAddress, shareData)
+                    const response = await client.put(uploadAddress, shareData)
                     openFileListDialog(response.data)
                 }}>
                 确认导出<

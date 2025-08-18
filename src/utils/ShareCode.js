@@ -135,7 +135,7 @@ export function decodeMixFileRaw(data) {
     try {
         return JSON.parse(dData)
     } catch (e) {
-        console.log(e)
+        console.error(e)
     }
 }
 

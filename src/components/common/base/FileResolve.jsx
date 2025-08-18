@@ -30,7 +30,7 @@ const Container = styled.div`
 `
 
 export function resolveMixFile(code, file) {
-    let {fileName, fileSize} = file ?? decodeMixFile(code)
+    const {fileName, fileSize} = file ?? decodeMixFile(code)
     if (!fileName) {
         return notifyError('解密分享码失败');
     }
@@ -57,9 +57,9 @@ function FileResolve({callback = resolveMixFile}) {
                 setInput(event.target.value)
             }}/>
             <Button variant={'contained'} onClick={async () => {
-                let code = input.trim()
+                const code = input.trim()
                 run(async () => {
-                    let file = decodeMixFile(code)
+                    const file = decodeMixFile(code)
                     if (!file?.fileName) {
                         return notifyError('解密分享码失败');
                     }

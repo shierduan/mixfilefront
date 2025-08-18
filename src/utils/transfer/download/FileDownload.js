@@ -79,7 +79,7 @@ export async function downloadFile(
     dFile.tip = `开始下载...`
 
     try {
-        let response = await client.get(url, {
+        const response = await client.get(url, {
             onDownloadProgress: progressEvent => {
                 const {loaded, total} = progressEvent
                 dFile.tip = `下载中: ${formatFileSize(loaded, true)}/${formatFileSize(total)}`

@@ -4,7 +4,8 @@ import {
     getFormattedDate,
     getRoutePath,
     notifyMsg,
-    notifyPromise
+    notifyPromise,
+    run
 } from "../../../../../utils/CommonUtils.jsx";
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import FolderCopyIcon from '@mui/icons-material/FolderCopy';
@@ -114,11 +115,12 @@ function WebDavFileCard({file}) {
         lastModified,
     } = file
 
-    let fileSize = null
-
-    if (!isFolder) {
-        fileSize = <div>{formatFileSize(size)}</div>
-    }
+    const fileSize = run(() => {
+        if (!isFolder) {
+            return <div>{formatFileSize(size)}</div>
+        }
+        return null
+    })
 
 
     useSnapshot(selectedFiles)

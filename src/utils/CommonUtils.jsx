@@ -51,7 +51,7 @@ export function notifyPromise(promise, msg, options) {
 }
 
 export function getRoutePath() {
-    return window.location.hash.substring(1)
+    return decodeURIComponent(window.location.hash.substring(1))
 }
 
 export async function sleep(ms) {

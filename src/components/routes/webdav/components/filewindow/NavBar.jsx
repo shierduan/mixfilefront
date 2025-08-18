@@ -2,6 +2,7 @@ import {Breadcrumbs} from "@mui/material";
 import HomeIcon from '@mui/icons-material/Home';
 import styled from "styled-components";
 import {Link, useLocation} from "react-router-dom";
+import {run} from "../../../../../utils/CommonUtils.jsx";
 
 const Container = styled.div`
     width: 100%;
@@ -45,13 +46,18 @@ function NavBar(props) {
 
     const crumbs = segments.map((segment, index) => {
         lastSegment += `/${segment}`
-        let content = decodeURIComponent(segment)
-        if (index === 0) {
-            content = <>
-                <HomeIcon fontSize="inherit"/>
-                ROOT
-            </>
-        }
+        const content = run(() => {
+            if (index === 0) {
+                return (
+                    <>
+                        <HomeIcon fontSize="inherit"/>
+                        ROOT
+                    </>
+                )
+            }
+            return decodeURIComponent(segment)
+        })
+
         return <Link
             to={lastSegment}
             key={index}
