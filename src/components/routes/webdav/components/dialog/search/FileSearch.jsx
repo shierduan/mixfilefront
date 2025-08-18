@@ -1,10 +1,9 @@
 import styled from "styled-components";
 import DialogDiv from "../../../../../common/base/DialogDiv.jsx";
 import useProxyState from "../../../../../../hooks/useProxyState.js";
-import {TextField} from "@mui/material";
-import LoadingButton from "../../../../../common/base/LoadingButton.jsx";
+import {Button, TextField} from "@mui/material";
 import {downloadFileArchive} from "../../../utils/WebDavUtils.jsx";
-import {getRoutePath, notifyError} from "../../../../../../utils/CommonUtils.jsx";
+import {getRoutePath, notifyError, notifyPromise} from "../../../../../../utils/CommonUtils.jsx";
 import {addDialog} from "../../../../../../utils/DialogContainer.jsx";
 import SearchResult from "./SearchResult.jsx";
 
@@ -56,7 +55,20 @@ function FileSearch(props) {
 
     const state = useProxyState({
         name: '',
+        searching: false
     })
+
+    async function doSearch() {
+        state.searching = true
+        try {
+            const results = await notifyPromise(searchFiles(name), '搜索中')
+            addDialog(<SearchResult files={results}/>)
+        } catch (error) {
+            notifyError(`搜索失败,错误: ${error?.message}`)
+        } finally {
+            state.searching = false;
+        }
+    }
 
     const {name} = state
 
@@ -65,12 +77,7 @@ function FileSearch(props) {
             <h4 className={'no-select'}>搜索文件</h4>
             <form onSubmit={async (event) => {
                 event.preventDefault()
-                try {
-                    const results = await searchFiles(name)
-                    addDialog(<SearchResult files={results}/>)
-                } catch (error) {
-                    notifyError(`搜索失败,错误: ${error?.message}`)
-                }
+                await doSearch()
             }}>
                 <TextField
                     label={'关键词'}
@@ -80,13 +87,13 @@ function FileSearch(props) {
                         state.name = event.target.value.trim()
                     }}/>
                 <p>将会在当前目录进行嵌套深度搜索</p>
-                <LoadingButton
+                <Button
                     variant={'contained'}
                     type="submit"
-                    disabled={name.length === 0}
+                    disabled={name.length === 0 || state.searching}
                 >
                     搜索
-                </LoadingButton>
+                </Button>
             </form>
         </Container>
     );
