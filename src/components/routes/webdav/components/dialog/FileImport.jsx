@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import DialogDiv from "../../../../common/DialogDiv.jsx";
+import DialogDiv from "../../../../common/base/DialogDiv.jsx";
 import {createFolder} from "../../utils/WebDavUtils.jsx";
 import {
     formatFileSize,
@@ -9,12 +9,12 @@ import {
     run,
     substringAfter
 } from "../../../../../utils/CommonUtils.jsx";
-import LoadingButton from "../../../../common/LoadingButton.jsx";
+import LoadingButton from "../../../../common/base/LoadingButton.jsx";
 import {dialogList} from "../../../../../utils/DialogContainer.jsx";
 import {openFileListDialog} from "../../../../mixformats/FileList.jsx";
 import {openFileDavDialog} from "../../../../mixformats/DavList.jsx";
 import {Button} from "@mui/material";
-import {showConfirmWindow} from "../../../../common/ConfirmWindow.jsx";
+import {showConfirmWindow} from "../../../../common/base/ConfirmWindow.jsx";
 import {client} from "../../../../../config.js";
 import {decodeMixFile, getShareCodeUrl} from "../../../../../utils/ShareCode.js";
 
@@ -108,7 +108,9 @@ function FileImport({file}) {
                     await notifyPromise(importFile(code), '导入文件')
                     notifyMsg('导入成功')
                     dialogList.pop()
-                }}>导入文件</LoadingButton>
+                }}>
+                导入文件
+            </LoadingButton>
         </Container>
     );
 }

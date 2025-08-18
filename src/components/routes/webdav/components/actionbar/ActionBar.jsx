@@ -10,7 +10,7 @@ import {apiAddress} from "../../../../../config.js";
 import {copyText, getRoutePath, notifyMsg, notifyPromise} from "../../../../../utils/CommonUtils.jsx";
 import {useSnapshot} from "valtio";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import {showConfirmWindow} from "../../../../common/ConfirmWindow.jsx";
+import {showConfirmWindow} from "../../../../common/base/ConfirmWindow.jsx";
 import FolderCopyIcon from "@mui/icons-material/FolderCopy";
 import {selectFolder} from "../dialog/FolderSelect.jsx";
 import DriveFileMoveIcon from '@mui/icons-material/DriveFileMove';
@@ -21,6 +21,8 @@ import {addDownloadFile} from "../../../../../utils/transfer/download/FileDownlo
 import DownloadDialog from "../../../../../utils/transfer/download/DownloadDialog.jsx";
 import ShareIcon from '@mui/icons-material/Share';
 import FileShare from "../dialog/FileShare.jsx";
+import SearchIcon from '@mui/icons-material/Search';
+import FileSearch from "../dialog/search/FileSearch.jsx";
 
 
 const Container = styled.div`
@@ -163,6 +165,16 @@ const fabs = [
                 return
             }
             addDialog(<FileShare/>)
+        }
+    },
+    {
+        name: '搜索文件',
+        get disabled() {
+            return !!webDavState.singleFile
+        },
+        icon: <SearchIcon/>,
+        async onClick() {
+            addDialog(<FileSearch/>)
         }
     }
 ]

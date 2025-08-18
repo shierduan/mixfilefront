@@ -2,10 +2,10 @@ import {TextField} from "@mui/material";
 import {useState} from "react";
 import {useLocation} from "react-router-dom";
 import {dialogList} from "../../../../../utils/DialogContainer.jsx";
-import DialogDiv from "../../../../common/DialogDiv.jsx";
+import DialogDiv from "../../../../common/base/DialogDiv.jsx";
 import {notifyMsg} from "../../../../../utils/CommonUtils.jsx";
 import {createFolder} from "../../utils/WebDavUtils.jsx";
-import LoadingButton from "../../../../common/LoadingButton.jsx";
+import LoadingButton from "../../../../common/base/LoadingButton.jsx";
 
 function NewFolder(props) {
 

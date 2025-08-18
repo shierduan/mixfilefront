@@ -6,7 +6,7 @@ import {addDialog} from "../../../utils/DialogContainer.jsx";
 import DragUpload from "./components/dragupload/DragUpload.jsx";
 import {useSnapshot} from "valtio";
 import {webDavState} from "./state/WebDavState.js";
-import FileResolve from "../../common/FileResolve.jsx";
+import FileResolve from "../../common/base/FileResolve.jsx";
 import FileImport from "./components/dialog/FileImport.jsx";
 
 const Container = styled.div`

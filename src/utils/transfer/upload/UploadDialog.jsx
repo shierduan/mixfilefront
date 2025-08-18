@@ -3,7 +3,7 @@ import {UploadFileCard} from "./UploadFileCard.jsx";
 import {notifyMsg, run} from "../../CommonUtils.jsx";
 import {dialogList} from "../../DialogContainer.jsx";
 import {useSnapshot} from "valtio";
-import {showConfirmWindow} from "../../../components/common/ConfirmWindow.jsx";
+import {showConfirmWindow} from "../../../components/common/base/ConfirmWindow.jsx";
 import {cancelAllUpload, isUploading, uploadFileList} from "./FileUpload.js";
 import {TransferDialog} from "../components/TransferDialog.jsx";
 

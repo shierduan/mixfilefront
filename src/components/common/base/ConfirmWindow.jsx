@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import {addDialog, dialogList} from "../../utils/DialogContainer.jsx";
+import {addDialog, dialogList} from "../../../utils/DialogContainer.jsx";
 import {useState} from "react";
 import LoadingButton from "./LoadingButton.jsx";
 

@@ -1,12 +1,12 @@
 import {useEffect} from "react";
 import {apiAddress} from "../../config.js";
 import {Button} from "@mui/material";
-import {formatFileSize} from "../../utils/CommonUtils.jsx";
+import {formatFileSize, run} from "../../utils/CommonUtils.jsx";
 import {addDialog} from "../../utils/DialogContainer.jsx";
-import {resolveMixFile} from "../common/FileResolve.jsx";
+import {resolveMixFile} from "../common/base/FileResolve.jsx";
 import {MixFileChip, MixFileDataContainer} from "./StyleContainers.jsx";
 import useApi from "../../hooks/useApi.jsx";
-import VirtualList from "../common/VirtualList.jsx";
+import VirtualList from "../common/base/VirtualList.jsx";
 import useProxyState from "../../hooks/useProxyState.js";
 import {FILE_SORTS} from "../routes/webdav/state/WebDavState.js";
 import {copyShareCode} from "../../utils/ShareCode.js";
@@ -84,10 +84,13 @@ function FileDavDialog({data}) {
 
                             const {name, size, time, shareInfoData, isFolder} = file
 
-                            let description = <p>{formatFileSize(size)}</p>
-                            if (isFolder) {
-                                description = <p>文件夹</p>
-                            }
+                            const description = run(() => {
+                                if (isFolder) {
+                                    return <p>文件夹</p>
+                                }
+                                return <p>{formatFileSize(size)}</p>
+                            })
+
 
                             return (
                                 <MixFileChip key={key} style={style} onClick={() => {

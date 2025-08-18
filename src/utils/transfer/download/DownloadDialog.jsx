@@ -1,7 +1,7 @@
 import {useSnapshot} from "valtio";
 import {Button} from "@mui/material";
 import {dialogList} from "../../DialogContainer.jsx";
-import {showConfirmWindow} from "../../../components/common/ConfirmWindow.jsx";
+import {showConfirmWindow} from "../../../components/common/base/ConfirmWindow.jsx";
 import {notifyMsg, run} from "../../CommonUtils.jsx";
 import {cancelAllDownload, downloadFileList, downloadingCount, isDownloading} from "./FileDownload.js";
 import {TransferDialog} from "../components/TransferDialog.jsx";

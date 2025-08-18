@@ -9,11 +9,11 @@ export default defineConfig({
     build: {
         rollupOptions: {
             plugins: [
-                visualizer({
-                    filename: 'dist/stats.html', // 输出分析报告
-                    open: true,                 // 构建后自动打开
-                    gzipSize: true,             // 显示gzip大小
-                })
+                // visualizer({
+                //     filename: 'dist/stats.html', // 输出分析报告
+                //     open: true,                 // 构建后自动打开
+                //     gzipSize: true,             // 显示gzip大小
+                // })
             ]
         }
     },

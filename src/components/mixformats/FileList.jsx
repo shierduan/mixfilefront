@@ -2,10 +2,10 @@ import {apiAddress} from "../../config.js";
 import {Button} from "@mui/material";
 import {compareByName, formatFileSize} from "../../utils/CommonUtils.jsx";
 import {addDialog} from "../../utils/DialogContainer.jsx";
-import {resolveMixFile} from "../common/FileResolve.jsx";
+import {resolveMixFile} from "../common/base/FileResolve.jsx";
 import {MixFileChip, MixFileDataContainer} from "./StyleContainers.jsx";
 import useApi from "../../hooks/useApi.jsx";
-import VirtualList from "../common/VirtualList.jsx";
+import VirtualList from "../common/base/VirtualList.jsx";
 import {copyShareCode} from "../../utils/ShareCode.js";
 
 

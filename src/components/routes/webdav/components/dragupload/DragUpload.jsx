@@ -1,4 +1,4 @@
-import DialogDiv from "../../../../common/DialogDiv.jsx";
+import DialogDiv from "../../../../common/base/DialogDiv.jsx";
 import UploadArea from "../../../../../utils/transfer/upload/UploadArea.jsx";
 import {addUploadFile} from "../../../../../utils/transfer/upload/FileUpload.js";
 import {apiAddress} from "../../../../../config.js";

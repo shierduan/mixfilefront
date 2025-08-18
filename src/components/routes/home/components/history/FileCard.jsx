@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import {resolveMixFile} from "../../../../common/FileResolve.jsx";
+import {resolveMixFile} from "../../../../common/base/FileResolve.jsx";
 import {formatFileSize} from "../../../../../utils/CommonUtils.jsx";
 
 const CardContainer = styled.div`

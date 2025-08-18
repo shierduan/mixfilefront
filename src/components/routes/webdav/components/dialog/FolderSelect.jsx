@@ -1,4 +1,4 @@
-import DialogDiv from "../../../../common/DialogDiv.jsx";
+import DialogDiv from "../../../../common/base/DialogDiv.jsx";
 import {SimpleTreeView, TreeItem} from "@mui/x-tree-view";
 import styled from "styled-components";
 import useApi from "../../../../../hooks/useApi.jsx";
@@ -128,13 +128,21 @@ function FolderSelect({callback}) {
                     label="覆盖文件"
                 />
                 <div class="actions">
-                    <Button variant={'contained'} onClick={async () => {
-                        dialogList.pop()
-                        callback?.(state)
-                    }}>确认</Button>
-                    <Button variant={'outlined'} onClick={async () => {
-                        dialogList.pop()
-                    }}>取消</Button>
+                    <Button
+                        variant={'contained'}
+                        onClick={async () => {
+                            dialogList.pop()
+                            callback?.(state)
+                        }}>
+                        确认
+                    </Button>
+                    <Button
+                        variant={'outlined'}
+                        onClick={async () => {
+                            dialogList.pop()
+                        }}>
+                        取消
+                    </Button>
                 </div>
             </div>
         </Container>

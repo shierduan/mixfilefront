@@ -5,7 +5,7 @@ import WebDavFileCard from "./WebDavFileCard.jsx";
 import {deepEqual, noProxy, run} from "../../../../../utils/CommonUtils.jsx";
 import {useLocation} from "react-router-dom";
 import FileSort from "./FileSort.jsx";
-import VirtualList from "../../../../common/VirtualList.jsx";
+import VirtualList from "../../../../common/base/VirtualList.jsx";
 import {useSnapshot} from "valtio";
 import {Checkbox} from "@mui/material";
 import useDeepCompareEffect from "../../../../../hooks/useDeepCompareEffect.js";

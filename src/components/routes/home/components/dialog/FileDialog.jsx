@@ -1,6 +1,6 @@
 import {Button} from "@mui/material";
 import {copyText, formatFileSize} from "../../../../../utils/CommonUtils.jsx";
-import DialogDiv from "../../../../common/DialogDiv.jsx";
+import DialogDiv from "../../../../common/base/DialogDiv.jsx";
 import {copyShareCode, getShareCodeUrl} from "../../../../../utils/ShareCode.js";
 
 

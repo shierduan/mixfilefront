@@ -40,6 +40,12 @@ export async function copyFile(path, destination, overwrite = false) {
     })
 }
 
+export async function downloadFileArchive(path = getRoutePath()) {
+    const downloadPath = `api/${path}/当前目录存档.mix_dav?response-content-encoding=gzip`
+    const response = await client.get(downloadPath)
+    return JSON.parse(response.data.substring(4))
+}
+
 export function parsePropfindXML(xmlText) {
     const parser = new DOMParser();
     const xml = parser.parseFromString(xmlText, "application/xml");
