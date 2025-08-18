@@ -135,8 +135,18 @@ function VideoPreview({file}) {
             const videos = files.filter((it) => !it.isFolder)
             videos.sort(FILE_SORTS.name.func)
             state.videoList = videos
-            const controls = player.current?.controls;
-            if (videos.length > 1 && controls) {
+            const art = player.current
+            if (videos.length > 1 && art) {
+                const controls = art.controls;
+
+                function nextVideo() {
+                    const nextIndex = (state.currentFileIndex + 1) % state.videoList.length;
+                    const item = state.videoList[nextIndex]
+                    navigate(`${getParentPath()}/${encodeURIComponent(item.name)}`)
+                }
+
+                art.on("video:ended", nextVideo)
+
                 controls.update({
                     name: "previous-button",
                     index: 10,
@@ -155,12 +165,9 @@ function VideoPreview({file}) {
                     position: "left",
                     html: NEXT_ICON,
                     tooltip: "下一集",
-                    click: function () {
-                        const nextIndex = (state.currentFileIndex + 1) % state.videoList.length;
-                        const item = state.videoList[nextIndex]
-                        navigate(`${getParentPath()}/${encodeURIComponent(item.name)}`)
-                    },
+                    click: nextVideo,
                 })
+
             }
         }
     })
@@ -181,6 +188,7 @@ function VideoPreview({file}) {
             playbackRate: true,
             flip: true,
             volume: 0.7,
+            autoplay: true,
             controls: [],
         });
         art.on('video:timeupdate', (event) => {
