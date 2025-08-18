@@ -41,7 +41,7 @@ function WebDav(props) {
             addDialog(<DragUpload/>)
         }}>
             <FileResolve callback={(code, file) => {
-                addDialog(<FileImport file={file} code={code}/>)
+                addDialog(<FileImport file={file}/>)
             }}/>
             <NavBar/>
             <FileWindow/>

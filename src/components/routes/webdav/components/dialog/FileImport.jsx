@@ -41,14 +41,15 @@ export async function importFiles(code) {
     await client.put(uploadUrl, response.data)
 }
 
-function FileImport({file, code}) {
-    const {fileName, fileSize} = file
+function FileImport({file}) {
+    const {fileName, fileSize, code} = file
 
 
     const actionButtons = run(() => {
 
         function importAllFiles() {
             showConfirmWindow('确定导入所有文件? (同名文件会覆盖)', async () => {
+                dialogList.pop()
                 await notifyPromise(importFiles(code))
                 notifyMsg('导入成功')
             })
@@ -71,6 +72,7 @@ function FileImport({file, code}) {
                     </Button></>
             )
         }
+
         if (fileName.endsWith(".mix_dav")) {
             return (
                 <>

@@ -160,6 +160,12 @@ export function substringAfter(str, delimiter) {
     return str.substring(index + delimiter.length);
 }
 
+export function substringAfterLast(str, delimiter) {
+    const index = str.lastIndexOf(delimiter);
+    if (index === -1) return str; // 没找到分隔符就返回原字符串
+    return str.substring(index + delimiter.length);
+}
+
 
 export function encodeUrlPath(path) {
     return path

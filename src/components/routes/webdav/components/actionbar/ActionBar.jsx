@@ -7,7 +7,7 @@ import NewFolder from "../dialog/NewFolder.jsx";
 import {selectFiles} from "../../../../common/FileSelect.jsx";
 import {addUploadFile} from "../../../../../utils/transfer/upload/FileUpload.js";
 import {apiAddress} from "../../../../../config.js";
-import {getRoutePath, notifyMsg, notifyPromise} from "../../../../../utils/CommonUtils.jsx";
+import {copyText, getRoutePath, notifyMsg, notifyPromise} from "../../../../../utils/CommonUtils.jsx";
 import {useSnapshot} from "valtio";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import {showConfirmWindow} from "../../../../common/ConfirmWindow.jsx";
@@ -19,17 +19,20 @@ import {webDavState} from "../../state/WebDavState.js";
 import DownloadIcon from '@mui/icons-material/Download';
 import {addDownloadFile} from "../../../../../utils/transfer/download/FileDownload.js";
 import DownloadDialog from "../../../../../utils/transfer/download/DownloadDialog.jsx";
+import ShareIcon from '@mui/icons-material/Share';
+import FileShare from "../dialog/FileShare.jsx";
 
 
 const Container = styled.div`
     width: 100%;
-    height: 60px;
+    min-height: 60px;
     border-radius: 10px;
     display: flex;
     align-items: center;
-    padding: 0px 20px;
-    gap: 20px;
+    padding: 10px 20px;
+    gap: 25px;
     background-color: rgba(142, 42, 254, 0.21);
+    flex-wrap: wrap;
 
     svg {
         font-size: 25px;
@@ -146,6 +149,20 @@ const fabs = [
                 addDownloadFile(file.url, file.name)
             })
             addDialog(<DownloadDialog/>)
+        }
+    },
+    {
+        name: '分享文件',
+        get disabled() {
+            return selectedFiles.length === 0
+        },
+        icon: <ShareIcon/>,
+        async onClick() {
+            if (webDavState.singleFile) {
+                copyText(webDavState.singleFile.etag)
+                return
+            }
+            addDialog(<FileShare/>)
         }
     }
 ]

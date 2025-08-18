@@ -63,7 +63,7 @@ function FileResolve({callback = resolveMixFile}) {
                     if (!file?.fileName) {
                         return notifyError('解密分享码失败');
                     }
-                    callback?.(code, file)
+                    callback?.(file.code, file)
                 })
             }} disabled={!input.trim().length}>解析</Button>
         </Container>

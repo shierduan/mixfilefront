@@ -152,6 +152,7 @@ export function decodeMixFile(shareInfo) {
             url: u,
             key: k,
             referer: r,
+            code,
         }
     } catch (e) {
         console.error("解密失败:", e);
