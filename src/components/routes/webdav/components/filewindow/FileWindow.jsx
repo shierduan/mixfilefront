@@ -2,7 +2,7 @@ import styled from "styled-components";
 import useApi from "../../../../../hooks/useApi.jsx";
 import {parsePropfindXML} from "../../utils/WebDavUtils.jsx";
 import WebDavFileCard from "./WebDavFileCard.jsx";
-import {deepEqual, noProxy, run} from "../../../../../utils/CommonUtils.jsx";
+import {deepEqual, getParentPath, noProxy, run} from "../../../../../utils/CommonUtils.jsx";
 import {useLocation} from "react-router-dom";
 import FileSort from "./FileSort.jsx";
 import VirtualList from "../../../../common/base/VirtualList.jsx";
@@ -108,6 +108,9 @@ function FileWindow(props) {
             depth: 1
         },
         callback(data) {
+
+            webDavState.singleFile = false
+
             const files = parsePropfindXML(data)
             if (files.length === 0) {
                 return;
@@ -120,8 +123,6 @@ function FileWindow(props) {
                 webDavState.singleFile = files[0]
                 return
             }
-
-            webDavState.singleFile = false
 
             //去掉目录文件
             files.shift()
@@ -198,6 +199,9 @@ function FileWindow(props) {
 
 
     const videoPreview = run(() => {
+        if (getParentPath() === '/') {
+            return null
+        }
         if (singleFile?.mimeType?.startsWith('video/')) {
             return (
                 <VideoPreview file={singleFile}/>

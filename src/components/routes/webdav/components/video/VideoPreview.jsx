@@ -7,7 +7,7 @@ import useProxyState from "../../../../../hooks/useProxyState.js";
 import {parsePropfindXML} from "../../utils/WebDavUtils.jsx";
 import {FILE_SORTS, webDavState} from "../../state/WebDavState.js";
 import {NEXT_ICON, PREV_ICON} from "./Icons.js";
-import {useLocation, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {useSnapshot} from "valtio";
 import useLocalState from "../../../../../hooks/useLocalState.js";
 import {NativeSelect} from "@mui/material";
@@ -58,12 +58,16 @@ const Container = styled.div`
 `
 
 function VideoPreview({file}) {
+
     const {url, name, etag} = file;
+
     useSnapshot(webDavState)
+
+    const navigate = useNavigate()
 
     const player = useRef(null);
 
-    const path = useLocation()
+    const artRef = useRef();
 
     const state = useProxyState({
         videoFile: file,
@@ -78,6 +82,7 @@ function VideoPreview({file}) {
     const videoCache = useLocalState('video-cache', {
         history: []
     })
+
 
     useEffect(() => {
         const art = player.current
@@ -111,8 +116,6 @@ function VideoPreview({file}) {
         state.currentFileIndex = state.videoList.findIndex((it) => it.href === file.href)
     }, [state.videoList, etag])
 
-
-    const artRef = useRef();
 
     useApi({
         method: 'PROPFIND',
@@ -171,8 +174,6 @@ function VideoPreview({file}) {
             }
         }
     })
-
-    const navigate = useNavigate()
 
 
     useEffect(() => {
