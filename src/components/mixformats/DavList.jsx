@@ -4,7 +4,7 @@ import {Button} from "@mui/material";
 import {formatFileSize, run} from "../../utils/CommonUtils.jsx";
 import {addDialog} from "../../utils/DialogContainer.jsx";
 import {resolveMixFile} from "../common/base/FileResolve.jsx";
-import {MixFileChip, MixFileDataContainer} from "./StyleContainers.jsx";
+import {MixFileChip, MixFileDataContainer} from "../common/base/DataContainers.jsx";
 import useApi from "../../hooks/useApi.jsx";
 import VirtualList from "../common/base/VirtualList.jsx";
 import useProxyState from "../../hooks/useProxyState.js";
