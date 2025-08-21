@@ -1,15 +1,35 @@
-# `create-preact`
 
-<h2 align="center">
-  <img height="256" width="256" src="./src/assets/preact.svg">
-</h2>
+## mixfile网页前端
+使用preact+vite+mui开发
 
-<h3 align="center">Get started using Preact and Vite!</h3>
+## 特点
+支持文件批量上传/下载 \
+webdav文件查看，移动，复制，删除，重命名，新建文件夹，图片视频文档文本预览 \
+与mixfile深度集成 \
+支持文件批量分享，批量导入，单一或指定文件夹分享，导入指定文件夹 \
+虚拟列表，上万文件不卡顿 \
+支持文件深层嵌套搜索，无论嵌套多少层的文件都可一次性搜索出结果 
 
-## Getting Started
+## 相比于alist的优点
+视频播放切换剧集不会丢失全屏状态 \
+浏览器本地自动缓存播放进度，最多500条 \
+直接访问视频地址不会丢失剧集列表 \
+文件批量下载本地管理 \
+不会添加大量文件到浏览器下载列表，自动控制并发 \
+可直接查看所有正在上传下载的任务列表，可随时取消所有任务 
 
-- `npm run dev` - Starts a dev server at http://localhost:5173/
+### 安全性第一原则
+不会远程加载任何js库 \
+doc docx等文件预览均为本地算法渲染，不会调用微软谷歌等渲染服务进行预览 \
+防止您的隐私泄漏
 
-- `npm run build` - Builds for production, emitting to `dist/`
+## 开发
+使用yarn dev即可启动 \
+添加url param api参数可指定mixfile服务端地址 \
+例如http://localhost:5173?api=http://127.0.0.1:4719
 
-- `npm run preview` - Starts a server at http://localhost:4173/ to test production build locally
+## 缺陷
+没有引入代码高亮等库，减少体积,没有文件编辑功能
+
+
+
