@@ -101,6 +101,16 @@ export function getParamUrl(params) {
     return url.toString();
 }
 
+export function safeInterval(fn, interval) {
+    let timer;
+    const run = async () => {
+        await fn().catch(console.error);
+        timer = setTimeout(run, interval); // 任务结束后再启动下一轮
+    };
+    timer = setTimeout(run, interval);
+    return () => clearTimeout(timer); // 返回停止函数
+}
+
 export function saveBlob(data, fileName) {
     // 1. 统一转成 Blob
     const blob = data instanceof Blob

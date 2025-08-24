@@ -4,7 +4,7 @@ import {CircularProgress} from "@mui/material";
 import styled from "styled-components";
 import useProxyState from "./useProxyState.js";
 import useDeepCompareEffect from "./useDeepCompareEffect.js";
-import {noProxy} from "../utils/CommonUtils.jsx";
+import {noProxy, safeInterval} from "../utils/CommonUtils.jsx";
 
 const MiddleContainer = styled.div`
     margin: 20px auto;
@@ -40,6 +40,7 @@ export default function useApi({
                                    config = {},
                                    callback = (data) => {
                                    },
+                                   request = true,
                                    refreshInterval = -1,
                                    content = (data) => <></>,
                                    error = (err) => <DefaultError err={err}/>,
@@ -66,6 +67,9 @@ export default function useApi({
     }
 
     useDeepCompareEffect(() => {
+        if (!request) {
+            return
+        }
         (async () => {
             state.isLoading = true
             try {
@@ -78,8 +82,8 @@ export default function useApi({
             }
         })()
         if (refreshInterval > 0) {
-            const timer = setInterval(fetchData, refreshInterval)
-            return () => clearInterval(timer)
+            const stop = safeInterval(fetchData, refreshInterval)
+            return () => stop()
         }
     }, [path, method, headers, config, body, refreshInterval])
 
