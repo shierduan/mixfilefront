@@ -1,5 +1,4 @@
-import {proxy, ref} from "valtio";
-import {watch} from "valtio/utils";
+import {ref} from "valtio";
 import copy from "copy-to-clipboard";
 import toast from "react-hot-toast";
 import {CircularProgress} from "@mui/material";
@@ -80,27 +79,6 @@ export function noProxy(obj) {
     return ref(obj)
 }
 
-/**
- * 生成一个带有更新参数的新 URL（不会修改浏览器地址）
- * @param {Object} params - 需要更新的参数
- * @returns {string} - 更新后的 URL 字符串
- */
-export function getParamUrl(params) {
-    const url = new URL(window.location.href);
-    const searchParams = url.searchParams;
-
-    Object.entries(params).forEach(([key, value]) => {
-        if (value === null || value === undefined) {
-            searchParams.delete(key);
-        } else {
-            searchParams.set(key, value.toString());
-        }
-    });
-
-    // 返回完整 URL
-    return url.toString();
-}
-
 export function safeInterval(fn, interval, {immediate = false} = {}) {
     let stopped = false;
 
@@ -151,21 +129,6 @@ export function reverseSort(compareFn) {
     return (a, b) => compareFn(b, a); // 反转 a 和 b 的位置
 }
 
-export function updateURLParams(params, replace = false) {
-
-    const newUrl = getParamUrl(params);
-
-    if (newUrl !== window.location.href) {
-        const {history} = window;
-        if (replace) {
-            history.replaceState(null, '', newUrl);
-        } else {
-            history.pushState(null, '', newUrl);
-        }
-        window.dispatchEvent(new PopStateEvent('popstate', {state: history.state}));
-    }
-}
-
 export function copyText(text) {
     copy(text)
     notifyMsg('复制成功')
@@ -213,36 +176,6 @@ export function getParentPath(path = getRoutePath()) {
     return normalized.substring(0, lastSlash) || "/";
 }
 
-export function paramProxy(defaults) {
-    const state = proxy({})
-
-    function syncFromURL() {
-        for (const key in defaults) {
-            const val = getURLParam(key)
-            state[key] = val ?? defaults[key]
-        }
-    }
-
-    // 初始化：从 URL 读入状态
-    syncFromURL()
-
-    watch((get) => {
-
-        const value = get(state)
-        const params = {}
-        for (const key in value) {
-            params[key] = String(value[key])
-        }
-        updateURLParams(params)
-    })
-
-    // 添加 popstate 监听器
-    window.addEventListener('popstate', () => {
-        syncFromURL()
-    })
-
-    return state
-}
 
 function extractNumber(str, start) {
     let result = 0;
