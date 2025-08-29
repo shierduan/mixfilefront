@@ -1,6 +1,7 @@
 {
   "private": true,
   "type": "module",
+  "version": "1.0.2",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -23,7 +24,6 @@
     "copy-to-clipboard": "3.3.3",
     "dayjs": "^1.11.13",
     "docx-preview": "^0.3.6",
-    "excel-viewer": "^1.0.1",
     "fflate": "^0.8.2",
     "jscrypto": "^1.0.3",
     "preact": "10.27.0",
