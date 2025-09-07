@@ -24,6 +24,6 @@ export function UploadFileCard({file: upFile}) {
     }}>
         <h4 className={'text-hide'}>{title}</h4>
         {!complete && <LinearProgressWithLabel value={progress}/>}
-        <p>{tip}</p>
+        <p className={'text-hide'}>{tip}</p>
     </TransferFileCard>
 }

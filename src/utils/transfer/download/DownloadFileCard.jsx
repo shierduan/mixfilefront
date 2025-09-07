@@ -15,6 +15,6 @@ export function DownloadFileCard({file: dFile}) {
     return <TransferFileCard className={`shadow no-select ${classes.join(' ')}`}>
         <h4 className={'text-hide'}>{title}</h4>
         {!complete && <LinearProgressWithLabel value={progress}/>}
-        <p>{tip}</p>
+        <p className={'text-hide'}>{tip}</p>
     </TransferFileCard>
 }

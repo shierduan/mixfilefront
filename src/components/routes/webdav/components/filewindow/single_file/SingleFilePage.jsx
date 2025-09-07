@@ -72,9 +72,6 @@ const Container = styled.div`
                     }
 
                     .value {
-                        white-space: nowrap;
-                        text-overflow: ellipsis;
-                        overflow: hidden;
                         cursor: text;
                     }
 
@@ -130,7 +127,7 @@ function SingleFilePage({file}) {
                                         <div className={'name'}>
                                             {item}:
                                         </div>
-                                        <div className={'value'}>
+                                        <div className={'value text-hide'}>
                                             {infos[item].value}
                                         </div>
                                     </div>

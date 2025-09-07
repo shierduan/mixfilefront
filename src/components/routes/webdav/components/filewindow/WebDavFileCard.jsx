@@ -73,9 +73,6 @@ const Container = styled(Link)`
             font-weight: normal;
             max-width: 40vw;
             width: 400px;
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
         }
     }
 
@@ -217,7 +214,7 @@ function WebDavFileCard({file}) {
                         <dic class="icon">
                             <FileIcon file={file}/>
                         </dic>
-                        <h4>{name}</h4>
+                        <h4 className={'text-hide'}>{name}</h4>
                     </div>
                     {fileSize}
                 </div>

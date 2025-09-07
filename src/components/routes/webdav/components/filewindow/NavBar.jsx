@@ -16,9 +16,6 @@ const Container = styled.div`
     .MuiBreadcrumbs-li {
         a {
             max-width: 100px;
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
             display: block;
             gap: 5px;
             color: rgba(67, 4, 116, 0.86);
@@ -58,6 +55,7 @@ function NavBar(props) {
         })
 
         return <Link
+            className={'text-hide'}
             to={lastSegment}
             key={index}
         >

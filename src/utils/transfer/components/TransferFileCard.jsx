@@ -28,9 +28,6 @@ export const TransferFileCard = styled.div`
     }
 
     p {
-        overflow: hidden;
-        white-space: nowrap;
         font-weight: bold;
-        text-overflow: ellipsis;
     }
 `
