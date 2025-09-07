@@ -6,7 +6,7 @@ const Container = styled.div`
     padding: 20px;
     width: 100%;
     font-weight: bold;
-    font-size: 4rem;
+    font-size: min(10vw, 50px);
     color: #a632f9;
 `
 

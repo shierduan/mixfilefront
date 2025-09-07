@@ -21,7 +21,6 @@ const Container = styled.div`
             text-overflow: ellipsis;
             display: block;
             gap: 5px;
-            font-size: 16px;
             color: rgba(67, 4, 116, 0.86);
             transition: .3s;
             text-decoration: none;

@@ -23,6 +23,7 @@ function DragUpload(props) {
     return (
         <Container className={'shadow no-select'}>
             <UploadArea className={'upload-area'} callback={async (files) => {
+                console.log(files)
                 await sleep(100)
                 dialogList.pop()
                 addDialog(<UploadDialog/>)

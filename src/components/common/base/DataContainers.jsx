@@ -27,7 +27,6 @@ export const MixFileDataContainer = styled.div`
 
     button {
         max-width: 100%;
-        font-size: max(.6rem, 14px);
     }
 `
 

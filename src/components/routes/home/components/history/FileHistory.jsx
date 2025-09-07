@@ -20,10 +20,6 @@ const Container = styled.div`
         width: 100%;
     }
 
-    button {
-        font-size: max(.6rem, 14px);
-    }
-
 `
 
 function FileHistory(props) {

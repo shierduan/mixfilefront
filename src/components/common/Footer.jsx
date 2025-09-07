@@ -24,7 +24,7 @@ function Footer(props) {
                     className={'gradient-text'}
                     target="_blank"
                 >
-                    GitHub地址: https://github.com/InvertGeek/MixFile
+                    GitHub: https://github.com/InvertGeek/MixFile
                 </a>
             </div>
         </Container>

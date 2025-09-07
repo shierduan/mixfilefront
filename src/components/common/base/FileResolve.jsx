@@ -15,7 +15,6 @@ const Container = styled.div`
     max-width: 95vw;
     justify-content: center;
     padding: 10px;
-    font-size: max(.6rem, 16px);
 
     .MuiTextField-root {
         width: 70%;
@@ -24,7 +23,7 @@ const Container = styled.div`
     button {
         max-width: 100px;
         width: 30%;
-        font-size: max(.8rem, 18px)
+        font-size: 18px
     }
 
 `
