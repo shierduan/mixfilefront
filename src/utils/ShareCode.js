@@ -25,8 +25,8 @@ function decodeHex(content) {
     return content
 }
 
-function hex2a(hexx) {
-    const hex = hexx.toString();
+function hex2a(hex) {
+    hex = hex.toString();
     let str = '';
     for (let i = 0; i < hex.length; i += 2)
         str += String.fromCharCode(parseInt(hex.substring(i, i + 2), 16));
