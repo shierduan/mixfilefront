@@ -26,10 +26,10 @@ function decodeHex(content) {
 }
 
 function hex2a(hexx) {
-    const hex = hexx.toString();//force conversion
+    const hex = hexx.toString();
     let str = '';
     for (let i = 0; i < hex.length; i += 2)
-        str += String.fromCharCode(parseInt(hex.substring(i, 2), 16));
+        str += String.fromCharCode(parseInt(hex.substring(i, i + 2), 16));
     return str;
 }
 
